@@ -6,15 +6,15 @@
 #include <stdio.h>
 
 /* spells allowed in staff inventory */
-const size_t numOfSpellsAllowed = 3;
+const size_t numSpellsAllowed = 3;
 /* number of spells in our pre-defined book */
-const size_t numOfSpellsInBook = 5;
+const size_t numSpellsInBook = 5;
 /* number of sounds in out pre-defined book */
 const size_t numOfSounds = 2;
 
 struct playerStaffData
 {
-	int spells[numOfSpellsAllowed] = [0,2,3];
+	int spells[numSpellsAllowed] = [0,2,3];
 	bool isCasting = false;
 
 	bool isRumbling = false;
@@ -32,15 +32,15 @@ struct playerStaffData
 };
 
 /* each index of the array equates to it's spell ID */
-const char* bookOfSpells[numOfSpellsInBook] = [
-	"water-defense", // 0
+const char* bookOfSpells[numSpellsInBook] = [
+	"water_defense", // 0
 	"fireball", // 1
-	"air-rush", // 2
-	"rock-grind", // 3
+	"air_rush", // 2
+	"rock_grind", // 3
 	"splash" // 4
 ];
 
 const char* bookOfSounds[numOfSounds] = [
-	"sent-spell",
-	"got-hit"
+	"sent_spell",
+	"got_hit"
 ];
