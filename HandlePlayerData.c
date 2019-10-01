@@ -11,7 +11,7 @@
 // -----------------------------------------------
 
 PlayerData* initPlayerStruct(int[] spellsChosen) {
-	PlayerData* P = {
+	PlayerData* P = &(PlayerData){
 		.spells = &spellsChosen,
 		.currentSpell = 0,
 		.isCasting = false,
