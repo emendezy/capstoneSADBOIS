@@ -3,8 +3,8 @@
  */
 
 #include <assert.h>
-#include <PlayerData.h>
-#include <HandlePlayerData.c>
+#include "PlayerData.h"
+#include "HandlePlayerData.c"
 
 int[] spellsChosen = [0,1,2];
 
@@ -57,4 +57,8 @@ int main() {
 	/*
 	 * All functions are called here for testing
 	 */
+
+	/* Test initialize struct */
+	PlayerData *actual = initPlayerStruct(spellsChosen);
+	assert(compareStructs(P_expected, actual));
 }
