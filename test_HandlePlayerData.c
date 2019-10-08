@@ -4,12 +4,9 @@
 
 #include <assert.h>
 #include "PlayerData.h"
-#include "HandlePlayerData.c"
 
-int[] spellsChosen = [0,1,2];
-
-PlayerData* P_expected = &(PlayerData){
-	.spells = &spellsChosen,
+/* create fake initially created PlayerData struct */
+struct PlayerStaffData* P_expected = &(struct PlayerStaffData){
 	.currentSpell = 0,
 	.isCasting = false,
 	.isRumbling = false,
@@ -25,17 +22,13 @@ PlayerData* P_expected = &(PlayerData){
 	.healthPercent = 100
 };
 
-bool compareStructs(PlayerData* expected, PlayerData* actual) {
+bool compareStructs(struct PlayerStaffData* expected,
+					struct PlayerStaffData* actual) {
 	/* not null */
 	assert(expected);
 	assert(actual);
 
 	/* check internal values */
-	int[] *expectedSpells = expected->spellsChosen;
-	int[] *actualSpells = actual->spellsChosen;
-	for(int i = 0; i < NUM_SPELLS_ALLOWED; i++) {
-		assert(*expectedSpells[i] == *actualSpells[i]);
-	}
 	assert(expected->currentSpell == actual->currentSpell);
 	assert(expected->isCasting == actual->isCasting);
 	assert(expected->isRumbling == actual->isRumbling);
@@ -59,6 +52,8 @@ int main() {
 	 */
 
 	/* Test initialize struct */
-	PlayerData *actual = initPlayerStruct(spellsChosen);
+	struct PlayerStaffData *actual = initPlayerStruct();
 	assert(compareStructs(P_expected, actual));
+
+	printf("Everything ran to completion!\n");
 }
