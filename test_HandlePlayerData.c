@@ -2,7 +2,6 @@
  * Test file for HandlePlayerData.c
  */
 
-#include <assert.h>
 #include "PlayerData.h"
 
 /* create fake initially created PlayerData struct */
@@ -46,6 +45,34 @@ bool compareStructs(struct PlayerStaffData* expected,
 	return true;
 }
 
+void test_rumbleHandler(struct PlayerStaffData* actual) {
+	rumbleHandler(actual, TURN_ON);
+	rumbleHandler(actual, INCR);
+	rumbleHandler(actual, INCR);
+	assert(actual->isRumbling == true);
+	assert(actual->rumbleLevel == 3);
+
+	rumbleHandler(actual, DECR);
+	assert(actual->rumbleLevel == 2);
+	rumbleHandler(actual, TURN_OFF);
+	assert(actual->isRumbling == false);
+	assert(actual->rumbleLevel == 0);
+}
+
+void test_lightHandler(struct PlayerStaffData* actual) {
+	lightHandler(actual, TURN_ON);
+	lightHandler(actual, INCR);
+	lightHandler(actual, INCR);
+	assert(actual->isLit == true);
+	assert(actual->lightLevel == 3);
+
+	lightHandler(actual, DECR);
+	assert(actual->lightLevel == 2);
+	lightHandler(actual, TURN_OFF);
+	assert(actual->isLit == false);
+	assert(actual->lightLevel == 0);
+}
+
 int main() {
 	/*
 	 * All functions are called here for testing
@@ -54,6 +81,14 @@ int main() {
 	/* Test initialize struct */
 	struct PlayerStaffData *actual = initPlayerStruct();
 	assert(compareStructs(P_expected, actual));
+
+	/* test rumbleHandler */
+	test_rumbleHandler(actual);
+	assert(compareStructs(P_expected, actual)); /* left actual unchanged */
+
+	/* test lightHandler */
+	test_lightHandler(actual);
+	assert(compareStructs(P_expected, actual)); /* left actual unchanged */
 
 	printf("Everything ran to completion!\n");
 }

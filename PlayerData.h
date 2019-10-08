@@ -8,28 +8,24 @@
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
+#include <assert.h>
 
 #ifndef HEADER_GAURD_FOR_PLAYER_DATA
 #define HEADER_GAURD_FOR_PLAYER_DATA
 
-/* spells allowed in staff inventory */
-#define NUM_SPELLS_ALLOWED 3
+// #define NDEBUG /* Comment for no debug mode */
+#define TURN_OFF 0
+#define TURN_ON 1
+#define INCR 2
+#define DECR 3
+
+#define MAX_RUMBLE 10
+#define MAX_LIGHT 10
+
 /* number of spells in our pre-defined book */
 #define TOTAL_SPELLS_IN_SPELLBOOK 5
-/* max length of spell name */
-#define MAX_SPELL_NAME_LENGTH 10
 /* number of sounds in out pre-defined book */
 #define TOTAL_NUM_OF_SOUNDS 2
-
-#define SPELL_CASTING_RUMBLE_LEVEL 20 /* out of 100 */
-#define SPELL_END_RUMBLE_LEVEL 70 /* out of 100 */
-
-#define SPELL_CASTING_LIGHT_LEVEL 20 /* out of 100 */
-#define SPELL_END_LIGHT_LEVEL 70 /* out of 100 */
-
-/* 4,000,000,000 clocks = 1 sec ??-> TODO: need to confirm number with tests */
-#define END_SPELL_RUMBLE_TIME (4000000000 * 1.5)
-#define END_SPELL_LIGHT_TIME (4000000000 * 1.5)
 
 /* ------------------------------------------------------------------------- */
 
@@ -39,11 +35,11 @@ struct PlayerStaffData
 	bool isCasting;
 
 	bool isRumbling;
-	size_t rumbleLevel; /* 0 -> 100 */
+	size_t rumbleLevel; /* 0 -> 10 */
 	clock_t rumbleStartTime;
 
 	bool isLit;
-	size_t lightLevel; /* 0 -> 100 */
+	size_t lightLevel; /* 0 -> 10 */
 	clock_t lightStartTime;
 
 	bool isLoud;
@@ -72,9 +68,9 @@ struct PlayerStaffData
 
 struct PlayerStaffData* initPlayerStruct();
 
-void rumbler();
+void rumbleHandler();
 
-void lights();
+void lightHandler();
 
 void changeSpell();
 
