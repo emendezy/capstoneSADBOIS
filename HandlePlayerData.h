@@ -31,6 +31,7 @@
 
 struct PlayerStaffData
 {
+	bool gameInProgress;
 	int currentSpell; // from book of spells
 	bool isCasting;
 
@@ -51,28 +52,19 @@ struct PlayerStaffData
 	size_t healthPercent; /* 0(dead) -> 100(full) */
 };
 
-/* each index of the array equates to it's spell ID */
-// const char* const bookOfSpells[] = {
-// 	"no_spell_chosen", // 0 (default case)
-// 	"water_defense", // 1
-// 	"fireball", // 2
-// 	"air_rush", // 3
-// 	"rock_grind", // 4
-// 	"splash" // 5
-// };
-
-// const char* const bookOfSounds[] = {
-// 	"sent_spell",
-// 	"got_hit"
-// };
-
 struct PlayerStaffData* initPlayerStruct();
+
+void unloadPlayerData();
 
 void rumbleHandler();
 
 void lightHandler();
 
 void changeSpell();
+
+bool isCasting();
+
+bool wasAttacked();
 
 void startCasting();
 

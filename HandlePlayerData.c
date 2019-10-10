@@ -4,10 +4,11 @@
  *
  */
 
-#include "PlayerData.h"
+#include "HandlePlayerData.h"
 
 /* each index of the array equates to it's spell ID */
-const char* const bookOfSpells[] = {
+const char* const bookOfSpells[] =
+{
 	"no_spell_chosen", // 0 (default case)
 	"water_defense", // 1
 	"fireball", // 2
@@ -16,7 +17,8 @@ const char* const bookOfSpells[] = {
 	"splash" // 5
 };
 
-const char* const bookOfSounds[] = {
+const char* const bookOfSounds[] =
+{
 	"sent_spell",
 	"got_hit"
 };
@@ -25,8 +27,10 @@ const char* const bookOfSounds[] = {
 // Initialization Steps
 // -----------------------------------------------
 
-struct PlayerStaffData* initPlayerStruct() {
+struct PlayerStaffData* initPlayerStruct()
+{
 	struct PlayerStaffData* P = malloc(sizeof(struct PlayerStaffData));
+	P->gameInProgress = true;
 	P->currentSpell = 0;
 	P->isCasting = false;
 	P->isRumbling = false;
@@ -45,83 +49,51 @@ struct PlayerStaffData* initPlayerStruct() {
 }
 
 // -----------------------------------------------
-// Functions that react to changed Player Data
+// De-initialization Steps
 // -----------------------------------------------
 
-/* Rumbling handler
- *  Handle Rumbling sequences based on Player data
- *	isCasting - rumble at a low frequency to provide haptic feedback
- */
-void rumbleHandler(struct PlayerStaffData* P, int rumbleMode) {
-
-	switch (rumbleMode)
-	{
-	case 0: /* Case for turning rumbler OFF */
-		assert(P->isRumbling == true);
-		P->isRumbling = false;
-		P->rumbleLevel = 0;
-		P->rumbleStartTime = 0;
-		break;
-	case 1: /* Case for turning rumbler ON */
-		assert(P->isRumbling == false);
-		P->isRumbling = true;
-		P->rumbleStartTime = clock();
-		P->rumbleLevel = 1;
-		break;
-	case 2: /* Case for increasing rumbler by 1 level */
-		assert(P->isRumbling == true);
-		assert(P->rumbleLevel < MAX_RUMBLE);
-		P->rumbleLevel++;
-		break;
-	case 3: /* Case for decreasing the rumbler by 1 level */
-		assert(P->isRumbling == true);
-		assert(P->rumbleLevel > 1);
-		P->rumbleLevel--;
-		break;
-	}
+void unloadPlayerData(struct PlayerStaffData* P)
+{
+	/* TODO - add code that saves the Player staff data to SD card */
+	free(P);
 }
 
-/* Lights handler
- *  Handle light sequences based on Player data
- *	isCasting - be lit at a low level to provide haptic feedback
- *				< End goal -> make light pulse slowly >
- */
-void lightHandler(struct PlayerStaffData* P, int lightMode) {
-	switch (lightMode)
+// -----------------------------------------------
+// Functions that read input directly
+// -----------------------------------------------
+
+bool isCasting(struct PlayerStaffData* P)
+{
+	bool castButtonPressed = false;
+	// ^ TODO - fill with cast button input reading
+
+	if (castButtonPressed)
 	{
-	case 0: /* Case for turning LEDs OFF */
-		assert(P->isLit == true);
-		P->isLit = false;
-		P->lightLevel = 0;
-		P->lightStartTime = 0;
-		break;
-	case 1: /* Case for turning LEDs ON */
-		assert(P->isLit == false);
-		P->isLit = true;
-		P->lightStartTime = clock();
-		P->lightLevel = 1;
-		break;
-	case 2: /* Case for increasing LEDs by 1 level */
-		assert(P->isLit == true);
-		assert(P->lightLevel < MAX_LIGHT);
-		P->lightLevel++;
-		break;
-	case 3: /* Case for decreasing the LEDs by 1 level */
-		assert(P->isLit == true);
-		assert(P->lightLevel > 1);
-		P->lightLevel--;
-		break;
+		return true;
 	}
+	else
+		return false;
 }
 
+bool wasAttacked(struct PlayerStaffData* P)
+{
+	bool recievedAttack = false;
+	// ^ TODO - fill with bluetooth/wifi response from other staff
+
+	if (recievedAttack)
+	{
+		return true;
+	}
+	else
+		return false;
+}
 
 // -----------------------------------------------
 // Functions that change Player Data
 // -----------------------------------------------
 
-/* Button was pressed to initialize cast sequence
- */
-void startCasting(struct PlayerStaffData* P) {
+void startCasting(struct PlayerStaffData* P)
+{
 	P->isCasting = true;
 
 	rumbleHandler(P, TURN_ON);
@@ -130,7 +102,8 @@ void startCasting(struct PlayerStaffData* P) {
 
 /* Pressure sensor was pressed end cast sequence
  */
-void endCasting(struct PlayerStaffData* P) {
+void endCasting(struct PlayerStaffData* P)
+{
 	P->isCasting = false;
 
 	rumbleHandler(P, TURN_OFF);
@@ -138,5 +111,72 @@ void endCasting(struct PlayerStaffData* P) {
 }
 
 // -----------------------------------------------
-// Update functions that rely on timing
+// Functions that react to changed Player Data
 // -----------------------------------------------
+
+/* Rumbling handler
+ *  Handle Rumbling sequences based on Player data
+ *	isCasting - rumble at a low frequency to provide haptic feedback
+ */
+void rumbleHandler(struct PlayerStaffData* P, int rumbleMode)
+{
+	switch (rumbleMode)
+	{
+		case 0: /* Case for turning rumbler OFF */
+			assert(P->isRumbling == true);
+			P->isRumbling = false;
+			P->rumbleLevel = 0;
+			P->rumbleStartTime = 0;
+			break;
+		case 1: /* Case for turning rumbler ON */
+			assert(P->isRumbling == false);
+			P->isRumbling = true;
+			P->rumbleStartTime = clock();
+			P->rumbleLevel = 1;
+			break;
+		case 2: /* Case for increasing rumbler by 1 level */
+			assert(P->isRumbling == true);
+			assert(P->rumbleLevel < MAX_RUMBLE);
+			P->rumbleLevel++;
+			break;
+		case 3: /* Case for decreasing the rumbler by 1 level */
+			assert(P->isRumbling == true);
+			assert(P->rumbleLevel > 1);
+			P->rumbleLevel--;
+			break;
+	}
+}
+
+/* Lights handler
+ *  Handle light sequences based on Player data
+ *	isCasting - be lit at a low level to provide haptic feedback
+ *				< End goal -> make light pulse slowly >
+ */
+void lightHandler(struct PlayerStaffData* P, int lightMode)
+{
+	switch (lightMode)
+	{
+		case 0: /* Case for turning LEDs OFF */
+			assert(P->isLit == true);
+			P->isLit = false;
+			P->lightLevel = 0;
+			P->lightStartTime = 0;
+			break;
+		case 1: /* Case for turning LEDs ON */
+			assert(P->isLit == false);
+			P->isLit = true;
+			P->lightStartTime = clock();
+			P->lightLevel = 1;
+			break;
+		case 2: /* Case for increasing LEDs by 1 level */
+			assert(P->isLit == true);
+			assert(P->lightLevel < MAX_LIGHT);
+			P->lightLevel++;
+			break;
+		case 3: /* Case for decreasing the LEDs by 1 level */
+			assert(P->isLit == true);
+			assert(P->lightLevel > 1);
+			P->lightLevel--;
+			break;
+	}
+}

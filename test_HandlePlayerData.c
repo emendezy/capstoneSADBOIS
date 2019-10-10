@@ -2,7 +2,7 @@
  * Test file for HandlePlayerData.c
  */
 
-#include "PlayerData.h"
+#include "HandlePlayerData.h"
 
 /* create fake initially created PlayerData struct */
 struct PlayerStaffData* P_expected = &(struct PlayerStaffData){
@@ -22,7 +22,8 @@ struct PlayerStaffData* P_expected = &(struct PlayerStaffData){
 };
 
 bool compareStructs(struct PlayerStaffData* expected,
-					struct PlayerStaffData* actual) {
+					struct PlayerStaffData* actual)
+{
 	/* not null */
 	assert(expected);
 	assert(actual);
@@ -45,7 +46,8 @@ bool compareStructs(struct PlayerStaffData* expected,
 	return true;
 }
 
-void test_rumbleHandler(struct PlayerStaffData* actual) {
+void test_rumbleHandler(struct PlayerStaffData* actual)
+{
 	rumbleHandler(actual, TURN_ON);
 	rumbleHandler(actual, INCR);
 	rumbleHandler(actual, INCR);
@@ -59,7 +61,8 @@ void test_rumbleHandler(struct PlayerStaffData* actual) {
 	assert(actual->rumbleLevel == 0);
 }
 
-void test_lightHandler(struct PlayerStaffData* actual) {
+void test_lightHandler(struct PlayerStaffData* actual)
+{
 	lightHandler(actual, TURN_ON);
 	lightHandler(actual, INCR);
 	lightHandler(actual, INCR);
@@ -73,7 +76,8 @@ void test_lightHandler(struct PlayerStaffData* actual) {
 	assert(actual->lightLevel == 0);
 }
 
-int main() {
+int main()
+{
 	/*
 	 * All functions are called here for testing
 	 */
