@@ -31,7 +31,7 @@ void playTheGame()
 
 		if (isCurrentlyCasting && !isBeingAttacked)
 		{
-			startCasting(P);
+			spellCaster(P);
 		}
 		else if (!isCurrentlyCasting && isBeingAttacked)
 		{

@@ -66,7 +66,7 @@ bool isCasting();
 
 bool wasAttacked();
 
-void startCasting();
+void spellCaster();
 
 void endCasting();
 

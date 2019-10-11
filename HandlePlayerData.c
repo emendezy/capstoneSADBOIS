@@ -77,11 +77,16 @@ bool isCasting(struct PlayerStaffData* P)
 
 bool wasAttacked(struct PlayerStaffData* P)
 {
-	bool recievedAttack = false;
-	// ^ TODO - fill with bluetooth/wifi response from other staff
+	bool recievedAttack = false; // TODO - fill with bluetooth/wifi response
+								 // 	 from other staff
 
 	if (recievedAttack)
 	{
+		/* TODO - Have the comm of attack be continously sent from other
+		 * 		staff until picked up by this staff
+		 *  	- Have this staff send back a response that the "gotAttacked"
+		 *    	signal was recieved
+		 */
 		return true;
 	}
 	else
@@ -92,12 +97,34 @@ bool wasAttacked(struct PlayerStaffData* P)
 // Functions that change Player Data
 // -----------------------------------------------
 
-void startCasting(struct PlayerStaffData* P)
+void imuInputHandler(struct PlayerStaffData* P)
 {
-	P->isCasting = true;
+	/* Need to fill up with data reciever from the IMU handler module
+	 * - Update PlayerStaffData with recieved IMU data
+	 *   - Updating the progress of the current spell
+	 *	 - i.e. if spell counter is incr, which spell was drawn, variations
+	 * TODO - add sections that represent a managed variable that tracks the
+	 * 		current spell being drawn
+	 */
+	return;
+}
 
-	rumbleHandler(P, TURN_ON);
-	lightHandler(P, TURN_ON);
+void spellCaster(struct PlayerStaffData* P)
+{
+	/* Run spell starting steps */
+	if(P->rumbleStartTime == 0 && P->lightHandler == 0)
+	{
+		P->isCasting = true;
+
+		rumbleHandler(P, TURN_ON);
+		lightHandler(P, TURN_ON);
+	}
+	/* Spell has been started and keep processing the IMU input */
+	else
+	{
+		imuInputHandler(P);
+	}
+
 }
 
 /* Pressure sensor was pressed end cast sequence
