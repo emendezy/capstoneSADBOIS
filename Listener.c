@@ -4,7 +4,7 @@
 
 #include "Listener.h"
 
-bool gameIsActive = false;
+gameIsActive = false;
 
 void playTheGame()
 {
@@ -13,11 +13,12 @@ void playTheGame()
 	//-------------------------------------
 
 	/* initialize player struct */
-	struct PlayerStaffData* P = initPlayerStruct();
+	struct PlayerStaffData* P = initPlayerStruct(&gameIsActive);
 
 	/* Instantiate variables needed for the game loop */
 	bool isCurrentlyCasting = false;
 	bool isBeingAttacked = false;
+	int damage = 0;
 
 	//-------------------------------------
 	// Loop while game is active
@@ -27,35 +28,27 @@ void playTheGame()
 	{
 		/* Be listening for user input or enemy attack */
 		isCurrentlyCasting = isCasting(P);
-		isBeingAttacked = wasAttacked(P);
+		damage = wasAttacked(P);
+		if(damage != -1)
+			isBeingAttacked = true;
+		else
+			isBeingAttacked = false
 
-		if (isCurrentlyCasting && !isBeingAttacked)
+		if (isCurrentlyCasting)
 		{
-			spellCaster(P);
-		}
-		else if (!isCurrentlyCasting && isBeingAttacked)
-		{
-			/* decrement health
-			 * provide haptic feeback to the user
-			 */
-		}
-		else if (isCurrentlyCasting && isBeingAttacked)
-		{
-			/* need to interupt casting process
-			 * - this won't neccissarily be called here
-			 * - it will most likely be some interupt throughout the player
-			 *   handler
-			 */
+			spellCaster(P, damage); /* handle attack interupt in spellCaster */
 		}
 		else
 		{
-			/* nothing is happening here - no cast and no attack detected */
-		}
+			if(isBeingAttacked)
+			{
+				/* decrement health
+				 * provide haptic feeback to the user
+				 */
+				attackHandler(P, damage);
+			}
 
-		/* End game when Health reaches 0
-		 *  - Change gameInProgress to false
-		 *  - Send game over signal to other player
-		 */
+		}
 	}
 
 	//-------------------------------------
@@ -83,6 +76,7 @@ void waitForGameToStart()
  */
 int main()
 {
+	initializeRaspberryPi();
 	while(1)
 	{
 		if (gameIsActive)

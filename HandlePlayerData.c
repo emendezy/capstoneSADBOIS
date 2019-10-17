@@ -27,22 +27,30 @@ const char* const bookOfSounds[] =
 // Initialization Steps
 // -----------------------------------------------
 
-struct PlayerStaffData* initPlayerStruct()
+struct PlayerStaffData* initPlayerStruct(bool* gameIsActive)
 {
+	setupPinsOnRaspberryPi(); /* From GPIOHandler */
+
 	struct PlayerStaffData* P = malloc(sizeof(struct PlayerStaffData));
-	P->gameInProgress = true;
+	P->gameInProgress = gameIsActive;
 	P->currentSpell = 0;
 	P->isCasting = false;
+	P->castDamage = 0;
+
 	P->isRumbling = false;
 	P->rumbleLevel = 0;
 	P->rumbleStartTime = 0;
+
 	P->isLit = false;
 	P->lightLevel = 0;
 	P->lightStartTime = 0;
+
 	P->isLoud = false;
 	P->keyOfSoundToPlay = -1;
+
 	P->isShielding = false;
 	P->shieldPercent = 100;
+
 	P->healthPercent = 100;
 
 	return P;
@@ -54,12 +62,12 @@ struct PlayerStaffData* initPlayerStruct()
 
 void unloadPlayerData(struct PlayerStaffData* P)
 {
-	/* TODO - add code that saves the Player staff data to SD card */
+	/* TODO - add code that saves the Player staff data to file on SD card */
 	free(P);
 }
 
 // -----------------------------------------------
-// Functions that read input directly
+// Input Handlers
 // -----------------------------------------------
 
 bool isCasting(struct PlayerStaffData* P)
@@ -75,27 +83,25 @@ bool isCasting(struct PlayerStaffData* P)
 		return false;
 }
 
-bool wasAttacked(struct PlayerStaffData* P)
+int wasAttacked(struct PlayerStaffData* P)
 {
 	bool recievedAttack = false; // TODO - fill with bluetooth/wifi response
 								 // 	 from other staff
-
+	int damageTaken = 0;
 	if (recievedAttack)
 	{
 		/* TODO - Have the comm of attack be continously sent from other
 		 * 		staff until picked up by this staff
 		 *  	- Have this staff send back a response that the "gotAttacked"
 		 *    	signal was recieved
+		 *		- Grab damageTaken variable from staff comm and return
 		 */
-		return true;
+		// damage = readBluetoothInput
+		return damageTaken;
 	}
 	else
-		return false;
+		return -1;
 }
-
-// -----------------------------------------------
-// Functions that change Player Data
-// -----------------------------------------------
 
 void imuInputHandler(struct PlayerStaffData* P)
 {
@@ -109,10 +115,29 @@ void imuInputHandler(struct PlayerStaffData* P)
 	return;
 }
 
-void spellCaster(struct PlayerStaffData* P)
+void attackHandler(struct PlayerStaffData* P, int damageTaken)
 {
+	P->healthPercent -= damageTaken;
+	if(P->healthPercent <= 0)
+	{
+		/* game over */
+		bool* gameStatus = P->gameInProgress;
+		(*gameStatus) = false; // global var - defined in Listener.h
+
+	}
+}
+
+void spellCaster(struct PlayerStaffData* P, int damageTaken)
+{
+	if(damageTaken != -1)
+	{
+		/* need to stop spell casting and call attackHandler */
+
+		attackHandler(P, damageTaken);
+	}
 	/* Run spell starting steps */
-	if(P->rumbleStartTime == 0 && P->lightHandler == 0)
+	else if((P->rumbleStartTime == 0 && P->lightStartTime == 0)
+			&& damageTaken == -1)
 	{
 		P->isCasting = true;
 
@@ -129,16 +154,28 @@ void spellCaster(struct PlayerStaffData* P)
 
 /* Pressure sensor was pressed end cast sequence
  */
-void endCasting(struct PlayerStaffData* P)
+void endCasting(struct PlayerStaffData* P, bool successfulCast)
 {
 	P->isCasting = false;
 
 	rumbleHandler(P, TURN_OFF);
 	lightHandler(P, TURN_OFF);
+
+	if(successfulCast)
+	{
+		sendCast(P);
+	}
+}
+
+void sendCast(struct PlayerStaffData* P)
+{
+	/* TODO - setup bluetooth communication
+	 *	- cast damage should be in the player struct (P->castDamage)
+	 */
 }
 
 // -----------------------------------------------
-// Functions that react to changed Player Data
+// Output Handlers
 // -----------------------------------------------
 
 /* Rumbling handler
