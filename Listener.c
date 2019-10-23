@@ -21,9 +21,9 @@ void playTheGame()
 	//-------------------------------------
 	// Loop while game is active
 	//-------------------------------------
+	printf("game is active\n");
 	while(gameIsActive)
 	{
-		printf("game is active\n");
 		/* Be listening for user input or enemy attack */
 		isCurrentlyCasting = isCasting(P);
 		damageType = wasAttacked(P);
@@ -78,6 +78,7 @@ int main()
 	initializeRaspberryPi();
 	printf("in main loop\n");
 	playSound(0);
+	playSound(1);
 	while(1)
 	{
 		if (gameIsActive)
