@@ -9,6 +9,8 @@
 #include <wiringPi.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #define LED_PIN 0
 #define RUMBLER_PIN 1
@@ -20,5 +22,7 @@ void setupPinsOnRaspberryPi();
 void changeRumbleMode(int);
 
 void changeLEDMode(int);
+
+void playSound(int);
 
 #endif
