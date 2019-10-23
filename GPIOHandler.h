@@ -13,7 +13,12 @@
 #define LED_PIN 0
 #define RUMBLER_PIN 1
 
+void initializeRaspberryPi();
+
 void setupPinsOnRaspberryPi();
 
+void changeRumbleMode(int);
+
+void changeLEDMode(int)
 
 #endif

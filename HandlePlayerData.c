@@ -27,12 +27,12 @@ const char* const bookOfSounds[] =
 // Initialization Steps
 // -----------------------------------------------
 
-struct PlayerStaffData* initPlayerStruct(bool* gameIsActive)
+struct PlayerStaffData* initPlayerStruct(bool* isTheGameInProgress)
 {
 	setupPinsOnRaspberryPi(); /* From GPIOHandler */
 
 	struct PlayerStaffData* P = malloc(sizeof(struct PlayerStaffData));
-	P->gameInProgress = gameIsActive;
+	P->gameInProgress = isTheGameInProgress;
 	P->currentSpell = 0;
 	P->isCasting = false;
 	P->castDamage = 0;
@@ -75,7 +75,7 @@ bool isCasting(struct PlayerStaffData* P)
 	bool castButtonPressed = false;
 	// ^ TODO - fill with cast button input reading
 
-	if (castButtonPressed)
+	if (castButtonPressed || P->isCasting)
 	{
 		return true;
 	}
@@ -117,6 +117,9 @@ void imuInputHandler(struct PlayerStaffData* P)
 
 void attackHandler(struct PlayerStaffData* P, int damageTaken)
 {
+	/* TODO - need to check if the spell being currently cast is a
+	 * defense spell
+	 */
 	P->healthPercent -= damageTaken;
 	if(P->healthPercent <= 0)
 	{

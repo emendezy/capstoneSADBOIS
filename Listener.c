@@ -32,7 +32,7 @@ void playTheGame()
 		if(damage != -1)
 			isBeingAttacked = true;
 		else
-			isBeingAttacked = false
+			isBeingAttacked = false;
 
 		if (isCurrentlyCasting)
 		{
@@ -63,7 +63,7 @@ void waitForGameToStart()
 	//-------------------------------------
 	// Loop while game is inactive
 	//-------------------------------------
-	if (/* button to start game is pressed */)
+	if (true/* button to start game is pressed */)
 	{
 		gameIsActive = true;
 	}
