@@ -10,11 +10,15 @@
 const char* const bookOfSpells[] =
 {
 	"no_spell_chosen", // 0 (default case)
-	"water_defense", // 1
-	"fireball", // 2
-	"air_rush", // 3
-	"rock_grind", // 4
-	"splash" // 5
+	"healing_ward", // 1
+	"burning_brand", // 2
+	"crackling_bolt", // 3
+	"bastion", // 4
+	"second_wind" // 5
+	"infernal_pact" // 6
+	"molten_bombardment" // 7
+	"healing_surge" // 8
+	"thundering_devastation" // 9
 };
 
 const char* const bookOfSounds[] =
