@@ -4,8 +4,6 @@
 
 #include "Listener.h"
 
-gameIsActive = false;
-
 void playTheGame()
 {
 	//-------------------------------------

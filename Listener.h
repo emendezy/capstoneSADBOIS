@@ -10,7 +10,7 @@
 #include "HandlePlayerData.h"
 #include "GPIOHandler.h"
 
-bool gameIsActive;
+bool gameIsActive = false;
 
 void playTheGame();
 
