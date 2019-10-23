@@ -4,7 +4,7 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/Users/Dong Hun Kim/Desktop/Box Sync/CMU/2019 Fall/18-500 ECE Design/Code"
+                "C:\\Users\\Dong Hun Kim\\Documents\\GitHub\\capstoneSADBOIS"
             ],
             "defines": [
                 "_DEBUG",
