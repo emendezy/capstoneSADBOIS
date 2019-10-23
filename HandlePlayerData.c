@@ -17,12 +17,6 @@ const char* const bookOfSpells[] =
 	"splash" // 5
 };
 
-const char* const bookOfSounds[] =
-{
-	"sent_spell",
-	"got_hit"
-};
-
 // -----------------------------------------------
 // Initialization Steps
 // -----------------------------------------------
