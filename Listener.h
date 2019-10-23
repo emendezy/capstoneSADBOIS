@@ -9,7 +9,7 @@
 #include "HandlePlayerData.h"
 #include "GPIOHandler.h"
 
-extern bool gameIsActive;
+extern bool gameIsActive = false;
 
 void playTheGame();
 

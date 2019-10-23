@@ -4,7 +4,7 @@
 
 #include "Listener.h"
 
-gameIsActive = false;
+// gameIsActive = false;
 
 void playTheGame()
 {
@@ -18,25 +18,26 @@ void playTheGame()
 	/* Instantiate variables needed for the game loop */
 	bool isCurrentlyCasting = false;
 	bool isBeingAttacked = false;
-	int damage = 0;
+	int damageType;
 
 	//-------------------------------------
 	// Loop while game is active
 	//-------------------------------------
-
 	while(gameIsActive)
 	{
+		printf("game is active\n");
 		/* Be listening for user input or enemy attack */
 		isCurrentlyCasting = isCasting(P);
-		damage = wasAttacked(P);
-		if(damage != -1)
+		damageType = wasAttacked(P);
+		if(damageType != -1)
 			isBeingAttacked = true;
 		else
-			isBeingAttacked = false
+			isBeingAttacked = false;
 
 		if (isCurrentlyCasting)
 		{
-			spellCaster(P, damage); /* handle attack interupt in spellCaster */
+			spellCaster(P, damageType); 
+			/* ^ handle attack interupt in spellCaster */
 		}
 		else
 		{
@@ -45,7 +46,7 @@ void playTheGame()
 				/* decrement health
 				 * provide haptic feeback to the user
 				 */
-				attackHandler(P, damage);
+				attackHandler(P, damageType);
 			}
 
 		}
@@ -63,7 +64,7 @@ void waitForGameToStart()
 	//-------------------------------------
 	// Loop while game is inactive
 	//-------------------------------------
-	if (/* button to start game is pressed */)
+	if (true)/*TODO - button to start game is pressed */
 	{
 		gameIsActive = true;
 	}
@@ -77,6 +78,7 @@ void waitForGameToStart()
 int main()
 {
 	initializeRaspberryPi();
+	printf("in main loop\n");
 	while(1)
 	{
 		if (gameIsActive)
