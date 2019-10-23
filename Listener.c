@@ -77,6 +77,7 @@ int main()
 {
 	initializeRaspberryPi();
 	printf("in main loop\n");
+	playSound(0);
 	while(1)
 	{
 		if (gameIsActive)
