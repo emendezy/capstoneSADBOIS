@@ -19,6 +19,6 @@ void setupPinsOnRaspberryPi();
 
 void changeRumbleMode(int);
 
-void changeLEDMode(int)
+void changeLEDMode(int);
 
 #endif

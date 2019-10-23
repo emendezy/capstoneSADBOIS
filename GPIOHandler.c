@@ -20,6 +20,7 @@ void setupPinsOnRaspberryPi()
 
 void changeRumbleMode(int mode)
 {
+	printf("changing rumbleMode");
 	if(mode == 1)
 		digitalWrite(RUMBLER_PIN, HIGH);
 	else /* mode == 0 */
