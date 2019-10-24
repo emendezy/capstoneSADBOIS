@@ -9,7 +9,8 @@
 
 int main()
 {
-    
+    bool isCircle = false;
+    bool isLightning = false;
     int retval = 0;
 
     /*
@@ -22,6 +23,7 @@ int main()
     */
     while (true)
     {
+        sleep(FRAMEWAITTIME);
         retval = get_eul(&currEulStruct);
         // error getting euler orientation
         if (retval < 0)
@@ -34,7 +36,7 @@ int main()
         {
             return retval;
         }
-        sleep(FRAMEWAITTIME);
+        currSpellType = classifyShape(&currEulStruct, &currLinStruct);        
     }
     return retval;
 }
@@ -43,20 +45,35 @@ int main()
     checks if rune is a Horizontal or Vertical circle
     must pass pointers bnoeulptr and bnolinptr that are already filled
     waits POLYWAITTIME; if angle change is > MAXPOLYWAITTIME
+    returns WIND if wind (horizontal circle)
+    returns WATER if water (vertical circle)
+    returns NOTCIRCLE otherwise
 */
-bool checkCircle(struct bnoeul *starteulptr, struct bnolin *bnolinptr)
+short checkCircle(struct bnoeul *starteulptr, struct bnolin *bnolinptr)
 {
-    double init_h = starteulptr->eul_head;
-    double init_r = starteulptr->eul_roll;
-    double init_p = starteulptr->eul_pitc;
+    int retval;
     double final_h;
     double final_r;
     double final_p;
+    struct bnoeul *finaleulptr;
+    double init_h = starteulptr->eul_head;
+    double init_r = starteulptr->eul_roll;
+    double init_p = starteulptr->eul_pitc;
     clock_t time_start = clock();
-    clock_t time_end = time_start;
-    struct bnoeul *tempeulptr;
-    time_end = time_start + (POLYWAITTIME / CLOCKS_PER_SEC);
+    // allocate memory for struct
+    finaleulptr = (struct bnoeul *) malloc(sizeof(struct bnoeul));
+
+    // wait POLYWAITTIME
     sleep(POLYWAITTIME);
+    retval = get_eul(finaleulptr);
+    if (retval < 0)
+    {
+        return false;
+    }
+    
+    // free memory after casting to void*
+    free((void *)finaleulptr);
+
 }
 
 /*
@@ -78,6 +95,31 @@ bool checkLightning(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr)
     {
         return false;
     }
+}
+
+short classifyShape(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr)
+{
+    short circleType = 0;
+    bool isLightning;
+
+    circleType = checkCircle(bnoeulptr, bnolinptr);
+    isLightning = checkLightning(bnoeulptr, bnolinptr);
+    if (circleType == WATER)
+    {
+        currSpellType = WATER;
+        return currSpellType;
+    }
+    else if (circleType == WIND)
+    {
+        currSpellType = WIND;
+        return currSpellType;
+    }
+    else if (isLightning)
+    {
+        currSpellType = LIGHTNING;
+        return currSpellType;
+    }
+    return currSpellType;
 }
 
 double getDistance(clock_t start, clock_t end, struct bnoeul *bnoeulptr, struct bnolin *bnolinptr)

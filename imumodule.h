@@ -1,3 +1,6 @@
+#include <stdbool.h>
+
+
 /*
     global constant
 */
@@ -19,7 +22,20 @@ static double MINDRAWLENLIGHT = 0.3; // in meters
 static double POLYANGLETRI = 60;
 static double POLYANGLELIGHT = 150;
 static double POLYANGLESQUARE = 90;
-
+    /*
+        values of each type
+        0 = earth
+        1 = fire
+        2 = lightning
+        3 = water
+        4 = wind
+    */
+static short EARTH = 0;
+static short FIRE = 1;
+static short LIGHTNING = 2;
+static short WATER = 3;
+static short WIND = 4;
+static short NOTCIRCLE = 5;
 /*
     struct
 */
@@ -51,6 +67,15 @@ typedef struct spellQueueStruct
     global variable
 */
     /*
+        stores current spell type
+        0 = earth
+        1 = fire
+        2 = lightning
+        3 = water
+        4 = wind
+    */
+extern short currSpellType;
+    /*
         we can use pointers for these as they start as NULL
     */
 extern spellQueueAlias *spellQueueStart; // other files read spells from this guy
@@ -67,7 +92,7 @@ extern struct bnolin currLinStruct; // stores current velocity
     function declarations
 */
 extern int main();
-extern bool checkCircle(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr);
+extern short checkCircle(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr);
 extern bool checkLightning(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr);
 extern short classifyShape(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr);
 extern double getVelocity(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr);
