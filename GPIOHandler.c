@@ -4,7 +4,7 @@
 
 #include "GPIOHandler.h"
 
-extern int soundRet;
+int soundRet;
 
 const char* const bookOfSounds[] =
 {

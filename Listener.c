@@ -18,6 +18,14 @@ void playTheGame()
 	bool isBeingAttacked = false;
 	int damageType;
 
+	int testOnce = 1;
+	if(testOnce == 1)
+	{
+		soundHandler(P, 0);
+		testOnce = 0;
+	}
+
+
 	//-------------------------------------
 	// Loop while game is active
 	//-------------------------------------

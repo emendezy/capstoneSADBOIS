@@ -62,6 +62,8 @@ void rumbleHandler(struct PlayerStaffData*, int);
 
 void lightHandler(struct PlayerStaffData*, int);
 
+void soundHandler(struct PlayerStaffData*, int);
+
 bool isCasting(struct PlayerStaffData*);
 
 int wasAttacked(struct PlayerStaffData*);
