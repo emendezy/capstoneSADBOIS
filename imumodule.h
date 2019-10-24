@@ -21,7 +21,7 @@ typedef struct runeClassStruct
 
 typedef struct spellQueueStruct
 {
-    struct SpellQueueStruct *next;
+    struct spellQueueStruct *next;
     /*
         spellType
         0 = earth
@@ -49,6 +49,6 @@ extern bool checkLightning(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr);
 extern double getVelocity(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr);
 extern void calibrateImu(struct bnoeul *bnoeulptr);
 extern bool isValidSpell(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr);
-extern void enqueueSpell(short spell, spellQueueAlias *start);
-extern short dequeueSpell(spellQueueAlias *start);
+extern void enqueueSpell(short spell);
+extern short dequeueSpell(); // returns -1 on error
 extern void initQueue(); // initialize spellQueueStart

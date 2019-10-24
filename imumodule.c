@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <time.h>
 #include <unistd.h>
 #include <getbno055.h>
-#include <bno055.h>
 #include <imumodule.h>
 #include <errno.h>
 
@@ -18,7 +18,7 @@ int main()
         get initial hrp values
     */
 
-    calibrate_imu(initdirptr);
+    calibrateImu(initdirptr);
 
     /*
         main loop
@@ -51,32 +51,29 @@ bool checkCircle(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr)
     {
         
     }
-    time_end = time_start + (POLYWAITTIME / CLOCKS_PER_SECOND);
+    time_end = time_start + (POLYWAITTIME / CLOCKS_PER_SEC);
     sleep(POLYWAITTIME);
     retval = get_eul(bnoeulptr);
 }
-bool checkLightning(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr);
+bool checkLightning(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr)
 {
     double heading = bnoeulptr->eul_head;
     double roll = bnoeulptr->eul_roll;
-    double pitch = bnoeulptr->eul_pitch;
+    double pitch = bnoeulptr->eul_pitc;
 }
 
-extern double getVelocity(struct bnolin *bnolinptr)
+double getVelocity(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr)
 {
     double acc_x = bnolinptr->linacc_x;
-    double acc_y = bnolinptr->linacc_y
+    double acc_y = bnolinptr->linacc_y;
     double acc_z = bnolinptr->linacc_z;
-   
-
 }
 
-int calibrateImu(struct bnoeul *bnoeulptr)
+void calibrateImu(struct bnoeul *bnoeulptr)
 {
     int retval = 0;
     bno_reset();
     retval = get_eul(bnoeulptr);
-
 }
 
 
@@ -84,23 +81,68 @@ int calibrateImu(struct bnoeul *bnoeulptr)
 /*
     add spell to end of list: FIFO
 */
-void enqueueSpell(short spell, spellQueueAlias *end)
+void enqueueSpell(short spell)
 {
-    spellQueueAlias newNode = (spellQueueAlias) malloc(sizeof(spellQueueStruct));
-    end->spellType = spell;
-    end->next = NULL;
+    /*
+        allocate memory
+    */
+    struct spellQueueStruct *newNode = (struct spellQueueStruct*) malloc(sizeof(struct spellQueueStruct));
+    /*
+        fill in data of new struct
+    */
+    newNode->next = NULL;
+    newNode->spellType = spell;
+    /*
+        if adding to empty list set values
+    */
+    if (spellQueueStart == NULL)
+    {
+        spellQueueStart = newNode;
+        spellQueueEnd = newNode;
+    }
+    else
+    {
+        /*
+            update next pointer of last element that existed before
+        */
+        spellQueueEnd->next = newNode;
+        /*
+            update last pointer
+        */
+        spellQueueEnd = newNode;
+    }
+    
 }
 
-short dequeueSpell(spellQueueAlias *start)
+/*
+    remove spell from start of list: FIFO
+    returns -1 on error
+    0 = earth
+    1 = fire
+    2 = lightning
+    3 = water
+    4 = wind
+*/
+short dequeueSpell()
 {
     short spell;
-    spell = start->spellType;
-    start = start->next;
+    struct spellQueue *start;
+    if (spellQueueStart == NULL)
+    {
+        return -1;
+    }
+    spell = spellQueueStart->spellType;
+    spellQueueStart = spellQueueStart->next;
+    /*
+        free memory
+    */
+    free((void *) start);
+    return spell;
 }
 
 // initialize spellQueue & spellQueueStart
 void initQueue()
 {
-    spellQueueStart->next = NULL;
-    spellQueueStart->spellType = 0;
+    spellQueueStart = NULL;
+    spellQueueEnd = NULL;
 }
