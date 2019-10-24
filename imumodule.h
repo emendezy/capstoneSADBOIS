@@ -1,7 +1,7 @@
 #include <stdbool.h>
 
 /*
-    global constant
+    global constants
 */
 static unsigned FRAMEWAITTIME = 10;
 static unsigned POLYWAITTIME = 20; // time in ms must be unsigned to be passed to sleep()
