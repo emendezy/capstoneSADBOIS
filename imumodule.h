@@ -1,6 +1,5 @@
 #include <stdbool.h>
 
-
 /*
     global constant
 */
@@ -10,7 +9,7 @@ static double MAXPOLYDEV = 30; // angle in degrees
     /*
         angle tolerances in degrees used when there should be no movement in that direction
     */
-static double ANGLETOLHEAD = 15;;
+static double ANGLETOLHEAD = 15;
 static double ANGLETOLROLL = 15;
 static double ANGLETOLPITCH = 15;
     /*
@@ -36,6 +35,7 @@ static short LIGHTNING = 2;
 static short WATER = 3;
 static short WIND = 4;
 static short NOTCIRCLE = 5;
+static short ERRORVAL = -1;
 /*
     struct
 */
@@ -58,13 +58,13 @@ typedef struct spellQueueStruct
         2 = lightning
         3 = water
         4 = wind
-
+        other = various errors
     */
     short spellType;
 } spellQueueAlias;
 
 /*
-    global variable
+    global variables
 */
     /*
         stores current spell type
@@ -73,8 +73,11 @@ typedef struct spellQueueStruct
         2 = lightning
         3 = water
         4 = wind
+        other = various errors
     */
+extern double currTotalLength;
 extern short currSpellType;
+extern bool isCasting;
     /*
         we can use pointers for these as they start as NULL
     */
