@@ -21,7 +21,7 @@ int main()
     /*
         main loop
     */
-    while (true)
+    while (isCasting)
     {
         sleep(FRAMEWAITTIME);
         retval = get_eul(&currEulStruct);
@@ -51,29 +51,40 @@ int main()
 */
 short checkCircle(struct bnoeul *starteulptr, struct bnolin *bnolinptr)
 {
-    int retval;
+    int errval;
     double final_h;
     double final_r;
     double final_p;
     struct bnoeul *finaleulptr;
-    double init_h = starteulptr->eul_head;
-    double init_r = starteulptr->eul_roll;
-    double init_p = starteulptr->eul_pitc;
+    short retval = NOTCIRCLE;
+    double init_h = initEulStruct.eul_head;
+    double init_r = initEulStruct.eul_roll;
+    double init_p = initEulStruct.eul_pitc;
+    double start_h = starteulptr->eul_head;
+    double start_r = starteulptr->eul_roll;
+    double start_p = starteulptr->eul_pitc;
     clock_t time_start = clock();
     // allocate memory for struct
     finaleulptr = (struct bnoeul *) malloc(sizeof(struct bnoeul));
 
     // wait POLYWAITTIME
     sleep(POLYWAITTIME);
-    retval = get_eul(finaleulptr);
-    if (retval < 0)
+    errval = get_eul(finaleulptr);
+    if (errval < 0)
     {
-        return false;
+        retval = ERRORVAL;
     }
-    
+    else if (final_h - start_h > MAXPOLYDEV)
+    {
+        retval = WIND;
+    }
+    else if (final_r - start_r > MAXPOLYDEV)
+    {
+        retval = WATER;
+    }
     // free memory after casting to void*
     free((void *)finaleulptr);
-
+    return retval;
 }
 
 /*
@@ -87,11 +98,15 @@ bool checkLightning(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr)
     double h = bnoeulptr->eul_head;
     double r = bnoeulptr->eul_roll;
     double p = bnoeulptr->eul_pitc;
-    if (init_r - r < ANGLETOLPITCH)
+    if (init_r - r < ANGLETOLROLL)
     {
         return false;
     }
     else if (init_h - h < ANGLETOLHEAD)
+    {
+        return false;
+    }
+    else if (init_p - p < ANGLETOLPITCH)
     {
         return false;
     }
