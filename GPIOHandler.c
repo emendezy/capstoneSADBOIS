@@ -49,7 +49,7 @@ void* playSound(void* ptrToSoundIndex)
 	int* correctCast = (int*)ptrToSoundIndex;
 	int soundIndex = *correctCast;
 
-	execlp("/usr/bin/omxplayer", " ", bookOfSounds[soundIndex],
+	system("/usr/bin/omxplayer", " ", bookOfSounds[soundIndex],
 			" --no-keys", NULL);
 	printf("done playing");
 	soundRet = 100;
