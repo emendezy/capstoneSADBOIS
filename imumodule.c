@@ -9,74 +9,90 @@
 
 int main()
 {
-    struct bnoeul *initdirptr;
-    struct bnoeul *eulptr;
-    struct bnolin *linptr;
+    
     int retval = 0;
 
     /*
         get initial hrp values
+        passes to global pointer
     */
-
-    calibrateImu(initdirptr);
-
+    calibrateImu();
     /*
         main loop
     */
     while (true)
     {
-        retval = get_eul(eulptr);
+        retval = get_eul(&currEulStruct);
         // error getting euler orientation
         if (retval < 0)
         {
             return retval;
         }
-        retval = get_lin(linptr);
+        retval = get_lin(&currLinStruct);
         // error getting linear acceleration
         if (retval < 0)
         {
             return retval;
         }
+        sleep(FRAMEWAITTIME);
     }
     return retval;
 }
 
-bool checkCircle(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr)
+/*
+    checks if rune is a Horizontal or Vertical circle
+    must pass pointers bnoeulptr and bnolinptr that are already filled
+    waits POLYWAITTIME; if angle change is > MAXPOLYWAITTIME
+*/
+bool checkCircle(struct bnoeul *starteulptr, struct bnolin *bnolinptr)
 {
+    double init_h = starteulptr->eul_head;
+    double init_r = starteulptr->eul_roll;
+    double init_p = starteulptr->eul_pitc;
+    double final_h;
+    double final_r;
+    double final_p;
     clock_t time_start = clock();
     clock_t time_end = time_start;
-    int retval = get_eul(bnoeulptr);
     struct bnoeul *tempeulptr;
-    if (retval < 0)
-    {
-        
-    }
     time_end = time_start + (POLYWAITTIME / CLOCKS_PER_SEC);
     sleep(POLYWAITTIME);
-    retval = get_eul(bnoeulptr);
-}
-bool checkLightning(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr)
-{
-    double heading = bnoeulptr->eul_head;
-    double roll = bnoeulptr->eul_roll;
-    double pitch = bnoeulptr->eul_pitc;
 }
 
-double getVelocity(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr)
+/*
+    checks if rune is for lightning
+*/
+bool checkLightning(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr)
+{
+    double init_h = initEulStruct.eul_head;
+    double init_r = initEulStruct.eul_roll;
+    double init_p = initEulStruct.eul_pitc;
+    double h = bnoeulptr->eul_head;
+    double r = bnoeulptr->eul_roll;
+    double p = bnoeulptr->eul_pitc;
+    if (init_r - r < ANGLETOLPITCH)
+    {
+        return false;
+    }
+    else if (init_h - h < ANGLETOLHEAD)
+    {
+        return false;
+    }
+}
+
+double getDistance(clock_t start, clock_t end, struct bnoeul *bnoeulptr, struct bnolin *bnolinptr)
 {
     double acc_x = bnolinptr->linacc_x;
     double acc_y = bnolinptr->linacc_y;
     double acc_z = bnolinptr->linacc_z;
 }
 
-void calibrateImu(struct bnoeul *bnoeulptr)
+void calibrateImu()
 {
     int retval = 0;
     bno_reset();
-    retval = get_eul(bnoeulptr);
+    retval = get_eul(&initEulStruct);
 }
-
-
 
 /*
     add spell to end of list: FIFO
