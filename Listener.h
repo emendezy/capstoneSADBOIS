@@ -6,10 +6,11 @@
 #define HEADER_GAURD_FOR_LISTENER
 
 #include <stdbool.h>
+#include <stdlib.h>
 #include "HandlePlayerData.h"
 #include "GPIOHandler.h"
 
-extern bool gameIsActive;
+bool gameIsActive = false;
 
 void playTheGame();
 

@@ -17,22 +17,16 @@ const char* const bookOfSpells[] =
 	"splash" // 5
 };
 
-const char* const bookOfSounds[] =
-{
-	"sent_spell",
-	"got_hit"
-};
-
 // -----------------------------------------------
 // Initialization Steps
 // -----------------------------------------------
 
-struct PlayerStaffData* initPlayerStruct(bool* gameIsActive)
+struct PlayerStaffData* initPlayerStruct(bool* isTheGameInProgress)
 {
 	setupPinsOnRaspberryPi(); /* From GPIOHandler */
 
 	struct PlayerStaffData* P = malloc(sizeof(struct PlayerStaffData));
-	P->gameInProgress = gameIsActive;
+	P->gameInProgress = isTheGameInProgress;
 	P->currentSpell = 0;
 	P->isCasting = false;
 	P->castDamage = 0;
@@ -75,7 +69,7 @@ bool isCasting(struct PlayerStaffData* P)
 	bool castButtonPressed = false;
 	// ^ TODO - fill with cast button input reading
 
-	if (castButtonPressed)
+	if (castButtonPressed || P->isCasting)
 	{
 		return true;
 	}
@@ -87,20 +81,19 @@ int wasAttacked(struct PlayerStaffData* P)
 {
 	bool recievedAttack = false; // TODO - fill with bluetooth/wifi response
 								 // 	 from other staff
-	int damageTaken = 0;
+	int damageType = -1;
 	if (recievedAttack)
 	{
 		/* TODO - Have the comm of attack be continously sent from other
 		 * 		staff until picked up by this staff
 		 *  	- Have this staff send back a response that the "gotAttacked"
 		 *    	signal was recieved
-		 *		- Grab damageTaken variable from staff comm and return
+		 *		- Grab damageType variable from staff comm and return
 		 */
 		// damage = readBluetoothInput
-		return damageTaken;
+		return damageType;
 	}
-	else
-		return -1;
+	return damageType;
 }
 
 void imuInputHandler(struct PlayerStaffData* P)
@@ -117,6 +110,9 @@ void imuInputHandler(struct PlayerStaffData* P)
 
 void attackHandler(struct PlayerStaffData* P, int damageTaken)
 {
+	/* TODO - need to check if the spell being currently cast is a
+	 * defense spell
+	 */
 	P->healthPercent -= damageTaken;
 	if(P->healthPercent <= 0)
 	{
@@ -129,6 +125,7 @@ void attackHandler(struct PlayerStaffData* P, int damageTaken)
 
 void spellCaster(struct PlayerStaffData* P, int damageTaken)
 {
+	printf("In spellCaster\n");
 	if(damageTaken != -1)
 	{
 		/* need to stop spell casting and call attackHandler */
@@ -187,16 +184,18 @@ void rumbleHandler(struct PlayerStaffData* P, int rumbleMode)
 	switch (rumbleMode)
 	{
 		case 0: /* Case for turning rumbler OFF */
-			assert(P->isRumbling == true);
+			assert(P->isRumbling);
 			P->isRumbling = false;
 			P->rumbleLevel = 0;
 			P->rumbleStartTime = 0;
+			changeRumbleMode(TURN_OFF);
 			break;
 		case 1: /* Case for turning rumbler ON */
-			assert(P->isRumbling == false);
+			assert(!P->isRumbling);
 			P->isRumbling = true;
 			P->rumbleStartTime = clock();
 			P->rumbleLevel = 1;
+			changeRumbleMode(TURN_ON);
 			break;
 		case 2: /* Case for increasing rumbler by 1 level */
 			assert(P->isRumbling == true);
