@@ -4,6 +4,8 @@
 
 #include "GPIOHandler.h"
 
+extern int soundRet;
+
 const char* const bookOfSounds[] =
 {
 	"Sounds/Slurp.mp3", // 0 (default case)
@@ -41,27 +43,16 @@ void changeLEDMode(int mode)
 		digitalWrite(LED_PIN, LOW);
 }
 
-void playSound(int soundIndex)
+void* playSound(void* ptrToSoundIndex)
 {
 	/* soundIndex - represents the index in the array of available sounds */
-	pid_t pid;
-	int status;
+	int* correctCast = (int*)ptrToSoundIndex;
+	int soundIndex = *correctCast;
 
-	pid = fork();
-	if(pid == 0)
-	{
-		printf("I am the child\n");
-		execlp("/usr/bin/omxplayer", " ", bookOfSounds[soundIndex], " --no-keys", NULL);
-		printf("done playing");
-		_exit(0);
-	} else
-	{
-		printf("I am the parent\n");
-		while(wait(&status) != pid)
-		{
-			printf("...\n");
-		}
-		printf("it exited\n");
-		system("killall omxplayer.bin");
-	}
+	system("/usr/bin/omxplayer", " ", bookOfSounds[soundIndex],
+			" --no-keys", NULL);
+	printf("done playing");
+	system("killall omxplayer.bin");
+	soundRet = 100;
+	pthread_exit(&soundRet);
 }

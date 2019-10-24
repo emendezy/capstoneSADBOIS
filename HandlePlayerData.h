@@ -11,6 +11,7 @@
 #include <stdbool.h>
 #include <assert.h>
 #include <time.h>
+#include <pthread.h>
 #include "GPIOHandler.h"
 
 // #define NDEBUG /* Comment for no debug mode */

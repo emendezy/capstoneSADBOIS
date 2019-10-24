@@ -243,3 +243,16 @@ void lightHandler(struct PlayerStaffData* P, int lightMode)
 			break;
 	}
 }
+
+/* Sounds handler
+ *  Handle sound playback based on player data and given sound type
+ *  Sound type (int) is the index of the desired sound in the bookOfSounds[]
+ */
+void soundHandler(struct PlayerStaffData* P, int soundType)
+{
+	pthread_t soundThread;
+	int iret;
+	int* ptrToSound = &soundType;
+
+	iret = pthread_create(&soundThread, NULL, playSound, (void*)ptrToSound);
+}
