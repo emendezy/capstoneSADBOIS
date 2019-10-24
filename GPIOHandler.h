@@ -22,6 +22,6 @@ void changeRumbleMode(int);
 
 void changeLEDMode(int);
 
-void playSound(int);
+void* playSound(void*);
 
 #endif
