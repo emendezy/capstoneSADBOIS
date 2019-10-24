@@ -48,9 +48,9 @@ void* playSound(void* ptrToSoundIndex)
 	/* soundIndex - represents the index in the array of available sounds */
 	int* correctCast = (int*)ptrToSoundIndex;
 	int soundIndex = *correctCast;
+	char* sound = bookOfSounds[soundIndex]
 
-	system("/usr/bin/omxplayer", " ", bookOfSounds[soundIndex],
-			" --no-keys", NULL);
+	system("/usr/bin/omxplayer " + sound);
 	printf("done playing");
 	soundRet = 100;
 	pthread_exit(&soundRet);
