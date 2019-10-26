@@ -16,6 +16,7 @@ void playTheGame()
 	/* Instantiate variables needed for the game loop */
 	bool isCurrentlyCasting = false;
 	bool isBeingAttacked = false;
+	bool stopCasting = false;
 	int damageType;
 
 	int testOnce = 1;
@@ -41,26 +42,30 @@ void playTheGame()
 
 		/* Be listening for user input or enemy attack */
 		isCurrentlyCasting = isCasting(P);
+		// ^ returns true if button pressed or button was already pressed and
+		//     P->isCasting was set to true
+		stopCasting = isDoneCasting(P); /* handle send spell logic */
+
 		damageType = wasAttacked(P);
-		if(damageType != -1)
+		// TODO - look up damage Type's value to apply the damage done
+		// ^ damageType represents index for damages[] that has damage values
+		if(damageType > -1)
 			isBeingAttacked = true;
 		else
 			isBeingAttacked = false;
 
-		if (isCurrentlyCasting)
+		if (isCurrentlyCasting && !isBeingAttacked)
 		{
-			spellCaster(P, damageType);
-			/* ^ handle attack interupt in spellCaster */
+			if(!stopCasting)
+			{
+				spellCaster(P, damageType);
+				/* ^ handle attack interupt in spellCaster */
+			}
+			/* successful cast end is handled in isDoneCasting() */
 		}
 		else
 		{
-			if(isBeingAttacked)
-			{
-				/* decrement health
-				 * provide haptic feeback to the user
-				 */
-				attackHandler(P, damageType);
-			}
+			attackHandler(P, damageType);
 
 		}
 
@@ -95,8 +100,10 @@ int main()
 {
 	initializeRaspberryPi();
 	printf("in main loop\n");
+
 	while(1)
 	{
+		gameIsActive = gameStartButtonPressed();
 		if (gameIsActive)
 			playTheGame();
 		else

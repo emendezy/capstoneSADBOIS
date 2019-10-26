@@ -73,15 +73,29 @@ void unloadPlayerData(struct PlayerStaffData* P)
 
 bool isCasting(struct PlayerStaffData* P)
 {
-	bool castButtonPressed = false;
-	// ^ TODO - fill with cast button input reading
+	bool isPressed = castButtonPressed();
 
-	if (castButtonPressed || P->isCasting)
+	if (isPressed || P->isCasting)
 	{
 		return true;
 	}
 	else
 		return false;
+}
+
+bool isDoneCasting(struct PlayerStaffData* P)
+{
+	bool isPressed, isSuccessful;
+	isPressed = endCastButtonPressed();
+
+	if(isPressed)
+	{
+		isSuccessful = true;
+		endCasting(P, isSuccessful);
+		return true;
+	}
+
+	return false;
 }
 
 int wasAttacked(struct PlayerStaffData* P)
@@ -97,7 +111,6 @@ int wasAttacked(struct PlayerStaffData* P)
 		 *    	signal was recieved
 		 *		- Grab damageType variable from staff comm and return
 		 */
-		// damage = readBluetoothInput
 		return damageType;
 	}
 	return damageType;
@@ -120,40 +133,52 @@ void attackHandler(struct PlayerStaffData* P, int damageTaken)
 	/* TODO - need to check if the spell being currently cast is a
 	 * defense spell
 	 */
+	bool successfulCast;
+	bool* gameStatus;
+
+	successfulCast = false;
+	endCasting(P, successfulCast);
+
+	/* Health decrement and check */
 	P->healthPercent -= damageTaken;
 	if(P->healthPercent <= 0)
 	{
 		/* game over */
-		bool* gameStatus = P->gameInProgress;
+		gameStatus = P->gameInProgress;
 		(*gameStatus) = false; // global var - defined in Listener.h
 
 	}
 }
 
-void spellCaster(struct PlayerStaffData* P, int damageTaken)
+void spellCaster(struct PlayerStaffData* P, int damageType)
 {
 	printf("In spellCaster\n");
-	if(damageTaken != -1)
-	{
-		/* need to stop spell casting and call attackHandler */
 
-		attackHandler(P, damageTaken);
+	int level;
+
+	if(damageType > -1)
+	{
+		/* need to STOP SPELL CASTING and call attackHandler */
+		attackHandler(P, damageType);
 	}
 	/* Run spell starting steps */
-	else if((P->rumbleStartTime == 0 && P->lightStartTime == 0)
-			&& damageTaken == -1)
+	else /* damageType == -1 */
 	{
-		P->isCasting = true;
+		if(P->isCasting == false)
+		{
+			/* This is the FIRST time we've started the spell Casting seq
+			 * Run initialization steps
+			 */
+			P->isCasting = true;
 
-		rumbleHandler(P, TURN_ON);
-		lightHandler(P, TURN_ON);
-	}
-	/* Spell has been started and keep processing the IMU input */
-	else
-	{
+			level = MAX_ANALOG_RANGE / 2;
+			rumbleHandler(P, TURN_ON, level);
+			// lightHandler(P, TURN_ON);
+		}
+
+		/* Spell has been started and now process the IMU input */
 		imuInputHandler(P);
 	}
-
 }
 
 /* Pressure sensor was pressed end cast sequence
@@ -186,7 +211,7 @@ void sendCast(struct PlayerStaffData* P)
  *  Handle Rumbling sequences based on Player data
  *	isCasting - rumble at a low frequency to provide haptic feedback
  */
-void rumbleHandler(struct PlayerStaffData* P, int rumbleMode)
+void rumbleHandler(struct PlayerStaffData* P, int rumbleMode, int level)
 {
 	switch (rumbleMode)
 	{
@@ -202,18 +227,19 @@ void rumbleHandler(struct PlayerStaffData* P, int rumbleMode)
 			P->isRumbling = true;
 			P->rumbleStartTime = clock();
 			P->rumbleLevel = 1;
-			changeRumbleMode(TURN_ON);
+			changeRumbleMode(TURN_ON, level);
 			break;
-		case 2: /* Case for increasing rumbler by 1 level */
-			assert(P->isRumbling == true);
-			assert(P->rumbleLevel < MAX_RUMBLE);
-			P->rumbleLevel++;
-			break;
-		case 3: /* Case for decreasing the rumbler by 1 level */
-			assert(P->isRumbling == true);
-			assert(P->rumbleLevel > 1);
-			P->rumbleLevel--;
-			break;
+		/* Utilize this code later for fine tuning rumbling */
+		// case 2: /* Case for increasing rumbler by 1 level step */
+		// 	assert(P->isRumbling == true);
+		// 	assert(P->rumbleLevel < (MAX_ANALOG_RANGE * 9)/ 10);
+		// 	P->rumbleLevel += ANALOG_STEP;
+		// 	break;
+		// case 3: /* Case for decreasing the rumbler by 1 level step */
+		// 	assert(P->isRumbling == true);
+		// 	assert(P->rumbleLevel > ANALOG_STEP);
+		// 	P->rumbleLevel -= ANALOG_STEP;
+		// 	break;
 	}
 }
 
