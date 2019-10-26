@@ -52,6 +52,8 @@ struct PlayerStaffData
 	int shieldPercent; /* 0(empty) -> 100(full) */
 
 	int healthPercent; /* 0(dead) -> 100(full) */
+
+	sigset_t prev_mask;// for forking (masks for block/unblock)
 };
 
 struct PlayerStaffData* initPlayerStruct(bool*);

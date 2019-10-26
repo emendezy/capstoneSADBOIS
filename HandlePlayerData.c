@@ -17,6 +17,13 @@ const char* const bookOfSpells[] =
 	"splash" // 5
 };
 
+const char* const bookOfSounds[] =
+{
+	"Sounds/Slurp.mp3", // 0 (default case)
+	"Sounds/Baby.mp3", // 1
+	"Sounds/Burp.mp3" // 2
+};
+
 // -----------------------------------------------
 // Initialization Steps
 // -----------------------------------------------
@@ -250,9 +257,16 @@ void lightHandler(struct PlayerStaffData* P, int lightMode)
  */
 void soundHandler(struct PlayerStaffData* P, int soundType)
 {
-	pthread_t soundThread;
-	int iret;
-	int* ptrToSound = &soundType;
+	if((pid = fork()) == 0)
+	{
+		setpgid(0, 0);
+		sigset_t prev_mask = P->prev_mask;
+		sigprocmask(SIG_SETMASK, &prev_mask, NULL);
+		char* omxplayer = "/usr/bin/omxplayer";
 
-	iret = pthread_create(&soundThread, NULL, playSound, (void*)ptrToSound);
+		if (execve(omxplayer, bookOfSounds[soundType], NULL) < 0) {
+			sio_printf("%s: ERROR playing sound", omxplayer);
+			exit(1);
+		}
+	}
 }

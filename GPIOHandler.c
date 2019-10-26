@@ -4,14 +4,6 @@
 
 #include "GPIOHandler.h"
 
-int soundRet;
-
-const char* const bookOfSounds[] =
-{
-	"Sounds/Slurp.mp3", // 0 (default case)
-	"Sounds/Baby.mp3", // 1
-	"Sounds/Burp.mp3" // 2
-};
 
 void initializeRaspberryPi()
 {
@@ -41,17 +33,4 @@ void changeLEDMode(int mode)
 		digitalWrite(LED_PIN, HIGH);
 	else /* mode == 0 */
 		digitalWrite(LED_PIN, LOW);
-}
-
-void* playSound(void* ptrToSoundIndex)
-{
-	/* soundIndex - represents the index in the array of available sounds */
-	int* correctCast = (int*)ptrToSoundIndex;
-	int soundIndex = *correctCast;
-	char* sound = strcat("/usr/bin/omxplayer ", bookOfSounds[soundIndex]);
-
-	system(sound);
-	printf("done playing");
-	soundRet = 100;
-	pthread_exit(&soundRet);
 }

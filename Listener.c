@@ -25,6 +25,9 @@ void playTheGame()
 		testOnce = 0;
 	}
 
+	/* Install Signal Handler(s) */
+	Signal(SIGCHLD, sigchld_handler); // Handles terminated or stopped child
+	sigset_t prev_mask, mask;
 
 	//-------------------------------------
 	// Loop while game is active
@@ -32,6 +35,10 @@ void playTheGame()
 	printf("game is active\n");
 	while(gameIsActive)
 	{
+		sigfillset(&mask);
+		sigprocmask(SIG_BLOCK, &mask, &prev_mask);
+		P->prev_mask = prev_mask;
+
 		/* Be listening for user input or enemy attack */
 		isCurrentlyCasting = isCasting(P);
 		damageType = wasAttacked(P);
@@ -56,6 +63,9 @@ void playTheGame()
 			}
 
 		}
+
+		// unblock signals
+		sigprocmask(SIG_SETMASK, &prev_mask, NULL);
 	}
 
 	//-------------------------------------
@@ -92,4 +102,30 @@ int main()
 		else
 			waitForGameToStart();
 	}
+}
+
+/* 		(* From Shell lab - 15213 *)
+ * int sig: signal, should be SIGCHLD (which is why this is sigchld_handler)
+ * waits for pid of child and notifies user of stop/term signals in child
+ * child process, deletes terminated and exited jobs
+ */
+void sigchld_handler(int sig) {
+	int status;
+	pid_t pid;
+	jid_t jid;
+	int err = errno; //maintain errno
+
+	sigset_t prev_mask, mask;
+	sigfillset(&mask);
+
+	//wait for the child that has this pid
+	while ((pid = waitpid(-1, &status, WNOHANG|WUNTRACED)) > 0) {
+		sigprocmask(SIG_BLOCK, &mask, &prev_mask);
+		jid = job_from_pid(pid);
+
+		delete_job(jid); // only occurs if status was terminated or exited
+		sigprocmask(SIG_SETMASK, &prev_mask, NULL);
+	}
+	errno = err;
+	return;
 }
