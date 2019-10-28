@@ -9,9 +9,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+
+#include <unistd.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <errno.h>
+#include <ctype.h>
+
+#include <pthread.h>
+
 #include <assert.h>
 #include <time.h>
-#include <pthread.h>
+
 #include "GPIOHandler.h"
 
 // #define NDEBUG /* Comment for no debug mode */
@@ -60,13 +70,15 @@ struct PlayerStaffData* initPlayerStruct(bool*);
 
 void unloadPlayerData(struct PlayerStaffData*);
 
-void rumbleHandler(struct PlayerStaffData*, int);
+void rumbleHandler(struct PlayerStaffData*, int, int);
 
 void lightHandler(struct PlayerStaffData*, int);
 
 void soundHandler(struct PlayerStaffData*, int);
 
 bool isCasting(struct PlayerStaffData*);
+
+bool isDoneCasting(struct PlayerStaffData*);
 
 int wasAttacked(struct PlayerStaffData*);
 

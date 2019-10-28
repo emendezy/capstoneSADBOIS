@@ -46,13 +46,11 @@ bool endCastButtonPressed()
 	return false;
 }
 
-void changeRumbleMode(int mode)
+void changeRumbleMode(int level)
 {
 	printf("changing rumbleMode");
-	if(mode == 1)
-		softPwmWrite(RUMBLER_PIN, 80);
-	else /* mode == 0 */
-		softPwmWrite(RUMBLER_PIN, 0);
+
+	softPwmWrite(RUMBLER_PIN, level);
 }
 
 void changeLEDMode(int mode)

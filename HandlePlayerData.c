@@ -187,7 +187,7 @@ void endCasting(struct PlayerStaffData* P, bool successfulCast)
 {
 	P->isCasting = false;
 
-	rumbleHandler(P, TURN_OFF);
+	rumbleHandler(P, TURN_OFF, 0);
 	lightHandler(P, TURN_OFF);
 
 	if(successfulCast)
@@ -227,7 +227,7 @@ void rumbleHandler(struct PlayerStaffData* P, int rumbleMode, int level)
 			P->isRumbling = true;
 			P->rumbleStartTime = clock();
 			P->rumbleLevel = 1;
-			changeRumbleMode(TURN_ON, level);
+			changeRumbleMode(level);
 			break;
 		/* Utilize this code later for fine tuning rumbling */
 		// case 2: /* Case for increasing rumbler by 1 level step */
@@ -283,6 +283,7 @@ void lightHandler(struct PlayerStaffData* P, int lightMode)
  */
 void soundHandler(struct PlayerStaffData* P, int soundType)
 {
+	pid_t pid;
 	if((pid = fork()) == 0)
 	{
 		setpgid(0, 0);
@@ -291,7 +292,7 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 		char* omxplayer = "/usr/bin/omxplayer";
 
 		if (execve(omxplayer, bookOfSounds[soundType], NULL) < 0) {
-			sio_printf("%s: ERROR playing sound", omxplayer);
+			printf("%s: ERROR playing sound", omxplayer);
 			exit(1);
 		}
 	}
