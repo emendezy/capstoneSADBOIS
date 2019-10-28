@@ -23,20 +23,21 @@ const char* const bookOfSpells[] =
 
 const char* const bookOfSounds[] =
 {
-	"sent_spell",
-	"got_hit"
+	"Sounds/Slurp.mp3", // 0 (default case)
+	"Sounds/Baby.mp3", // 1
+	"Sounds/Burp.mp3" // 2
 };
 
 // -----------------------------------------------
 // Initialization Steps
 // -----------------------------------------------
 
-struct PlayerStaffData* initPlayerStruct(bool* gameIsActive)
+struct PlayerStaffData* initPlayerStruct(bool* isTheGameInProgress)
 {
 	setupPinsOnRaspberryPi(); /* From GPIOHandler */
 
 	struct PlayerStaffData* P = malloc(sizeof(struct PlayerStaffData));
-	P->gameInProgress = gameIsActive;
+	P->gameInProgress = isTheGameInProgress;
 	P->currentSpell = 0;
 	P->isCasting = false;
 	P->castDamage = 0;
@@ -76,10 +77,9 @@ void unloadPlayerData(struct PlayerStaffData* P)
 
 bool isCasting(struct PlayerStaffData* P)
 {
-	bool castButtonPressed = false;
-	// ^ TODO - fill with cast button input reading
+	bool isPressed = castButtonPressed();
 
-	if (castButtonPressed)
+	if (isPressed || P->isCasting)
 	{
 		return true;
 	}
@@ -87,24 +87,37 @@ bool isCasting(struct PlayerStaffData* P)
 		return false;
 }
 
+bool isDoneCasting(struct PlayerStaffData* P)
+{
+	bool isPressed, isSuccessful;
+	isPressed = endCastButtonPressed();
+
+	if(isPressed)
+	{
+		isSuccessful = true;
+		endCasting(P, isSuccessful);
+		return true;
+	}
+
+	return false;
+}
+
 int wasAttacked(struct PlayerStaffData* P)
 {
 	bool recievedAttack = false; // TODO - fill with bluetooth/wifi response
 								 // 	 from other staff
-	int damageTaken = 0;
+	int damageType = -1;
 	if (recievedAttack)
 	{
 		/* TODO - Have the comm of attack be continously sent from other
 		 * 		staff until picked up by this staff
 		 *  	- Have this staff send back a response that the "gotAttacked"
 		 *    	signal was recieved
-		 *		- Grab damageTaken variable from staff comm and return
+		 *		- Grab damageType variable from staff comm and return
 		 */
-		// damage = readBluetoothInput
-		return damageTaken;
+		return damageType;
 	}
-	else
-		return -1;
+	return damageType;
 }
 
 void imuInputHandler(struct PlayerStaffData* P)
@@ -121,39 +134,55 @@ void imuInputHandler(struct PlayerStaffData* P)
 
 void attackHandler(struct PlayerStaffData* P, int damageTaken)
 {
+	/* TODO - need to check if the spell being currently cast is a
+	 * defense spell
+	 */
+	bool successfulCast;
+	bool* gameStatus;
+
+	successfulCast = false;
+	endCasting(P, successfulCast);
+
+	/* Health decrement and check */
 	P->healthPercent -= damageTaken;
 	if(P->healthPercent <= 0)
 	{
 		/* game over */
-		bool* gameStatus = P->gameInProgress;
+		gameStatus = P->gameInProgress;
 		(*gameStatus) = false; // global var - defined in Listener.h
 
 	}
 }
 
-void spellCaster(struct PlayerStaffData* P, int damageTaken)
+void spellCaster(struct PlayerStaffData* P, int damageType)
 {
-	if(damageTaken != -1)
-	{
-		/* need to stop spell casting and call attackHandler */
+	printf("In spellCaster\n");
 
-		attackHandler(P, damageTaken);
+	int level;
+
+	if(damageType > -1)
+	{
+		/* need to STOP SPELL CASTING and call attackHandler */
+		attackHandler(P, damageType);
 	}
 	/* Run spell starting steps */
-	else if((P->rumbleStartTime == 0 && P->lightStartTime == 0)
-			&& damageTaken == -1)
+	else /* damageType == -1 */
 	{
-		P->isCasting = true;
+		if(P->isCasting == false)
+		{
+			/* This is the FIRST time we've started the spell Casting seq
+			 * Run initialization steps
+			 */
+			P->isCasting = true;
 
-		rumbleHandler(P, TURN_ON);
-		lightHandler(P, TURN_ON);
-	}
-	/* Spell has been started and keep processing the IMU input */
-	else
-	{
+			level = MAX_ANALOG_RANGE / 2;
+			rumbleHandler(P, TURN_ON, level);
+			// lightHandler(P, TURN_ON);
+		}
+
+		/* Spell has been started and now process the IMU input */
 		imuInputHandler(P);
 	}
-
 }
 
 /* Pressure sensor was pressed end cast sequence
@@ -186,32 +215,35 @@ void sendCast(struct PlayerStaffData* P)
  *  Handle Rumbling sequences based on Player data
  *	isCasting - rumble at a low frequency to provide haptic feedback
  */
-void rumbleHandler(struct PlayerStaffData* P, int rumbleMode)
+void rumbleHandler(struct PlayerStaffData* P, int rumbleMode, int level)
 {
 	switch (rumbleMode)
 	{
 		case 0: /* Case for turning rumbler OFF */
-			assert(P->isRumbling == true);
+			assert(P->isRumbling);
 			P->isRumbling = false;
 			P->rumbleLevel = 0;
 			P->rumbleStartTime = 0;
+			changeRumbleMode(TURN_OFF);
 			break;
 		case 1: /* Case for turning rumbler ON */
-			assert(P->isRumbling == false);
+			assert(!P->isRumbling);
 			P->isRumbling = true;
 			P->rumbleStartTime = clock();
 			P->rumbleLevel = 1;
+			changeRumbleMode(TURN_ON, level);
 			break;
-		case 2: /* Case for increasing rumbler by 1 level */
-			assert(P->isRumbling == true);
-			assert(P->rumbleLevel < MAX_RUMBLE);
-			P->rumbleLevel++;
-			break;
-		case 3: /* Case for decreasing the rumbler by 1 level */
-			assert(P->isRumbling == true);
-			assert(P->rumbleLevel > 1);
-			P->rumbleLevel--;
-			break;
+		/* Utilize this code later for fine tuning rumbling */
+		// case 2: /* Case for increasing rumbler by 1 level step */
+		// 	assert(P->isRumbling == true);
+		// 	assert(P->rumbleLevel < (MAX_ANALOG_RANGE * 9)/ 10);
+		// 	P->rumbleLevel += ANALOG_STEP;
+		// 	break;
+		// case 3: /* Case for decreasing the rumbler by 1 level step */
+		// 	assert(P->isRumbling == true);
+		// 	assert(P->rumbleLevel > ANALOG_STEP);
+		// 	P->rumbleLevel -= ANALOG_STEP;
+		// 	break;
 	}
 }
 
@@ -246,5 +278,25 @@ void lightHandler(struct PlayerStaffData* P, int lightMode)
 			assert(P->lightLevel > 1);
 			P->lightLevel--;
 			break;
+	}
+}
+
+/* Sounds handler
+ *  Handle sound playback based on player data and given sound type
+ *  Sound type (int) is the index of the desired sound in the bookOfSounds[]
+ */
+void soundHandler(struct PlayerStaffData* P, int soundType)
+{
+	if((pid = fork()) == 0)
+	{
+		setpgid(0, 0);
+		sigset_t prev_mask = P->prev_mask;
+		sigprocmask(SIG_SETMASK, &prev_mask, NULL);
+		char* omxplayer = "/usr/bin/omxplayer";
+
+		if (execve(omxplayer, bookOfSounds[soundType], NULL) < 0) {
+			sio_printf("%s: ERROR playing sound", omxplayer);
+			exit(1);
+		}
 	}
 }

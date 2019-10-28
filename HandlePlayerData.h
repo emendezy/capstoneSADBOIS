@@ -11,6 +11,7 @@
 #include <stdbool.h>
 #include <assert.h>
 #include <time.h>
+#include <pthread.h>
 #include "GPIOHandler.h"
 
 // #define NDEBUG /* Comment for no debug mode */
@@ -51,6 +52,8 @@ struct PlayerStaffData
 	int shieldPercent; /* 0(empty) -> 100(full) */
 
 	int healthPercent; /* 0(dead) -> 100(full) */
+
+	sigset_t prev_mask;// for forking (masks for block/unblock)
 };
 
 struct PlayerStaffData* initPlayerStruct(bool*);
@@ -60,6 +63,8 @@ void unloadPlayerData(struct PlayerStaffData*);
 void rumbleHandler(struct PlayerStaffData*, int);
 
 void lightHandler(struct PlayerStaffData*, int);
+
+void soundHandler(struct PlayerStaffData*, int);
 
 bool isCasting(struct PlayerStaffData*);
 

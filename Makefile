@@ -1,4 +1,4 @@
-C=gcc
+CC=gcc
 CFLAGS= -O3 -Wall -g
 LIBS=
 AR=ar
@@ -9,6 +9,12 @@ all: ${ALLBIN}
 
 clean:
 	rm -f *.o ${ALLBIN}
+
+listener: GPIOHandler.h GPIOHandler.c HandlePlayerData.h HandlePlayerData.c Listener.h Listener.c
+	gcc GPIOHandler.h GPIOHandler.c HandlePlayerData.h HandlePlayerData.c Listener.h Listener.c -lwiringPi -pthread
+	gcc ar cr listener.a GPIOHandler.o HandlePlayerData.o Listener.o
+	gcc listener.a -o listener
+
 
 getbno055: i2c_bno055.o getbno055.o
 	$(CC) i2c_bno055.o getbno055.o -o getbno055 ${LIBS}

@@ -4,14 +4,15 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/Users/Dong Hun Kim/Desktop/Box Sync/CMU/2019 Fall/18-500 ECE Design/Code"
+                "\"C:\\Users\\Dong Hun Kim\\Documents\\GitHub\\capstoneSADBOIS/**\""
             ],
             "defines": [
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE"
             ],
-            "intelliSenseMode": "msvc-x64"
+            "intelliSenseMode": "${default}",
+            "compilerPath": "\"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/g++.exe\""
         }
     ],
     "version": 4

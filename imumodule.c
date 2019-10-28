@@ -1,106 +1,221 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <time.h>
 #include <unistd.h>
 #include <getbno055.h>
-#include <bno055.h>
 #include <imumodule.h>
 #include <errno.h>
 
 int main()
 {
-    struct bnoeul *initdirptr;
-    struct bnoeul *eulptr;
-    struct bnolin *linptr;
+    bool isCircle = false;
+    bool isLightning = false;
     int retval = 0;
 
     /*
         get initial hrp values
+        passes to global pointer
     */
-
-    calibrate_imu(initdirptr);
-
+    calibrateImu();
     /*
         main loop
     */
-    while (true)
+    while (isCasting)
     {
-        retval = get_eul(eulptr);
+        sleep(FRAMEWAITTIME);
+        retval = get_eul(&currEulStruct);
         // error getting euler orientation
         if (retval < 0)
         {
             return retval;
         }
-        retval = get_lin(linptr);
+        retval = get_lin(&currLinStruct);
         // error getting linear acceleration
         if (retval < 0)
         {
             return retval;
         }
+        currSpellType = classifyShape(&currEulStruct, &currLinStruct);        
     }
     return retval;
 }
 
-bool checkCircle(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr)
+/*
+    checks if rune is a Horizontal or Vertical circle
+    must pass pointers bnoeulptr and bnolinptr that are already filled
+    waits POLYWAITTIME; if angle change is > MAXPOLYWAITTIME
+    returns WIND if wind (horizontal circle)
+    returns WATER if water (vertical circle)
+    returns NOTCIRCLE otherwise
+*/
+short checkCircle(struct bnoeul *starteulptr, struct bnolin *bnolinptr)
 {
+    int errval;
+    double final_h;
+    double final_r;
+    double final_p;
+    struct bnoeul *finaleulptr;
+    short retval = NOTCIRCLE;
+    double init_h = initEulStruct.eul_head;
+    double init_r = initEulStruct.eul_roll;
+    double init_p = initEulStruct.eul_pitc;
+    double start_h = starteulptr->eul_head;
+    double start_r = starteulptr->eul_roll;
+    double start_p = starteulptr->eul_pitc;
     clock_t time_start = clock();
-    clock_t time_end = time_start;
-    int retval = get_eul(bnoeulptr);
-    struct bnoeul *tempeulptr;
-    if (retval < 0)
-    {
-        
-    }
-    time_end = time_start + (POLYWAITTIME / CLOCKS_PER_SECOND);
+    // allocate memory for struct
+    finaleulptr = (struct bnoeul *) malloc(sizeof(struct bnoeul));
+
+    // wait POLYWAITTIME
     sleep(POLYWAITTIME);
-    retval = get_eul(bnoeulptr);
-}
-bool checkLightning(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr);
-{
-    double heading = bnoeulptr->eul_head;
-    double roll = bnoeulptr->eul_roll;
-    double pitch = bnoeulptr->eul_pitch;
+    errval = get_eul(finaleulptr);
+    if (errval < 0)
+    {
+        retval = ERRORVAL;
+    }
+    else if (final_h - start_h > MAXPOLYDEV)
+    {
+        retval = WIND;
+    }
+    else if (final_r - start_r > MAXPOLYDEV)
+    {
+        retval = WATER;
+    }
+    // free memory after casting to void*
+    free((void *)finaleulptr);
+    return retval;
 }
 
-extern double getVelocity(struct bnolin *bnolinptr)
+/*
+    checks if rune is for lightning
+*/
+bool checkLightning(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr)
+{
+    double init_h = initEulStruct.eul_head;
+    double init_r = initEulStruct.eul_roll;
+    double init_p = initEulStruct.eul_pitc;
+    double h = bnoeulptr->eul_head;
+    double r = bnoeulptr->eul_roll;
+    double p = bnoeulptr->eul_pitc;
+    if (init_r - r < ANGLETOLROLL)
+    {
+        return false;
+    }
+    else if (init_h - h < ANGLETOLHEAD)
+    {
+        return false;
+    }
+    else if (init_p - p < ANGLETOLPITCH)
+    {
+        return false;
+    }
+}
+
+short classifyShape(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr)
+{
+    short circleType = 0;
+    bool isLightning;
+
+    circleType = checkCircle(bnoeulptr, bnolinptr);
+    isLightning = checkLightning(bnoeulptr, bnolinptr);
+    if (circleType == WATER)
+    {
+        currSpellType = WATER;
+        return currSpellType;
+    }
+    else if (circleType == WIND)
+    {
+        currSpellType = WIND;
+        return currSpellType;
+    }
+    else if (isLightning)
+    {
+        currSpellType = LIGHTNING;
+        return currSpellType;
+    }
+    return currSpellType;
+}
+
+double getDistance(clock_t start, clock_t end, struct bnoeul *bnoeulptr, struct bnolin *bnolinptr)
 {
     double acc_x = bnolinptr->linacc_x;
-    double acc_y = bnolinptr->linacc_y
+    double acc_y = bnolinptr->linacc_y;
     double acc_z = bnolinptr->linacc_z;
-   
-
 }
 
-int calibrateImu(struct bnoeul *bnoeulptr)
+void calibrateImu()
 {
     int retval = 0;
     bno_reset();
-    retval = get_eul(bnoeulptr);
-
+    retval = get_eul(&initEulStruct);
 }
-
-
 
 /*
     add spell to end of list: FIFO
 */
-void enqueueSpell(short spell, spellQueueAlias *end)
+void enqueueSpell(short spell)
 {
-    spellQueueAlias newNode = (spellQueueAlias) malloc(sizeof(spellQueueStruct));
-    end->spellType = spell;
-    end->next = NULL;
+    /*
+        allocate memory
+    */
+    struct spellQueueStruct *newNode = (struct spellQueueStruct*) malloc(sizeof(struct spellQueueStruct));
+    /*
+        fill in data of new struct
+    */
+    newNode->next = NULL;
+    newNode->spellType = spell;
+    /*
+        if adding to empty list set values
+    */
+    if (spellQueueStart == NULL)
+    {
+        spellQueueStart = newNode;
+        spellQueueEnd = newNode;
+    }
+    else
+    {
+        /*
+            update next pointer of last element that existed before
+        */
+        spellQueueEnd->next = newNode;
+        /*
+            update last pointer
+        */
+        spellQueueEnd = newNode;
+    }
+    
 }
 
-short dequeueSpell(spellQueueAlias *start)
+/*
+    remove spell from start of list: FIFO
+    returns -1 on error
+    0 = earth
+    1 = fire
+    2 = lightning
+    3 = water
+    4 = wind
+*/
+short dequeueSpell()
 {
     short spell;
-    spell = start->spellType;
-    start = start->next;
+    struct spellQueue *start;
+    if (spellQueueStart == NULL)
+    {
+        return -1;
+    }
+    spell = spellQueueStart->spellType;
+    spellQueueStart = spellQueueStart->next;
+    /*
+        free memory
+    */
+    free((void *) start);
+    return spell;
 }
 
 // initialize spellQueue & spellQueueStart
 void initQueue()
 {
-    spellQueueStart->next = NULL;
-    spellQueueStart->spellType = 0;
+    spellQueueStart = NULL;
+    spellQueueEnd = NULL;
 }
