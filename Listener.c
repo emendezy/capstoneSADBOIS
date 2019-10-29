@@ -89,6 +89,8 @@ void waitForGameToStart()
 	//-------------------------------------
 	if (gameStartButtonPressed())/*TODO - button to start game is pressed */
 	{
+		printf("game button set to true\n");
+		delay(5000);
 		gameIsActive = true;
 	}
 
