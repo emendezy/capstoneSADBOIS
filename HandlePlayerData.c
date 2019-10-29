@@ -216,7 +216,7 @@ void rumbleHandler(struct PlayerStaffData* P, int rumbleMode, int level)
 	switch (rumbleMode)
 	{
 		case 0: /* Case for turning rumbler OFF */
-			assert(P->isRumbling);
+			// assert(P->isRumbling);
 			P->isRumbling = false;
 			P->rumbleLevel = 0;
 			P->rumbleStartTime = 0;
