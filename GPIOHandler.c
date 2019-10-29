@@ -16,7 +16,6 @@ void setupPinsOnRaspberryPi()
 	/* Digital Pins */
 	pinMode(LED_PIN, OUTPUT);
 	pinMode(SPELL_START_BUTTON, INPUT);
-	pullUpDnControl(SPELL_START_BUTTON, PUD_UP);
 
 	/* Analog Pins with PWM setup (range 0 - 100) */
 	softPwmCreate(RUMBLER_PIN, 0, MAX_ANALOG_RANGE);
