@@ -7,7 +7,7 @@
 #include "HandlePlayerData.h"
 
 /* each index of the array equates to it's spell ID */
-const char* const bookOfSpells[] =
+char* const bookOfSpells[] =
 {
 	"no_spell_chosen", // 0 (default case)
 	"water_defense", // 1
@@ -17,7 +17,7 @@ const char* const bookOfSpells[] =
 	"splash" // 5
 };
 
-const char* const bookOfSounds[] =
+char* const bookOfSounds[] =
 {
 	"Sounds/Slurp.mp3", // 0 (default case)
 	"Sounds/Baby.mp3", // 1
