@@ -17,7 +17,7 @@ const char* const bookOfSpells[] =
 	"splash" // 5
 };
 
-const char* const bookOfSounds[] =
+char* const bookOfSounds[] =
 {
 	"Sounds/Slurp.mp3", // 0 (default case)
 	"Sounds/Baby.mp3", // 1
