@@ -27,7 +27,7 @@ void playTheGame()
 	}
 
 	/* Install Signal Handler(s) */
-	Signal(SIGCHLD, sigchld_handler); // Handles terminated or stopped child
+	signal(SIGCHLD, sigchld_handler); // Handles terminated or stopped child
 	sigset_t prev_mask, mask;
 
 	//-------------------------------------
