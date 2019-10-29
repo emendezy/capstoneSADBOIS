@@ -216,14 +216,12 @@ void rumbleHandler(struct PlayerStaffData* P, int rumbleMode, int level)
 	switch (rumbleMode)
 	{
 		case 0: /* Case for turning rumbler OFF */
-			// assert(P->isRumbling);
 			P->isRumbling = false;
 			P->rumbleLevel = 0;
 			P->rumbleStartTime = 0;
 			changeRumbleMode(TURN_OFF);
 			break;
 		case 1: /* Case for turning rumbler ON */
-			assert(!P->isRumbling);
 			P->isRumbling = true;
 			P->rumbleStartTime = clock();
 			P->rumbleLevel = 1;
@@ -253,13 +251,11 @@ void lightHandler(struct PlayerStaffData* P, int lightMode)
 	switch (lightMode)
 	{
 		case 0: /* Case for turning LEDs OFF */
-			assert(P->isLit == true);
 			P->isLit = false;
 			P->lightLevel = 0;
 			P->lightStartTime = 0;
 			break;
 		case 1: /* Case for turning LEDs ON */
-			assert(P->isLit == false);
 			P->isLit = true;
 			P->lightStartTime = clock();
 			P->lightLevel = 1;
