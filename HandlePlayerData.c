@@ -137,7 +137,7 @@ void attackHandler(struct PlayerStaffData* P, int damageTaken)
 	bool* gameStatus;
 
 	successfulCast = false;
-	// endCasting(P, successfulCast);
+	endCasting(P, successfulCast);
 
 	/* Health decrement and check */
 	P->healthPercent -= damageTaken;
