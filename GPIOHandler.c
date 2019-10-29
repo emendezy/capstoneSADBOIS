@@ -26,7 +26,7 @@ void setupPinsOnRaspberryPi()
 
 bool gameStartButtonPressed()
 {
-	if(digitalRead(GAME_START_BUTTON) == HIGH)
+	if(digitalRead(GAME_START_BUTTON) == LOW)
 		return true;
 
 	return false;
