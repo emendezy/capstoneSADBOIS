@@ -291,7 +291,7 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 		sigprocmask(SIG_SETMASK, &prev_mask, NULL);
 		char* omxplayer = "/usr/bin/omxplayer";
 
-		if (execve(omxplayer, bookOfSounds[soundType], NULL) < 0) {
+		if (execve(omxplayer, (char *const)bookOfSounds[soundType], NULL) < 0) {
 			printf("%s: ERROR playing sound", omxplayer);
 			exit(1);
 		}
