@@ -87,7 +87,7 @@ void waitForGameToStart()
 	//-------------------------------------
 	// Loop while game is inactive
 	//-------------------------------------
-	if (true)/*TODO - button to start game is pressed */
+	if (gameStartButtonPressed())/*TODO - button to start game is pressed */
 	{
 		gameIsActive = true;
 	}
@@ -105,7 +105,6 @@ int main()
 
 	while(1)
 	{
-		gameIsActive = gameStartButtonPressed();
 		if (gameIsActive)
 			playTheGame();
 		else
