@@ -44,7 +44,7 @@ static bool check_block = true; // If true, check that signals are blocked
 static struct job_t job_list[MAXJOBS]; // The job list
 static jid_t nextjid = 1;              // Next job ID to allocate
 
-static bool init = false;
+static bool init = true;
 
 /*
  * parseline - Parse the command line and build the argv array.
@@ -232,12 +232,12 @@ static void check_blocked(void) {
     if (!Sigismember(&currmask, SIGCHLD)) {
         Sio_fprintf(STDERR_FILENO, "WARNING: SIGCHLD not blocked\n");
     }
-    if (!Sigismember(&currmask, SIGINT)) {
-        Sio_fprintf(STDERR_FILENO, "WARNING: SIGINT not blocked\n");
-    }
-    if (!Sigismember(&currmask, SIGTSTP)) {
-        Sio_fprintf(STDERR_FILENO, "WARNING: SIGTSTP not blocked\n");
-    }
+    // if (!Sigismember(&currmask, SIGINT)) {
+    //     Sio_fprintf(STDERR_FILENO, "WARNING: SIGINT not blocked\n");
+    // }
+    // if (!Sigismember(&currmask, SIGTSTP)) {
+    //     Sio_fprintf(STDERR_FILENO, "WARNING: SIGTSTP not blocked\n");
+    // }
 }
 
 /*
