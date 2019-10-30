@@ -288,7 +288,7 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 		char* omxplayer = "/usr/bin/omxplayer";
 
 		if (execve(omxplayer, &bookOfSounds[soundType], NULL) < 0) {
-			printf("%s: ERROR playing sound", omxplayer);
+			printf("%s: ERROR playing sound\n", omxplayer);
 			exit(1);
 		}
 	}

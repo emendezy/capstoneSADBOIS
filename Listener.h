@@ -8,8 +8,6 @@
 #include "HandlePlayerData.h"
 #include "GPIOHandler.h"
 
-#include "libraryFiles/tsh_helper.h"
-
 bool gameIsActive = false;
 
 void playTheGame();

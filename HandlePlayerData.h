@@ -24,9 +24,9 @@
 
 #include "GPIOHandler.h"
 
-#include "libraryFiles/tsh_exec.h"
-#include "libraryFiles/csapp.h"
-#include "libraryFiles/tsh_helper.h"
+#include "tsh_exec.h"
+#include "csapp.h"
+#include "tsh_helper.h"
 
 // #define NDEBUG /* Comment for no debug mode */
 #define TURN_OFF 0
