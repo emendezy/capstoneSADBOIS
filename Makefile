@@ -10,7 +10,7 @@ all: ${ALLBIN}
 clean:
 	rm -f *.o ${ALLBIN}
 
-listener: libraryFiles/tsh_exec.c libraryFiles/csapp.c libraryFiles/tsh_helper.c GPIOHandler.h GPIOHandler.c HandlePlayerData.h HandlePlayerData.c Listener.h Listener.c
+listener: tsh_exec.c csapp.c tsh_helper.c GPIOHandler.h GPIOHandler.c HandlePlayerData.h HandlePlayerData.c Listener.h Listener.c
 	gcc libraryFiles/tsh_exec.c libraryFiles/csapp.c libraryFiles/tsh_helper.c GPIOHandler.h GPIOHandler.c HandlePlayerData.h HandlePlayerData.c Listener.h Listener.c -lwiringPi -pthread
 	gcc ar cr listener.a tsh_exec.o csapp.o tsh_helper.o GPIOHandler.o HandlePlayerData.o Listener.o
 	gcc listener.a -o listener
