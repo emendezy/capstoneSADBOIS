@@ -107,7 +107,7 @@ int main()
 
 	while(1)
 	{
-		printf("%d\n",digitalRead(GAME_START_BUTTON));
+		printf("digitalRead of %d\n", digitalRead(GAME_START_BUTTON));
 		if (gameIsActive)
 			playTheGame();
 		else
