@@ -104,7 +104,6 @@ int main()
 {
 	initializeRaspberryPi();
 	printf("in main loop\n");
-
 	while(1)
 	{
 		if (gameIsActive)
