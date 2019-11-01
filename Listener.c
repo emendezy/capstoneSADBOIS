@@ -136,6 +136,6 @@ void sigchld_handler(int sig) {
 		sigprocmask(SIG_SETMASK, &prev_mask, NULL);
 	}
 	errno = err;
-	puts("Child Reaped Successfully");
+	puts("Child Reaped Successfully\n");
 	return;
 }
