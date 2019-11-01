@@ -287,8 +287,8 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 	pid_t pid;
 	char* omxplayerLocation = "/usr/bin/omxplayer ";
 	char* omxplayer = malloc(sizeof("omxplayer ") + sizeof(bookOfSounds[soundType]));
-	omxplayer = "omxplayer ";
-	char* const command = strcpy(omxplayer, bookOfSounds[soundType]);
+	strcpy(omxplayer, "omxplayer ");
+	strcpy(omxplayer, bookOfSounds[soundType]);
 	if((pid = fork()) == 0)
 	{
 		setpgid(0, 0);
@@ -300,4 +300,5 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 			exit(1);
 		}
 	}
+	free(omxplayer);
 }
