@@ -286,14 +286,14 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 {
 	pid_t pid;
 	char* omxplayer = "/usr/bin/omxplayer ";
-	char* command = strcat("omxplayer ", bookOfSounds[soundType]);
+	char* const command = strcat("omxplayer ", bookOfSounds[soundType]);
 	if((pid = fork()) == 0)
 	{
 		setpgid(0, 0);
 		sigset_t prev_mask = P->prev_mask;
 		sigprocmask(SIG_SETMASK, &prev_mask, NULL);
 
-		if (execve(omxplayer, (char *const)command, NULL) < 0) {
+		if (execve(omxplayer, &command, NULL) < 0) {
 			printf("%s: ERROR playing sound\n", omxplayer);
 			exit(1);
 		}
