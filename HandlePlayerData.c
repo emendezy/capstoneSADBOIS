@@ -186,7 +186,7 @@ void spellCaster(struct PlayerStaffData* P, int damageType)
 	}
 }
 
-/* Pressure sensor was pressed end cast sequence
+/* Pressure sensor was pressed now initate end cast sequence
  */
 void endCasting(struct PlayerStaffData* P, bool successfulCast)
 {
