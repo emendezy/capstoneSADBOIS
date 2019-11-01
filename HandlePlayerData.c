@@ -285,16 +285,18 @@ void lightHandler(struct PlayerStaffData* P, int lightMode)
 void soundHandler(struct PlayerStaffData* P, int soundType)
 {
 	pid_t pid;
-	char* omxplayer = "/usr/bin/omxplayer ";
-	char* const command = strcat("omxplayer ", bookOfSounds[soundType]);
+	char* omxplayerLocation = "/usr/bin/omxplayer ";
+	char* omxplayer = malloc(sizeof("omxplayer ") + sizeof(bookOfSounds[soundType]));
+	omxplayer = "omxplayer ";
+	char* const command = strcpy(omxplayer, bookOfSounds[soundType]);
 	if((pid = fork()) == 0)
 	{
 		setpgid(0, 0);
 		sigset_t prev_mask = P->prev_mask;
 		sigprocmask(SIG_SETMASK, &prev_mask, NULL);
 
-		if (execve(omxplayer, &command, NULL) < 0) {
-			printf("%s: ERROR playing sound\n", omxplayer);
+		if (execve(omxplayerLocation, &command, NULL) < 0) {
+			printf("%s: ERROR playing sound\n", omxplayerLocation);
 			exit(1);
 		}
 	}
