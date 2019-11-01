@@ -286,9 +286,11 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 {
 	pid_t pid;
 	char* omxplayerLocation = "/usr/bin/omxplayer";
-	char* omxplayer = malloc(sizeof("omxplayer ") + sizeof(bookOfSounds[soundType]));
-	strcpy(omxplayer, "omxplayer ");
+	char* omxplayer = malloc(sizeof("omxplayer") + sizeof(" -o local ") + sizeof(bookOfSounds[soundType]));
+	strcpy(omxplayer, "omxplayer"); // cmd
+	strcpy(omxplayer, " -o local ")
 	strcpy(omxplayer, bookOfSounds[soundType]);
+	printf(omxplayer);
 	if((pid = fork()) == 0)
 	{
 		setpgid(0, 0);
