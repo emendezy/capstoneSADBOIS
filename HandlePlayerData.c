@@ -287,19 +287,20 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 	pid_t pid;
 	char* omxplayerLocation = "/usr/bin/omxplayer";
 
-	char* omxplayer = malloc(sizeof("omxplayer -o local "));
+	char* omxplayer = malloc(sizeof("omxplayer -o local ") + sizeof(bookOfSounds[soundType]));
 	strcpy(omxplayer, "omxplayer -o local ");
 
-	char* command = malloc(sizeof("omxplayer -o local ") + sizeof(bookOfSounds[soundType]));
-	strcpy(command, omxplayer);
-	printf(command);
+	char* file = malloc(sizeof(bookOfSounds[soundType]));
+	strcpy(file, bookOfSounds[soundType]);
+	omxplayer = strcat(omxplayer, file);
+	printf(omxplayer);
 	if((pid = fork()) == 0)
 	{
 		setpgid(0, 0);
 		sigset_t prev_mask = P->prev_mask;
 		sigprocmask(SIG_SETMASK, &prev_mask, NULL);
 
-		if (execve(omxplayerLocation, &command, NULL) < 0) {
+		if (execve(omxplayerLocation, &omxplayer, NULL) < 0) {
 			printf("%s: ERROR playing sound\n", omxplayerLocation);
 			exit(1);
 		}
