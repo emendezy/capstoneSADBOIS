@@ -285,7 +285,7 @@ void lightHandler(struct PlayerStaffData* P, int lightMode)
 void soundHandler(struct PlayerStaffData* P, int soundType)
 {
 	pid_t pid;
-	char* omxplayerLocation = "/usr/bin/omxplayer ";
+	char* omxplayerLocation = "/usr/bin/omxplayer";
 	char* omxplayer = malloc(sizeof("omxplayer ") + sizeof(bookOfSounds[soundType]));
 	strcpy(omxplayer, "omxplayer ");
 	strcpy(omxplayer, bookOfSounds[soundType]);
