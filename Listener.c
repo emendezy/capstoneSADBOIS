@@ -65,7 +65,7 @@ void playTheGame()
 			}
 			/* successful cast end is handled in isDoneCasting() */
 		}
-		else
+		else if(isBeingAttacked)
 		{
 			attackHandler(P, damageType);
 
