@@ -174,7 +174,7 @@ void spellCaster(struct PlayerStaffData* P, int damageType)
 			P->isCasting = true;
 
 			level = MAX_ANALOG_RANGE / 2;
-			if(!P->isRumbling)
+			if(!(P->isRumbling))
 			{
 				rumbleHandler(P, TURN_ON, level);
 				// lightHandler(P, TURN_ON);
