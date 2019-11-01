@@ -7,7 +7,7 @@
 #include "HandlePlayerData.h"
 
 /* each index of the array equates to it's spell ID */
-const char* const bookOfSpells[] =
+const char* bookOfSpells[] =
 {
 	"no_spell_chosen", // 0 (default case)
 	"water_defense", // 1
@@ -17,7 +17,7 @@ const char* const bookOfSpells[] =
 	"splash" // 5
 };
 
-char* bookOfSounds[] =
+const char* bookOfSounds[] =
 {
 	"Sounds/Slurp.mp3", // 0 (default case)
 	"Sounds/Baby.mp3", // 1
@@ -286,7 +286,7 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 {
 	pid_t pid;
 	char* omxplayer = "/usr/bin/omxplayer ";
-	char *const command[] = strcat("/usr/bin/omxplayer ", bookOfSounds[soundType]);
+	char *const command[] = strcpy("omxplayer ", bookOfSounds[soundType]);
 	if((pid = fork()) == 0)
 	{
 		setpgid(0, 0);
