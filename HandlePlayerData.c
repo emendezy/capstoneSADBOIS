@@ -286,7 +286,7 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 {
 	pid_t pid;
 	char* omxplayer = "/usr/bin/omxplayer ";
-	char *const command[] = strcpy("omxplayer ", bookOfSounds[soundType]);
+	char* command[] = strcat("omxplayer ", bookOfSounds[soundType]);
 	if((pid = fork()) == 0)
 	{
 		setpgid(0, 0);
