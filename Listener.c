@@ -90,7 +90,7 @@ void waitForGameToStart()
 	if (gameStartButtonPressed())/*TODO - button to start game is pressed */
 	{
 		printf("game button set to true\n");
-		delay(5000);
+		delay(1000);
 		gameIsActive = true;
 	}
 
@@ -107,7 +107,6 @@ int main()
 
 	while(1)
 	{
-		printf("digitalRead of %d\n", digitalRead(GAME_START_BUTTON));
 		if (gameIsActive)
 			playTheGame();
 		else

@@ -77,6 +77,7 @@ bool isCasting(struct PlayerStaffData* P)
 
 	if (isPressed || P->isCasting)
 	{
+		P->isCasting = true;
 		return true;
 	}
 	else
@@ -90,6 +91,7 @@ bool isDoneCasting(struct PlayerStaffData* P)
 
 	if(isPressed)
 	{
+		P->isCasting = false;
 		isSuccessful = true;
 		endCasting(P, isSuccessful);
 		return true;
