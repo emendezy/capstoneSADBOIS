@@ -285,8 +285,8 @@ void lightHandler(struct PlayerStaffData* P, int lightMode)
 void soundHandler(struct PlayerStaffData* P, int soundType)
 {
 	pid_t pid;
-	char* omxplayer = "/usr/bin/omxplayer";
-	char *const command[] = strcat(omxplayer, bookOfSounds[soundType]);
+	char* omxplayer = "/usr/bin/omxplayer ";
+	char *const command[] = strcat("/usr/bin/omxplayer ", bookOfSounds[soundType]);
 	if((pid = fork()) == 0)
 	{
 		setpgid(0, 0);
