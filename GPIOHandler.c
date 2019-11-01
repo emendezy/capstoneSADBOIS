@@ -62,7 +62,7 @@ bool endCastButtonPressed()
 
 void changeRumbleMode(int level)
 {
-	printf("changing rumbleMode");
+	printf("changing rumbleMode\n");
 
 	softPwmWrite(RUMBLER_PIN, level);
 }

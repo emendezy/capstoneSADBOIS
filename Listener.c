@@ -87,7 +87,7 @@ void waitForGameToStart()
 	//-------------------------------------
 	// Loop while game is inactive
 	//-------------------------------------
-	if (gameStartButtonPressed())/*TODO - button to start game is pressed */
+	if (gameStartButtonPressed())
 	{
 		printf("game button set to true\n");
 		delay(1000);
