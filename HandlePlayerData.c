@@ -289,7 +289,7 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 	char* omxplayer = malloc(sizeof("omxplayer") + sizeof(" -o local ") + sizeof(bookOfSounds[soundType]));
 	strcpy(omxplayer, "omxplayer"); // cmd
 	strcpy(omxplayer, " -o local ");
-	strcpy(omxplayer, bookOfSounds[soundType]);
+	strcpy(omxplayer, "omxplayer" + " -o local " + bookOfSounds[soundType]);
 	printf(omxplayer);
 	if((pid = fork()) == 0)
 	{
