@@ -295,7 +295,7 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 		sigset_t prev_mask = P->prev_mask;
 		sigprocmask(SIG_SETMASK, &prev_mask, NULL);
 
-		if (execve(omxplayerLocation, &command, NULL) < 0) {
+		if (execve(omxplayerLocation, &omxplayer, NULL) < 0) {
 			printf("%s: ERROR playing sound\n", omxplayerLocation);
 			exit(1);
 		}
