@@ -12,13 +12,13 @@
 #include <wiringPi.h>
 #include <softPwm.h>
 
-#define GAME_START_BUTTON 7
+#define GAME_START_BUTTON 2
 
 #define LED_PIN 1
-#define SPELL_START_BUTTON 0
-#define SPELL_END_BUTTON 2
+#define SPELL_START_BUTTON 3
+#define SPELL_END_BUTTON 4
 
-#define RUMBLER_PIN 4
+#define RUMBLER_PIN 0
 #define MAX_ANALOG_RANGE 100
 #define ANALOG_STEP 5
 
