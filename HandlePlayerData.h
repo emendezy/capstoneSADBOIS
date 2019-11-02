@@ -24,6 +24,7 @@
 #include <time.h>
 
 #include "GPIOHandler.h"
+#include "imumodule.h"
 
 #include "tsh_exec.h"
 #include "csapp.h"
@@ -34,6 +35,12 @@
 #define TURN_ON 1
 #define INCR 2
 #define DECR 3
+
+extern static short EARTH; // = 0;
+extern static short FIRE; // = 1;
+extern static short LIGHTNING; // = 2;
+extern static short WATER; // = 3;
+extern static short WIND; // = 4;
 
 #define MAX_RUMBLE 10
 #define MAX_LIGHT 10
@@ -48,9 +55,12 @@
 struct PlayerStaffData
 {
 	bool* gameInProgress;
-	int currentSpell; // from book of spells
+	int[] activeSpells; // from book of spells
 	bool isCasting;
 	int castDamage; // damage of spell created by this user
+
+	struct spellQueueStruct *spellQueue;
+	int hasBastian;
 
 	bool isRumbling;
 	int rumbleLevel; /* 0 -> 10 */
@@ -94,6 +104,8 @@ void attackHandler(struct PlayerStaffData*, int);
 void spellCaster(struct PlayerStaffData*, int);
 
 void sendCast(struct PlayerStaffData*);
+
+void processDamageRecieved(struct PlayerStaffData*, int);
 
 void endCasting(struct PlayerStaffData*, bool);
 

@@ -9,12 +9,11 @@
 /* each index of the array equates to it's spell ID */
 const char* bookOfSpells[] =
 {
-	"no_spell_chosen", // 0 (default case)
-	"water_defense", // 1
-	"fireball", // 2
-	"air_rush", // 3
-	"rock_grind", // 4
-	"splash" // 5
+	"earth", // 0 (default case)
+	"fire", // 1
+	"lightning", // 2
+	"water", // 3
+	"wind", // 4
 };
 
 const char* bookOfSounds[] =
@@ -34,9 +33,13 @@ struct PlayerStaffData* initPlayerStruct(bool* isTheGameInProgress)
 
 	struct PlayerStaffData* P = malloc(sizeof(struct PlayerStaffData));
 	P->gameInProgress = isTheGameInProgress;
-	P->currentSpell = 0;
+	P->activeSpells[TOTAL_SPELLS_IN_SPELLBOOK] = {0, 0, 0, 0, 0};
 	P->isCasting = false;
 	P->castDamage = 0;
+
+	P->spellQueue = malloc(sizeof(struct spellQueueStruct));
+	initQueue();
+	P->hasBastion = 0;
 
 	P->isRumbling = false;
 	P->rumbleLevel = 0;
@@ -127,7 +130,13 @@ void imuInputHandler(struct PlayerStaffData* P)
 	 * TODO - add sections that represent a managed variable that tracks the
 	 * 		current spell being drawn
 	 */
-	return;
+	struct spellQueueStruct *spellQueue	= P->spellQueue;
+	short spellType = dequeueSpell();
+	if(spellType != -1) {
+		// Spell in queue that was successfully dequeued
+		printf("Spell was properly dequeued - %d\n", spellType);
+		P->activeSpells[spellType]++;
+	}
 }
 
 void attackHandler(struct PlayerStaffData* P, int damageTaken)
@@ -206,6 +215,34 @@ void sendCast(struct PlayerStaffData* P)
 	/* TODO - setup bluetooth communication
 	 *	- cast damage should be in the player struct (P->castDamage)
 	 */
+	// send P->activeSpells to the other IMU to process
+	// -> processDamageRecieved() will do the damage applying
+}
+
+void processDamageRecieved(struct PlayerStaffData* P, int damageType)
+{
+	// check for shield ability
+	if(!(P->hasBastion))
+	{
+		// hasBastion is type int
+		switch(damageType){
+			case 0:
+				break;
+			case 1:
+				break;
+			case 2:
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+		}
+	}
+	else
+	{
+		// can be a value of 0 - use up one bastian shield
+		P->hasBastion--;
+	}
 }
 
 // -----------------------------------------------
