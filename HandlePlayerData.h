@@ -50,6 +50,7 @@
 /* number of sounds in out pre-defined book */
 #define TOTAL_NUM_OF_SOUNDS 2
 
+#define NUM_DAMAGE_VALUES 5
 /* ------------------------------------------------------------------------- */
 
 struct PlayerStaffData

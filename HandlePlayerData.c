@@ -221,23 +221,38 @@ void sendCast(struct PlayerStaffData* P)
 	// -> processDamageRecieved() will do the damage applying
 }
 
-void processDamageRecieved(struct PlayerStaffData* P, int damageType)
+/* damageValues array key
+ * 0 - overall damage delt
+ * 1 - spell put on cooldown (index of spell in activeSpells)
+ * 2 - burned affect (1 - active, 0 - inactive)
+ * 3 - if burned is 1 -> burn damage
+ * 4 - if burned is 1 -> burn time
+ */
+void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 {
 	// check for shield ability
 	if(!(P->hasBastion))
 	{
 		// hasBastion is type int
-		switch(damageType){
-			case 0:
-				break;
-			case 1:
-				break;
-			case 2:
-				break;
-			case 3:
-				break;
-			case 4:
-				break;
+		for (int i = 0; i < NUM_DAMAGE_VALUES; i++) {
+			switch(i){
+				case 0:
+					P->healthPercent -= damageValues[0];
+					break;
+				case 1:
+					for(int s = 0; s < TOTAL_SPELLS_IN_SPELLBOOK; s++)
+					{
+						if(P->activeSpells[s] > 0)
+						{
+							/* put spells that are active on cooldown
+							 * -> TODO - add cooldown timers and bool gaurds
+							 */
+						}
+					}
+				case 2:
+				case 3:
+				case 4:
+			}
 		}
 	}
 	else
@@ -245,6 +260,17 @@ void processDamageRecieved(struct PlayerStaffData* P, int damageType)
 		// can be a value of 0 - use up one bastian shield
 		P->hasBastion--;
 	}
+}
+
+void earthDamage(struct PlayerStaffData* P)
+{
+	// nothing is done as an attack. This is purely a defense spell
+	return;
+}
+
+void fireDamage(struct PlayerStaffData* P)
+{
+
 }
 
 // -----------------------------------------------
