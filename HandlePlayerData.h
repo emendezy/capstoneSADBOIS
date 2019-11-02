@@ -55,7 +55,7 @@
 struct PlayerStaffData
 {
 	bool* gameInProgress;
-	int activeSpells[TOTAL_SPELLS_IN_SPELLBOOK]; // from book of spells
+	int* activeSpells; // from book of spells
 	bool isCasting;
 	int castDamage; // damage of spell created by this user
 
