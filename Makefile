@@ -10,8 +10,8 @@ all: ${ALLBIN}
 clean:
 	rm -f *.o ${ALLBIN}
 
-listener: tsh_exec.h tsh_exec.c csapp.h csapp.c tsh_helper.h tsh_helper.c GPIOHandler.h GPIOHandler.c HandlePlayerData.h HandlePlayerData.c Listener.h Listener.c
-	gcc tsh_exec.h tsh_exec.c csapp.h csapp.c tsh_helper.h tsh_helper.c GPIOHandler.h GPIOHandler.c HandlePlayerData.h HandlePlayerData.c Listener.h Listener.c -lwiringPi -pthread -ggdb -Wall
+listener: tsh_exec.h tsh_exec.c csapp.h csapp.c tsh_helper.h tsh_helper.c getbno055.h getbno055.c i2c_bno055.c imumodule.h imumodule.c GPIOHandler.h GPIOHandler.c HandlePlayerData.h HandlePlayerData.c Listener.h Listener.c
+	gcc tsh_exec.h tsh_exec.c csapp.h csapp.c tsh_helper.h tsh_helper.c getbno055.h getbno055.c i2c_bno055.c imumodule.h imumodule.c GPIOHandler.h GPIOHandler.c HandlePlayerData.h HandlePlayerData.c Listener.h Listener.c -lwiringPi -pthread -ggdb -Wall
 	gcc ar cr listener.a tsh_exec.o csapp.o tsh_helper.o GPIOHandler.o HandlePlayerData.o Listener.o
 	gcc listener.a -o listener
 

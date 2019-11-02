@@ -36,11 +36,11 @@
 #define INCR 2
 #define DECR 3
 
-extern static short EARTH; // = 0;
-extern static short FIRE; // = 1;
-extern static short LIGHTNING; // = 2;
-extern static short WATER; // = 3;
-extern static short WIND; // = 4;
+// EARTH = 0;
+// FIRE = 1;
+// LIGHTNING = 2;
+// WATER = 3;
+// WIND = 4;
 
 #define MAX_RUMBLE 10
 #define MAX_LIGHT 10
@@ -55,12 +55,12 @@ extern static short WIND; // = 4;
 struct PlayerStaffData
 {
 	bool* gameInProgress;
-	int[] activeSpells; // from book of spells
+	int activeSpells[TOTAL_SPELLS_IN_SPELLBOOK]; // from book of spells
 	bool isCasting;
 	int castDamage; // damage of spell created by this user
 
 	struct spellQueueStruct *spellQueue;
-	int hasBastian;
+	int hasBastion;
 
 	bool isRumbling;
 	int rumbleLevel; /* 0 -> 10 */
@@ -91,7 +91,7 @@ void lightHandler(struct PlayerStaffData*, int);
 
 void soundHandler(struct PlayerStaffData*, int);
 
-bool isCasting(struct PlayerStaffData*);
+bool isCurrCasting(struct PlayerStaffData*);
 
 bool isDoneCasting(struct PlayerStaffData*);
 

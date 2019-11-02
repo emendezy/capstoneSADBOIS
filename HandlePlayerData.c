@@ -33,7 +33,7 @@ struct PlayerStaffData* initPlayerStruct(bool* isTheGameInProgress)
 
 	struct PlayerStaffData* P = malloc(sizeof(struct PlayerStaffData));
 	P->gameInProgress = isTheGameInProgress;
-	P->activeSpells[TOTAL_SPELLS_IN_SPELLBOOK] = {0, 0, 0, 0, 0};
+	P->activeSpells = calloc(TOTAL_SPELLS_IN_SPELLBOOK, sizeof(int));
 	P->isCasting = false;
 	P->castDamage = 0;
 
@@ -74,7 +74,7 @@ void unloadPlayerData(struct PlayerStaffData* P)
 // Input Handlers
 // -----------------------------------------------
 
-bool isCasting(struct PlayerStaffData* P)
+bool isCurrCasting(struct PlayerStaffData* P)
 {
 	bool isPressed = castButtonPressed();
 
@@ -130,7 +130,6 @@ void imuInputHandler(struct PlayerStaffData* P)
 	 * TODO - add sections that represent a managed variable that tracks the
 	 * 		current spell being drawn
 	 */
-	struct spellQueueStruct *spellQueue	= P->spellQueue;
 	short spellType = dequeueSpell();
 	if(spellType != -1) {
 		// Spell in queue that was successfully dequeued

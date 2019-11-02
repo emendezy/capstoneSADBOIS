@@ -43,7 +43,7 @@ void playTheGame()
 		}
 
 		/* Be listening for user input or enemy attack */
-		isCurrentlyCasting = isCasting(P);
+		isCurrentlyCasting = isCurrCasting(P);
 		// ^ returns true if button pressed or button was already pressed and
 		//     P->isCasting was set to true
 		stopCasting = isDoneCasting(P); /* handle send spell logic */
