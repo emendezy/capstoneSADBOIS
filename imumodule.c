@@ -3,9 +3,10 @@
 #include <stdbool.h>
 #include <time.h>
 #include <unistd.h>
-#include <getbno055.h>
-#include <imumodule.h>
 #include <errno.h>
+
+#include "getbno055.h"
+#include "imumodule.h"
 
 int main()
 {
@@ -36,7 +37,7 @@ int main()
         {
             return retval;
         }
-        currSpellType = classifyShape(&currEulStruct, &currLinStruct);        
+        currSpellType = classifyShape(&currEulStruct, &currLinStruct);
     }
     return retval;
 }
@@ -184,7 +185,7 @@ void enqueueSpell(short spell)
         */
         spellQueueEnd = newNode;
     }
-    
+
 }
 
 /*
