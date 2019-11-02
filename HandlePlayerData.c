@@ -95,6 +95,7 @@ bool isDoneCasting(struct PlayerStaffData* P)
 	if(isPressed)
 	{
 		P->isCasting = false;
+		P->activeSpells = {0, 0, 0, 0, 0};
 		isSuccessful = true;
 		endCasting(P, isSuccessful);
 		return true;
