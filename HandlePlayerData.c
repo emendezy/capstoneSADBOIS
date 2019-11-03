@@ -50,6 +50,16 @@ struct PlayerStaffData* initPlayerStruct(bool* isTheGameInProgress)
 	P->immunityStart = (clock_t) 0;
 	P->immunityTime = 0;
 
+	P->isBurning = false;
+	P->burnStart = (clock_t) 0;
+	P->burnPerSecond = 0;
+	P->burnTotalTime = 0;
+
+	P->isWeakened = false;
+	P->weaknessPercent = 0;
+	P->weaknessTime = 0;
+	P->weaknessStart = (clock_t) 0;
+
 	P->coolDownMask = calloc(TOTAL_SPELLS_IN_SPELLBOOK, sizeof(int));
 
 	P->isRumbling = false;
@@ -217,8 +227,14 @@ void spellCaster(struct PlayerStaffData* P, int damageType)
 	if(oneSec <= ((double)(clockEnd - clockStart)) / CLOCKS_PER_SEC)
 	{
 		editCoolDownValues(P, 1);
+		checkWeakness(P);
 		checkShield(P);
 		checkImmunity(P);
+
+		if(P->isBurning)
+		{
+			handleBurning(P);
+		}
 	}
 }
 
@@ -237,6 +253,20 @@ void endCasting(struct PlayerStaffData* P, bool successfulCast)
 	}
 }
 
+void handleBurning(struct PlayerStaffData* P)
+{
+	if(P->burnTotalTime == 0)
+	{
+		P->isBurning = false;
+		P->burnPerSecond = 0;
+	}
+	else
+	{
+		P->healthPercent -= P->burnPerSecond;
+		P->burnTotalTime--;
+	}
+}
+
 void editCoolDownValues(struct PlayerStaffData* P, int amount)
 {
 	for (int i = 0; i < TOTAL_SPELLS_IN_SPELLBOOK; i++)
@@ -244,6 +274,20 @@ void editCoolDownValues(struct PlayerStaffData* P, int amount)
 		if(P->coolDownMask[i] > 0)
 		{
 			P->coolDownMask[i] -= amount;
+		}
+	}
+}
+
+void checkWeakness(struct PlayerStaffData* P)
+{
+	if(P->isWeakened)
+	{
+		clock_t currentTime = clock();
+		clock_t weaknessTime = (clock_t)(P->weaknessTime);
+		if(P->weaknessStart + weaknessTime < currentTime)
+		{
+			P->isWeakened = false;
+			P->weaknessPercent = 0;
 		}
 	}
 }
@@ -314,7 +358,7 @@ void sendCast(struct PlayerStaffData* P)
 				// NOTE - no need to send a damageValues package
 				break;
 			case 1:
-				damageValues[0] = 10; // damage
+				damageValues[0] = calcSendingSpellDamage(10); // damage
 				damageValues[1] = -1; // no cooldown affect
 				damageValues[2] = 1; // burned affect is true
 				damageValues[3] = 5 + (5 * timesCast); // damage over time
@@ -325,7 +369,8 @@ void sendCast(struct PlayerStaffData* P)
 				sendDamagePackage(damageValues);
 				break;
 			case 2:
-				damageValues[0] = 20 + (3 * timesCast); // deal damage instantly
+				// deal damage instantly
+				damageValues[0] = calcSendingSpellDamage(20 + (3 * timesCast));
 				damageValues[1] = 1 + timesCast; // add a cooldown time of 1 + 1*lightning seconds
 				damageValues[2] = 0; // no burn affect
 				damageValues[3] = 0; // ""
@@ -356,6 +401,15 @@ void sendCast(struct PlayerStaffData* P)
 	}
 }
 
+int calcSendingSpellDamage(struct PlayerStaffData* P, int damage)
+{
+	if (P->isWeakened)
+	{
+		return (MAX_WEAKNESS - P->weaknessPercent) * damage / MAX_WEAKNESS;
+	}
+	return damage;
+}
+
 void sendDamagePackage(int* damageValues)
 {
 	/* TODO - setup NRF24L01 chip communication */
@@ -380,28 +434,35 @@ void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 	// check for shield ability
 	if(!(P->hasBastion) && !(P->hasImmunity))
 	{
-		// hasBastion is type int
-		for (int i = 0; i < NUM_DAMAGE_VALUES; i++) {
-			switch(i){
-				case 0:
-					// 0 - overall damage delt
-					P->healthPercent -= calcTotalDamage(P->shieldPercent,damageValues[0]);
-					break;
-				case 1:
-					// 1 - spell put on cooldown (index of spell in activeSpells)
-					for(int s = 0; s < TOTAL_SPELLS_IN_SPELLBOOK; s++)
-					{
-						if(P->activeSpells[s] > 0)
-						{
-							// set cooldown time
-							P->coolDownMask[s] = damageValues[1];
-						}
-					}
-					break;
-				// case 2:
-				// case 3:
-				// case 4:
+
+		// 0 - overall damage delt
+		P->healthPercent -= calcTotalDamage(P->shieldPercent,damageValues[0]);
+
+		// 1 - spell put on cooldown (index of spell in activeSpells)
+		for(int s = 0; s < TOTAL_SPELLS_IN_SPELLBOOK; s++)
+		{
+			if(P->activeSpells[s] > 0)
+			{
+				// set cooldown time
+				P->coolDownMask[s] = damageValues[1];
 			}
+		}
+
+		// 2 (active/inactive) -> 3,4 burned affect : set burn damage and time
+		if(damageValues[2])
+		{
+			// burned affect == 1 (active)
+			P->isBurning = true;
+			P->burnStart = clock();
+			P->burnPerSecond = damageValues[3] / damageValues[4];
+			P->burnTotalTime = damageValues[4];
+		}
+		if(damageValues[5] > 0)
+		{
+			P->isWeakened = true;
+			P->weaknessPercent = damageValues[5];
+			P->weaknessTime = damageValues[6];
+			P->weaknessStart = clock();
 		}
 	}
 	else
@@ -409,17 +470,6 @@ void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 		// can be a value of 0 - use up one bastion shield
 		P->hasBastion--;
 	}
-}
-
-void earthDamage(struct PlayerStaffData* P)
-{
-	// nothing is done as an attack. This is purely a defense spell
-	return;
-}
-
-void fireDamage(struct PlayerStaffData* P)
-{
-
 }
 
 // -----------------------------------------------

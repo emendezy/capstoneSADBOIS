@@ -71,6 +71,16 @@ struct PlayerStaffData
 	clock_t immunityStart;
 	int immunityTime;
 
+	bool isBurning;
+	clock_t burnStart;
+	int burnPerSecond;
+	int burnTotalTime;
+
+	bool isWeakened;
+	int weaknessPercent;
+	int weaknessTime;
+	clock_t weaknessStart;
+
 	int* coolDownMask;
 
 	bool isRumbling;
@@ -159,7 +169,11 @@ void attackHandler(struct PlayerStaffData*, int);
 
 void spellCaster(struct PlayerStaffData*, int);
 
+void handleBurning(struct PlayerStaffData*);
+
 void editCoolDownValues(struct PlayerStaffData*, int);
+
+void checkWeakness(struct PlayerStaffData*);
 
 void checkShield(struct PlayerStaffData*);
 
