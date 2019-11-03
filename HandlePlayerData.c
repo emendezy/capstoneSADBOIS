@@ -218,6 +218,7 @@ void spellCaster(struct PlayerStaffData* P, int damageType)
 				rumbleHandler(P, TURN_ON, level);
 				// lightHandler(P, TURN_ON);
 			}
+			P->startOfSpell = false;
 		}
 
 		/* Spell has been started and now process the IMU input */
