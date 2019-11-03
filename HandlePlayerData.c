@@ -7,13 +7,20 @@
 #include "HandlePlayerData.h"
 
 /* each index of the array equates to it's spell ID */
-const char* bookOfSpells[] =
+
+const char* const bookOfSpells[] =
 {
-	"earth", // 0 (default case)
-	"fire", // 1
-	"lightning", // 2
-	"water", // 3
-	"wind", // 4
+	"no_spell_chosen", // 0 (default case)
+	"healing_ward", // 1
+	"burning_brand", // 2
+	"crackling_bolt", // 3
+	"bastion", // 4
+	"second_wind" // 5
+	"infernal_pact" // 6
+	"molten_bombardment" // 7
+	"healing_surge" // 8
+	"thundering_devastation" // 9
+
 };
 
 const char* bookOfSounds[] =
