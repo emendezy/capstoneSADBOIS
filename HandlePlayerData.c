@@ -44,7 +44,7 @@ struct PlayerStaffData* initPlayerStruct(bool* isTheGameInProgress)
 	P->castDamage = 0;
 
 	P->spellQueue = malloc(sizeof(struct spellQueueStruct));
-	initQueue();
+	// initQueue();
 	P->hasBastion = 0;
 	P->hasImmunity = false;
 	P->immunityStart = (clock_t) 0;
