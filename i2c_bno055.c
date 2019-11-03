@@ -15,6 +15,7 @@
 #include <linux/i2c-dev.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <sys/ioctl.h>
 #include "getbno055.h"
 
 /* ------------------------------------------------------------ *
