@@ -358,7 +358,7 @@ void sendCast(struct PlayerStaffData* P)
 				// NOTE - no need to send a damageValues package
 				break;
 			case 1:
-				damageValues[0] = calcSendingSpellDamage(10); // damage
+				damageValues[0] = calcSendingSpellDamage(P, 10); // damage
 				damageValues[1] = -1; // no cooldown affect
 				damageValues[2] = 1; // burned affect is true
 				damageValues[3] = 5 + (5 * timesCast); // damage over time
@@ -370,7 +370,7 @@ void sendCast(struct PlayerStaffData* P)
 				break;
 			case 2:
 				// deal damage instantly
-				damageValues[0] = calcSendingSpellDamage(20 + (3 * timesCast));
+				damageValues[0] = calcSendingSpellDamage(P, 20 + (3 * timesCast));
 				damageValues[1] = 1 + timesCast; // add a cooldown time of 1 + 1*lightning seconds
 				damageValues[2] = 0; // no burn affect
 				damageValues[3] = 0; // ""
