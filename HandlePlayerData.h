@@ -62,6 +62,7 @@ struct PlayerStaffData
 	bool* gameInProgress;
 	int* activeSpells; // from book of spells
 	bool isCasting;
+	bool startOfSpell;
 	int castDamage; // damage of spell created by this user
 
 	struct spellQueueStruct *spellQueue;

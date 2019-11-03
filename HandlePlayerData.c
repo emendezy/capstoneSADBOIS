@@ -41,6 +41,7 @@ struct PlayerStaffData* initPlayerStruct(bool* isTheGameInProgress)
 	P->gameInProgress = isTheGameInProgress;
 	P->activeSpells = calloc(TOTAL_SPELLS_IN_SPELLBOOK, sizeof(int));
 	P->isCasting = false;
+	P->startOfSpell = false;
 	P->castDamage = 0;
 
 	P->spellQueue = malloc(sizeof(struct spellQueueStruct));
@@ -100,6 +101,10 @@ void unloadPlayerData(struct PlayerStaffData* P)
 bool isCurrCasting(struct PlayerStaffData* P)
 {
 	bool isPressed = castButtonPressed();
+	if(!(P->isCasting) && isPressed)
+	{
+		P->startOfSpell = true;
+	}
 
 	if (isPressed || P->isCasting)
 	{
@@ -188,6 +193,7 @@ void attackHandler(struct PlayerStaffData* P, int damageTaken)
 
 void spellCaster(struct PlayerStaffData* P, int damageType)
 {
+	printf("In spellCaster\n");
 	int level;
 	clock_t clockStart, clockEnd;
 	clockStart = clock();
@@ -200,14 +206,12 @@ void spellCaster(struct PlayerStaffData* P, int damageType)
 	/* Run spell starting steps */
 	else /* damageType == -1 */
 	{
-		if(P->isCasting == false)
+		if(P->startOfSpell == true)
 		{
-			printf("In spellCaster\n");
+			printf("first time in spellCaster\n");
 			/* This is the FIRST time we've started the spell Casting seq
 			 * Run initialization steps
 			 */
-			P->isCasting = true;
-
 			level = MAX_ANALOG_RANGE / 2;
 			if(!(P->isRumbling))
 			{
