@@ -50,6 +50,7 @@
 /* number of sounds in out pre-defined book */
 #define TOTAL_NUM_OF_SOUNDS 2
 
+#define NUM_DAMAGE_VALUES 5
 /* ------------------------------------------------------------------------- */
 
 struct PlayerStaffData
@@ -80,6 +81,49 @@ struct PlayerStaffData
 
 	sigset_t prev_mask;// for forking (masks for block/unblock)
 };
+
+/*
+ * when the player casts a self-buff, or when the player is hit by an enemy spell, use this:
+ */
+struct playerSpellEffects
+{
+	//ward status
+	bool ward = false;
+	float wardReduction = 0.5;
+	int wardTimeLeft = 0; //X milliseconds
+
+	//heal over time status
+	bool healOverTime = false;
+	int healthPerTick; //hp restored after each second
+	int healTimeLeft = 0; //number of seconds left to heal
+
+	//instantaneous damage
+	int damageTaken = 0;
+
+	//forced cooldown
+	bool forcedCooldown = false;
+	int forcedCooldownDuration = 0; //duration of status
+
+	//damage over time status
+	bool damageOverTime = false;
+	int damagePerTick;
+	int damageTimeLeft = 0;
+	
+	//immunity status; ignore next incoming spell packet
+	bool immune = false;
+	int immuneTimeLeft = 0;
+	
+	//cooldown reduction (instantaneous)
+	int cooldownReduction = 0;
+
+	//damage boost status
+	bool empowered = false;
+	float empoweredAmplification; //will be passed some float like wardReduction to multiply (1.X)
+	int empoweredDuration = 0;
+
+	//instantaneous heal
+	int heal = 0;
+}
 
 struct PlayerStaffData* initPlayerStruct(bool*);
 

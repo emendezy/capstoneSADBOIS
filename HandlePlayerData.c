@@ -7,13 +7,20 @@
 #include "HandlePlayerData.h"
 
 /* each index of the array equates to it's spell ID */
-const char* bookOfSpells[] =
+
+const char* const bookOfSpells[] =
 {
-	"earth", // 0 (default case)
-	"fire", // 1
-	"lightning", // 2
-	"water", // 3
-	"wind", // 4
+	"no_spell_chosen", // 0 (default case)
+	"healing_ward", // 1
+	"burning_brand", // 2
+	"crackling_bolt", // 3
+	"bastion", // 4
+	"second_wind" // 5
+	"infernal_pact" // 6
+	"molten_bombardment" // 7
+	"healing_surge" // 8
+	"thundering_devastation" // 9
+
 };
 
 const char* bookOfSounds[] =
@@ -95,6 +102,9 @@ bool isDoneCasting(struct PlayerStaffData* P)
 	if(isPressed)
 	{
 		P->isCasting = false;
+		for (int i = 0; i < TOTAL_SPELLS_IN_SPELLBOOK; i++) {
+			P->activeSpells[i] = 0;
+		}
 		isSuccessful = true;
 		endCasting(P, isSuccessful);
 		return true;
@@ -218,23 +228,38 @@ void sendCast(struct PlayerStaffData* P)
 	// -> processDamageRecieved() will do the damage applying
 }
 
-void processDamageRecieved(struct PlayerStaffData* P, int damageType)
+/* damageValues array key
+ * 0 - overall damage delt
+ * 1 - spell put on cooldown (index of spell in activeSpells)
+ * 2 - burned affect (1 - active, 0 - inactive)
+ * 3 - if burned is 1 -> burn damage
+ * 4 - if burned is 1 -> burn time
+ */
+void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 {
 	// check for shield ability
 	if(!(P->hasBastion))
 	{
 		// hasBastion is type int
-		switch(damageType){
-			case 0:
-				break;
-			case 1:
-				break;
-			case 2:
-				break;
-			case 3:
-				break;
-			case 4:
-				break;
+		for (int i = 0; i < NUM_DAMAGE_VALUES; i++) {
+			switch(i){
+				case 0:
+					P->healthPercent -= damageValues[0];
+					break;
+				case 1:
+					for(int s = 0; s < TOTAL_SPELLS_IN_SPELLBOOK; s++)
+					{
+						if(P->activeSpells[s] > 0)
+						{
+							/* put spells that are active on cooldown
+							 * -> TODO - add cooldown timers and bool gaurds
+							 */
+						}
+					}
+				case 2:
+				case 3:
+				case 4:
+			}
 		}
 	}
 	else
@@ -242,6 +267,17 @@ void processDamageRecieved(struct PlayerStaffData* P, int damageType)
 		// can be a value of 0 - use up one bastian shield
 		P->hasBastion--;
 	}
+}
+
+void earthDamage(struct PlayerStaffData* P)
+{
+	// nothing is done as an attack. This is purely a defense spell
+	return;
+}
+
+void fireDamage(struct PlayerStaffData* P)
+{
+
 }
 
 // -----------------------------------------------
