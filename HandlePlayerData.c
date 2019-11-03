@@ -63,6 +63,8 @@ struct PlayerStaffData* initPlayerStruct(bool* isTheGameInProgress)
 
 	P->coolDownMask = calloc(TOTAL_SPELLS_IN_SPELLBOOK, sizeof(int));
 
+	P->damageValues = calloc(NUM_DAMAGE_VALUES, sizeof(int));
+
 	P->isRumbling = false;
 	P->rumbleLevel = 0;
 	P->rumbleStartTime = 0;
@@ -91,6 +93,9 @@ struct PlayerStaffData* initPlayerStruct(bool* isTheGameInProgress)
 void unloadPlayerData(struct PlayerStaffData* P)
 {
 	/* TODO - add code that saves the Player staff data to file on SD card */
+	free(P->activeSpells);
+	free(P->damageValues);
+	free(P->coolDownMask);
 	free(P);
 }
 
@@ -334,7 +339,6 @@ void checkImmunity(struct PlayerStaffData* P)
 void sendCast(struct PlayerStaffData* P)
 {
 	// -> processDamageRecieved() will do the damage application after being hit with a damage payload
-	int* damageValues = calloc(NUM_DAMAGE_VALUES, sizeof(int));
 
 	int maxSpell, timesCast;
 	maxSpell = 0;
@@ -359,30 +363,30 @@ void sendCast(struct PlayerStaffData* P)
 				// restore 5 + (5*timesCast)
 				P->healthPercent += 5 + (5 * timesCast);
 
-				// NOTE - no need to send a damageValues package
+				// NOTE - no need to send a P->damageValues package
 				break;
 			case 1:
-				damageValues[0] = calcSendingSpellDamage(P, 10); // damage
-				damageValues[1] = -1; // no cooldown affect
-				damageValues[2] = 1; // burned affect is true
-				damageValues[3] = 5 + (5 * timesCast); // damage over time
-				damageValues[4] = 10; // damage time duration in seconds
-				damageValues[5] = 50; // weakness percent
-				damageValues[6] = 5 + timesCast; // weakness time duration in seconds
+				P->damageValues[0] = calcSendingSpellDamage(P, 10); // damage
+				P->damageValues[1] = -1; // no cooldown affect
+				P->damageValues[2] = 1; // burned affect is true
+				P->damageValues[3] = 5 + (5 * timesCast); // damage over time
+				P->damageValues[4] = 10; // damage time duration in seconds
+				P->damageValues[5] = 50; // weakness percent
+				P->damageValues[6] = 5 + timesCast; // weakness time duration in seconds
 
-				sendDamagePackage(damageValues);
+				sendDamagePackage(P->damageValues);
 				break;
 			case 2:
 				// deal damage instantly
-				damageValues[0] = calcSendingSpellDamage(P, 20 + (3 * timesCast));
-				damageValues[1] = 1 + timesCast; // add a cooldown time of 1 + 1*lightning seconds
-				damageValues[2] = 0; // no burn affect
-				damageValues[3] = 0; // ""
-				damageValues[4] = 0; // ""
-				damageValues[5] = 0; // no weakening affect
-				damageValues[6] = 0; // ""
+				P->damageValues[0] = calcSendingSpellDamage(P, 20 + (3 * timesCast));
+				P->damageValues[1] = 1 + timesCast; // add a cooldown time of 1 + 1*lightning seconds
+				P->damageValues[2] = 0; // no burn affect
+				P->damageValues[3] = 0; // ""
+				P->damageValues[4] = 0; // ""
+				P->damageValues[5] = 0; // no weakening affect
+				P->damageValues[6] = 0; // ""
 
-				sendDamagePackage(damageValues);
+				sendDamagePackage(P->damageValues);
 				break;
 			case 3:
 				P->hasBastion += 1;
@@ -390,12 +394,12 @@ void sendCast(struct PlayerStaffData* P)
 				P->immunityStart = clock();
 				P->immunityTime = 4 + timesCast;
 
-				// NOTE - no need to send a damageValues package
+				// NOTE - no need to send a P->damageValues package
 				break;
 			case 4:
 				editCoolDownValues(P, 5 + timesCast);
 
-				// NOTE - no need to send a damageValues package
+				// NOTE - no need to send a P->damageValues package
 				break;
 		}
 	}
@@ -403,7 +407,7 @@ void sendCast(struct PlayerStaffData* P)
 	/* Fake test code
 		run this spell on the user's self for now
 	*/
-	processDamageRecieved(P, damageValues);
+	processDamageRecieved(P, P->damageValues);
 }
 
 int calcSendingSpellDamage(struct PlayerStaffData* P, int damage)

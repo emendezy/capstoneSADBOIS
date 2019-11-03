@@ -84,6 +84,8 @@ struct PlayerStaffData
 
 	int* coolDownMask;
 
+	int* damageValues;
+
 	bool isRumbling;
 	int rumbleLevel; /* 0 -> 10 */
 	clock_t rumbleStartTime;
