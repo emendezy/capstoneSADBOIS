@@ -45,12 +45,16 @@
 #define MAX_RUMBLE 10
 #define MAX_LIGHT 10
 
+#define MAX_HEALTH 100
+#define MAX_SHIELD 100
+#define MAX_WEAKNESS 100
+
 /* number of spells in our pre-defined book */
 #define TOTAL_SPELLS_IN_SPELLBOOK 5
 /* number of sounds in out pre-defined book */
 #define TOTAL_NUM_OF_SOUNDS 2
 
-#define NUM_DAMAGE_VALUES 5
+#define NUM_DAMAGE_VALUES 6
 /* ------------------------------------------------------------------------- */
 
 struct PlayerStaffData
@@ -61,7 +65,13 @@ struct PlayerStaffData
 	int castDamage; // damage of spell created by this user
 
 	struct spellQueueStruct *spellQueue;
+
 	int hasBastion;
+	bool hasImmunity;
+	clock_t immunityStart;
+	int immunityTime;
+
+	int* coolDownMask;
 
 	bool isRumbling;
 	int rumbleLevel; /* 0 -> 10 */
@@ -76,6 +86,8 @@ struct PlayerStaffData
 
 	bool isShielding;
 	int shieldPercent; /* 0(empty) -> 100(full) */
+	int shieldTime;
+	clock_t shieldStart;
 
 	int healthPercent; /* 0(dead) -> 100(full) */
 
@@ -85,45 +97,45 @@ struct PlayerStaffData
 /*
  * when the player casts a self-buff, or when the player is hit by an enemy spell, use this:
  */
-struct playerSpellEffects
-{
-	//ward status
-	bool ward = false;
-	float wardReduction = 0.5;
-	int wardTimeLeft = 0; //X milliseconds
+// struct playerSpellEffects
+// {
+// 	//ward status
+// 	bool ward = false;
+// 	float wardReduction = 0.5;
+// 	int wardTimeLeft = 0; //X milliseconds
 
-	//heal over time status
-	bool healOverTime = false;
-	int healthPerTick; //hp restored after each second
-	int healTimeLeft = 0; //number of seconds left to heal
+// 	//heal over time status
+// 	bool healOverTime = false;
+// 	int healthPerTick; //hp restored after each second
+// 	int healTimeLeft = 0; //number of seconds left to heal
 
-	//instantaneous damage
-	int damageTaken = 0;
+// 	//instantaneous damage
+// 	int damageTaken = 0;
 
-	//forced cooldown
-	bool forcedCooldown = false;
-	int forcedCooldownDuration = 0; //duration of status
+// 	//forced cooldown
+// 	bool forcedCooldown = false;
+// 	int forcedCooldownDuration = 0; //duration of status
 
-	//damage over time status
-	bool damageOverTime = false;
-	int damagePerTick;
-	int damageTimeLeft = 0;
-	
-	//immunity status; ignore next incoming spell packet
-	bool immune = false;
-	int immuneTimeLeft = 0;
-	
-	//cooldown reduction (instantaneous)
-	int cooldownReduction = 0;
+// 	//damage over time status
+// 	bool damageOverTime = false;
+// 	int damagePerTick;
+// 	int damageTimeLeft = 0;
 
-	//damage boost status
-	bool empowered = false;
-	float empoweredAmplification; //will be passed some float like wardReduction to multiply (1.X)
-	int empoweredDuration = 0;
+// 	//immunity status; ignore next incoming spell packet
+// 	bool immune = false;
+// 	int immuneTimeLeft = 0;
 
-	//instantaneous heal
-	int heal = 0;
-}
+// 	//cooldown reduction (instantaneous)
+// 	int cooldownReduction = 0;
+
+// 	//damage boost status
+// 	bool empowered = false;
+// 	float empoweredAmplification; //will be passed some float like wardReduction to multiply (1.X)
+// 	int empoweredDuration = 0;
+
+// 	//instantaneous heal
+// 	int heal = 0;
+// }
 
 struct PlayerStaffData* initPlayerStruct(bool*);
 
@@ -147,9 +159,19 @@ void attackHandler(struct PlayerStaffData*, int);
 
 void spellCaster(struct PlayerStaffData*, int);
 
+void editCoolDownValues(struct PlayerStaffData*, int);
+
+void checkShield(struct PlayerStaffData*);
+
+void checkImmunity(struct PlayerStaffData*);
+
 void sendCast(struct PlayerStaffData*);
 
-void processDamageRecieved(struct PlayerStaffData*, int);
+void sendDamagePackage(int*);
+
+int calcShieldAffect(int, int);
+
+void processDamageRecieved(struct PlayerStaffData*, int*);
 
 void endCasting(struct PlayerStaffData*, bool);
 
