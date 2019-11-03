@@ -20,14 +20,9 @@ void playTheGame()
 	int damageType;
 
 	int testOnce = 1;
-	if(testOnce == 1)
-	{
-		soundHandler(P, 0);
-		testOnce = 0;
-	}
 
 	/* Install Signal Handler(s) */
-	Signal(SIGCHLD, sigchld_handler); // Handles terminated or stopped child
+	signal(SIGCHLD, sigchld_handler); // Handles terminated or stopped child
 	sigset_t prev_mask, mask;
 
 	//-------------------------------------
@@ -40,8 +35,15 @@ void playTheGame()
 		sigprocmask(SIG_BLOCK, &mask, &prev_mask);
 		P->prev_mask = prev_mask;
 
+		// fake code
+		if(testOnce == 1)
+		{
+			soundHandler(P, 0);
+			testOnce = 0;
+		}
+
 		/* Be listening for user input or enemy attack */
-		isCurrentlyCasting = isCasting(P);
+		isCurrentlyCasting = isCurrCasting(P);
 		// ^ returns true if button pressed or button was already pressed and
 		//     P->isCasting was set to true
 		stopCasting = isDoneCasting(P); /* handle send spell logic */
@@ -63,7 +65,7 @@ void playTheGame()
 			}
 			/* successful cast end is handled in isDoneCasting() */
 		}
-		else
+		else if(isBeingAttacked)
 		{
 			attackHandler(P, damageType);
 
@@ -85,8 +87,10 @@ void waitForGameToStart()
 	//-------------------------------------
 	// Loop while game is inactive
 	//-------------------------------------
-	if (true)/*TODO - button to start game is pressed */
+	if (gameStartButtonPressed())
 	{
+		printf("game button set to true\n");
+		delay(1000);
 		gameIsActive = true;
 	}
 
@@ -99,11 +103,9 @@ void waitForGameToStart()
 int main()
 {
 	initializeRaspberryPi();
-	printf("in main loop\n");
-
 	while(1)
 	{
-		gameIsActive = gameStartButtonPressed();
+		printf("in main loop\n");
 		if (gameIsActive)
 			playTheGame();
 		else
@@ -134,5 +136,6 @@ void sigchld_handler(int sig) {
 		sigprocmask(SIG_SETMASK, &prev_mask, NULL);
 	}
 	errno = err;
+	puts("Child Reaped Successfully\n");
 	return;
 }
