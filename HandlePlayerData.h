@@ -86,8 +86,8 @@ struct PlayerStaffData
 
 	bool isShielding;
 	int shieldPercent; /* 0(empty) -> 100(full) */
-	int shieldTime
-	clock_t shieldStart
+	int shieldTime;
+	clock_t shieldStart;
 
 	int healthPercent; /* 0(dead) -> 100(full) */
 
@@ -171,7 +171,7 @@ void sendDamagePackage(int*);
 
 int calcShieldAffect(int, int);
 
-void processDamageRecieved(struct PlayerStaffData*, int);
+void processDamageRecieved(struct PlayerStaffData*, int*);
 
 void endCasting(struct PlayerStaffData*, bool);
 

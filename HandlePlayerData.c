@@ -317,7 +317,7 @@ void sendCast(struct PlayerStaffData* P)
 				damageValues[0] = 10; // damage
 				damageValues[1] = -1; // no cooldown affect
 				damageValues[2] = 1; // burned affect is true
-				damageValues[3] = 5 + (5 * P->activeSpells); // damage over time
+				damageValues[3] = 5 + (5 * (P->activeSpells)); // damage over time
 				damageValues[4] = 10; // damage time duration in seconds
 				damageValues[5] = 50; // weakness percent
 				damageValues[6] = 5 + timesCast; // weakness time duration in seconds
@@ -385,8 +385,7 @@ void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 			switch(i){
 				case 0:
 				// 0 - overall damage delt
-					int damageTaken = calcTotalDamage(P->shieldPercent,
-						damageValues[0]);
+					int damageTaken = calcTotalDamage(P->shieldPercent,damageValues[0]);
 					P->healthPercent -= damageTaken;
 					break;
 				case 1:
