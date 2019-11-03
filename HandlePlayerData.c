@@ -156,12 +156,12 @@ void imuInputHandler(struct PlayerStaffData* P)
 	 * TODO - add sections that represent a managed variable that tracks the
 	 * 		current spell being drawn
 	 */
-	short spellType = dequeueSpell();
-	if(spellType != -1) {
-		// Spell in queue that was successfully dequeued
-		printf("Spell was properly dequeued - %d\n", spellType);
-		P->activeSpells[spellType]++;
-	}
+	// short spellType = dequeueSpell();
+	// if(spellType != -1) {
+	// 	// Spell in queue that was successfully dequeued
+	// 	printf("Spell was properly dequeued - %d\n", spellType);
+	// 	P->activeSpells[spellType]++;
+	// }
 }
 
 void attackHandler(struct PlayerStaffData* P, int damageTaken)
@@ -188,8 +188,6 @@ void attackHandler(struct PlayerStaffData* P, int damageTaken)
 
 void spellCaster(struct PlayerStaffData* P, int damageType)
 {
-	printf("In spellCaster\n");
-
 	int level;
 	clock_t clockStart, clockEnd;
 	clockStart = clock();
@@ -204,6 +202,7 @@ void spellCaster(struct PlayerStaffData* P, int damageType)
 	{
 		if(P->isCasting == false)
 		{
+			printf("In spellCaster\n");
 			/* This is the FIRST time we've started the spell Casting seq
 			 * Run initialization steps
 			 */
@@ -395,10 +394,11 @@ void sendCast(struct PlayerStaffData* P)
 				break;
 		}
 	}
-	else
-	{
-		// do nothing because spell is on cooldown
-	}
+
+	/* Fake test code
+		run this spell on the user's self for now
+	*/
+	processDamageRecieved(P, damageValues);
 }
 
 int calcSendingSpellDamage(struct PlayerStaffData* P, int damage)
