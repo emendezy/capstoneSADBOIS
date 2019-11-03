@@ -384,7 +384,7 @@ void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 		for (int i = 0; i < NUM_DAMAGE_VALUES; i++) {
 			switch(i){
 				case 0:
-				// 0 - overall damage delt
+					// 0 - overall damage delt
 					int damageTaken = calcTotalDamage(P->shieldPercent,damageValues[0]);
 					P->healthPercent -= damageTaken;
 					break;
@@ -398,9 +398,10 @@ void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 							P->coolDownMask[s] = damageValues[1];
 						}
 					}
-				case 2:
-				case 3:
-				case 4:
+					break;
+				// case 2:
+				// case 3:
+				// case 4:
 			}
 		}
 	}
