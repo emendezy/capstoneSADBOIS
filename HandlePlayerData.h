@@ -183,6 +183,8 @@ void sendCast(struct PlayerStaffData*);
 
 void sendDamagePackage(int*);
 
+int calcSendingSpellDamage(struct PlayerStaffData*, int);
+
 int calcShieldAffect(int, int);
 
 void processDamageRecieved(struct PlayerStaffData*, int*);
