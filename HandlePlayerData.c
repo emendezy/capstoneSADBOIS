@@ -179,9 +179,9 @@ void imuInputHandler(struct PlayerStaffData* P)
 	/* fake code - create fake imu data */
 	// P->activeSpells[0] = 3;
 	// P->activeSpells[1] = 3;
-	// P->activeSpells[2] = 3;
+	P->activeSpells[2] = 3;
 	// P->activeSpells[3] = 3;
-	P->activeSpells[4] = 3;
+	// P->activeSpells[4] = 3;
 	P->coolDownMask[2] = 30;
 	P->coolDownMask[2] = 30;
 }
@@ -389,6 +389,8 @@ void sendCast(struct PlayerStaffData* P)
 				// restore 5 + (5*timesCast)
 				P->healthPercent += 5 + (5 * timesCast);
 
+				P->coolDownMask[maxSpell] = 30;
+
 				// NOTE - no need to send a P->damageValues package
 				break;
 			case 1:
@@ -401,6 +403,7 @@ void sendCast(struct PlayerStaffData* P)
 				P->damageValues[5] = 50; // weakness percent
 				P->damageValues[6] = 5 + timesCast; // weakness time duration in seconds
 
+				P->coolDownMask[maxSpell] = 30;
 				sendDamagePackage(P->damageValues);
 				break;
 			case 2:
@@ -414,6 +417,8 @@ void sendCast(struct PlayerStaffData* P)
 				P->damageValues[5] = 0; // no weakening affect
 				P->damageValues[6] = 0; // ""
 
+				P->coolDownMask[maxSpell] = 30;
+
 				sendDamagePackage(P->damageValues);
 				break;
 			case 3:
@@ -423,11 +428,15 @@ void sendCast(struct PlayerStaffData* P)
 				P->immunityStart = clock();
 				P->immunityTime = 4 + timesCast;
 
+				P->coolDownMask[maxSpell] = 30;
+
 				// NOTE - no need to send a P->damageValues package
 				break;
 			case 4:
 				printf("second_wind!\n");
 				editCoolDownValues(P, 5 + timesCast);
+
+				P->coolDownMask[maxSpell] = 30;
 
 				// NOTE - no need to send a P->damageValues package
 				break;
@@ -481,12 +490,15 @@ void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 		P->healthPercent -= calcTotalDamage(P->shieldPercent,damageValues[0]);
 
 		// 1 - spell put on cooldown (index of spell in activeSpells)
-		for(int s = 0; s < TOTAL_SPELLS_IN_SPELLBOOK; s++)
+		if(damageValues[1] > 0)
 		{
-			if(damageValues[1] > 0 && P->activeSpells[s] > 0)
+			for(int s = 0; s < TOTAL_SPELLS_IN_SPELLBOOK; s++)
 			{
-				// set cooldown time
-				P->coolDownMask[s] = damageValues[1];
+				if(P->activeSpells[s] > 0)
+				{
+					// set cooldown time
+					P->coolDownMask[s] = damageValues[1];
+				}
 			}
 		}
 
