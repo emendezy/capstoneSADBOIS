@@ -245,7 +245,7 @@ void updatePlayerFields(struct PlayerStaffData* P)
 	P->backOfOneSecond = clock();
 	if(oneSec <= ((double)(P->backOfOneSecond - P->frontOfOneSecond)) / CLOCKS_PER_SEC)
 	{
-		printf("1 second mark\n");
+		printf("-----------------------------\n1 second mark\n");
 		editCoolDownValues(P, 1);
 		checkWeakness(P);
 		checkShield(P);
@@ -277,7 +277,6 @@ void endCasting(struct PlayerStaffData* P, bool successfulCast)
 
 void handleBurning(struct PlayerStaffData* P)
 {
-	printf("Handle Burning code : health left - %d | time left - %d\n", P->healthPercent, P->burnTotalTime);
 	if(P->burnTotalTime == 0)
 	{
 		P->isBurning = false;
@@ -288,6 +287,8 @@ void handleBurning(struct PlayerStaffData* P)
 		P->healthPercent -= P->burnPerSecond;
 		P->burnTotalTime--;
 	}
+	printf("Handle Burning code : health left - %d | time left - %d\n", P->healthPercent, P->burnTotalTime);
+
 }
 
 void editCoolDownValues(struct PlayerStaffData* P, int amount)
@@ -299,6 +300,7 @@ void editCoolDownValues(struct PlayerStaffData* P, int amount)
 			P->coolDownMask[i] -= amount;
 		}
 	}
+	printf("Cooldown values = [%d, %d, %d, %d, %d]\n", P->coolDownMask[0], P->coolDownMask[1], P->coolDownMask[2], P->coolDownMask[3], P->coolDownMask[4]);
 }
 
 void checkWeakness(struct PlayerStaffData* P)
@@ -312,6 +314,7 @@ void checkWeakness(struct PlayerStaffData* P)
 			P->isWeakened = false;
 			P->weaknessPercent = 0;
 		}
+		printf("Is Weakened by the spell :(\n");
 	}
 }
 
@@ -326,6 +329,7 @@ void checkShield(struct PlayerStaffData* P)
 			P->isShielding = false;
 			P->shieldPercent = 0;
 		}
+		printf("We've got our shield up!\n");
 	}
 }
 
@@ -339,6 +343,7 @@ void checkImmunity(struct PlayerStaffData* P)
 		{
 			P->hasImmunity = false;
 		}
+		printf("We are immune for : %d\n", (currentTime - immunityStart));
 	}
 }
 
