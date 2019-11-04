@@ -361,6 +361,7 @@ void sendCast(struct PlayerStaffData* P)
 		// classify the spell type
 		switch(maxSpell){
 			case 0:
+				printf("healing_ward!\n");
 				// reduce damge (10 + timesCast)
 				P->isShielding = true;
 				P->shieldPercent = 50;
@@ -373,6 +374,7 @@ void sendCast(struct PlayerStaffData* P)
 				// NOTE - no need to send a P->damageValues package
 				break;
 			case 1:
+				printf("burning_brand!\n");
 				P->damageValues[0] = calcSendingSpellDamage(P, 10); // damage
 				P->damageValues[1] = -1; // no cooldown affect
 				P->damageValues[2] = 1; // burned affect is true
@@ -384,6 +386,7 @@ void sendCast(struct PlayerStaffData* P)
 				sendDamagePackage(P->damageValues);
 				break;
 			case 2:
+				printf("crackling bolt!\n");
 				// deal damage instantly
 				P->damageValues[0] = calcSendingSpellDamage(P, 20 + (3 * timesCast));
 				P->damageValues[1] = 1 + timesCast; // add a cooldown time of 1 + 1*lightning seconds
@@ -396,6 +399,7 @@ void sendCast(struct PlayerStaffData* P)
 				sendDamagePackage(P->damageValues);
 				break;
 			case 3:
+				printf("bastion!\n");
 				P->hasBastion += 1;
 				P->hasImmunity = true;
 				P->immunityStart = clock();
@@ -404,6 +408,7 @@ void sendCast(struct PlayerStaffData* P)
 				// NOTE - no need to send a P->damageValues package
 				break;
 			case 4:
+				printf("second_wind!\n");
 				editCoolDownValues(P, 5 + timesCast);
 
 				// NOTE - no need to send a P->damageValues package
