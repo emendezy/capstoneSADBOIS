@@ -77,7 +77,6 @@ struct PlayerStaffData* initPlayerStruct(bool* isTheGameInProgress)
 	P->isShielding = false;
 	P->shieldPercent = 0;
 	P->shieldTime = 0;
-	P->shieldStart = (clock_t) 0;
 
 	P->healthPercent = MAX_HEALTH;
 	P->isHealing = false;
@@ -404,7 +403,6 @@ void sendCast(struct PlayerStaffData* P)
 				P->isShielding = true;
 				P->shieldPercent = 50;
 				P->shieldTime = 10 + timesCast;
-				P->shieldStart = clock();
 
 				// restore 5 + (5*timesCast)
 				P->isHealing = true;
