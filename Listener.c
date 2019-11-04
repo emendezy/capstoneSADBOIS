@@ -47,6 +47,7 @@ void playTheGame()
 		// ^ returns true if button pressed or button was already pressed and
 		//     P->isCasting was set to true
 		stopCasting = isDoneCasting(P); /* handle send spell logic */
+		printf("The active spell is fire (1) - %d\n", P->activeSpells[1]);
 
 		damageType = wasAttacked(P);
 		// TODO - look up damage Type's value to apply the damage done

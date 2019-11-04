@@ -233,7 +233,6 @@ void spellCaster(struct PlayerStaffData* P, int damageType)
 
 		/* Spell has been started and now process the IMU input */
 		imuInputHandler(P);
-		printf("The active spell is fire (1) - %d\n", P->activeSpells[1]);
 	}
 
 	/* Clean up code - dealing with timing gaurds */
