@@ -178,6 +178,8 @@ void attackHandler(struct PlayerStaffData*, int);
 
 void spellCaster(struct PlayerStaffData*, int);
 
+void healPlayer(struct PlayerStaffData*);
+
 void handleBurning(struct PlayerStaffData*);
 
 void editCoolDownValues(struct PlayerStaffData*, int);
