@@ -240,6 +240,7 @@ void spellCaster(struct PlayerStaffData* P, int damageType)
 	double oneSec = 1.0;
 	if(oneSec <= ((double)(clockEnd - clockStart)) / CLOCKS_PER_SEC)
 	{
+		printf("1 second mark\n");
 		editCoolDownValues(P, 1);
 		checkWeakness(P);
 		checkShield(P);
@@ -451,6 +452,7 @@ void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 	// check for shield ability
 	if(!(P->hasBastion) && !(P->hasImmunity))
 	{
+		printf("-> damage processing logic\n");
 
 		// 0 - overall damage delt
 		P->healthPercent -= calcTotalDamage(P->shieldPercent,damageValues[0]);
@@ -487,7 +489,7 @@ void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 		// can be a value of 0 - use up one bastion shield
 		P->hasBastion--;
 	}
-	printf("Player health = %d", P->healthPercent);
+	printf("Player health = %d\n", P->healthPercent);
 }
 
 // -----------------------------------------------
