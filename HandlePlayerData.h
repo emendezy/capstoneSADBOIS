@@ -171,6 +171,8 @@ int wasAttacked(struct PlayerStaffData*);
 
 void imuInputHandler(struct PlayerStaffData*);
 
+void updatePlayerFields(struct PlayerStaffData*);
+
 void attackHandler(struct PlayerStaffData*, int);
 
 void spellCaster(struct PlayerStaffData*, int);

@@ -343,7 +343,7 @@ void checkImmunity(struct PlayerStaffData* P)
 		{
 			P->hasImmunity = false;
 		}
-		printf("We are immune for : %d\n", (currentTime - immunityStart));
+		printf("We are immune for : %d\n", (currentTime - P->immunityStart));
 	}
 }
 
