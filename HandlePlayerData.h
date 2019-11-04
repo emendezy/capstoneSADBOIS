@@ -69,11 +69,9 @@ struct PlayerStaffData
 
 	int hasBastion;
 	bool hasImmunity;
-	clock_t immunityStart;
 	int immunityTime;
 
 	bool isBurning;
-	clock_t burnStart;
 	int burnPerSecond;
 	int burnTotalTime;
 
@@ -103,6 +101,9 @@ struct PlayerStaffData
 	clock_t shieldStart;
 
 	int healthPercent; /* 0(dead) -> 100(full) */
+	bool isHealing;
+	int healthRestorePerSecond;
+	int healthRestoreTime;
 
 	clock_t frontOfOneSecond;
 	clock_t backOfOneSecond;

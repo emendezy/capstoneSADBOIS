@@ -48,11 +48,9 @@ struct PlayerStaffData* initPlayerStruct(bool* isTheGameInProgress)
 	// initQueue();
 	P->hasBastion = 0;
 	P->hasImmunity = false;
-	P->immunityStart = (clock_t) 0;
 	P->immunityTime = 0;
 
 	P->isBurning = false;
-	P->burnStart = (clock_t) 0;
 	P->burnPerSecond = 0;
 	P->burnTotalTime = 0;
 
@@ -82,6 +80,9 @@ struct PlayerStaffData* initPlayerStruct(bool* isTheGameInProgress)
 	P->shieldStart = (clock_t) 0;
 
 	P->healthPercent = MAX_HEALTH;
+	P->isHealing = false;
+	P->healthRestorePerSecond = 0;
+	P->healthRestoreTime = 0;
 
 	P->frontOfOneSecond = clock();
 	P->backOfOneSecond = clock();
@@ -177,10 +178,10 @@ void imuInputHandler(struct PlayerStaffData* P)
 	// }
 
 	/* fake code - create fake imu data */
-	// P->activeSpells[0] = 3;
+	P->activeSpells[0] = 3;
 	// P->activeSpells[1] = 3;
 	// P->activeSpells[2] = 3;
-	P->activeSpells[3] = 3;
+	// P->activeSpells[3] = 3;
 	// P->activeSpells[4] = 3;
 }
 
@@ -248,15 +249,20 @@ void updatePlayerFields(struct PlayerStaffData* P)
 	if(oneSec <= ((double)(P->backOfOneSecond - P->frontOfOneSecond)) / CLOCKS_PER_SEC)
 	{
 		printf("-----------------------------\n1 second mark\n");
-		editCoolDownValues(P, 1);
-		checkWeakness(P);
-		checkShield(P);
-		checkImmunity(P);
 
+		editCoolDownValues(P, 1);
+
+		if(P->isHealing)
+			healPlayer(P);
+		if(P->isWeakened)
+			checkWeakness(P);
+		if(P->isShielding)
+			checkShield(P);
+		if(P->hasImmunity)
+			checkImmunity(P);
 		if(P->isBurning)
-		{
 			handleBurning(P);
-		}
+
 		P->frontOfOneSecond = clock();
 		P->backOfOneSecond = clock();
 	}
@@ -275,6 +281,24 @@ void endCasting(struct PlayerStaffData* P, bool successfulCast)
 	{
 		sendCast(P);
 	}
+}
+
+void healPlayer(struct PlayerStaffData* P)
+{
+	if(P->healthPercent < 100 && P->healthRestoreTime > 0)
+	{
+		P->healthPercent += P->healthRestorePerSecond;
+		if(P->healthPercent > 100)
+			P->healthPercent = 100;
+		P->healthRestoreTime--;
+	}
+	else
+	{
+		P->isHealing = false;
+		P->healthRestorePerSecond = 0;
+	}
+	printf("Healing Ourselves ######## health level : %d\n", P->healthPercent);
+
 }
 
 void handleBurning(struct PlayerStaffData* P)
@@ -307,48 +331,39 @@ void editCoolDownValues(struct PlayerStaffData* P, int amount)
 
 void checkWeakness(struct PlayerStaffData* P)
 {
-	if(P->isWeakened)
+	clock_t currentTime = clock();
+	clock_t weaknessTime = (clock_t)(P->weaknessTime);
+	if(P->weaknessStart + weaknessTime < currentTime)
 	{
-		clock_t currentTime = clock();
-		clock_t weaknessTime = (clock_t)(P->weaknessTime);
-		if(P->weaknessStart + weaknessTime < currentTime)
-		{
-			P->isWeakened = false;
-			P->weaknessPercent = 0;
-		}
-		printf("Is Weakened by the spell :(\n");
+		P->isWeakened = false;
+		P->weaknessPercent = 0;
 	}
+	printf("Is Weakened by the spell :(\n");
 }
 
 void checkShield(struct PlayerStaffData* P)
 {
-	if(P->isShielding)
+	clock_t currentTime = clock();
+	clock_t shieldTime = (clock_t)(P->shieldTime);
+	if(P->shieldStart + shieldTime < currentTime)
 	{
-		clock_t currentTime = clock();
-		clock_t shieldTime = (clock_t)(P->shieldTime);
-		if(P->shieldStart + shieldTime < currentTime)
-		{
-			P->isShielding = false;
-			P->shieldPercent = 0;
-		}
-		printf("We've got our shield up!\n");
+		P->isShielding = false;
+		P->shieldPercent = 0;
 	}
+	printf("We've got our shield up!\n");
 }
 
 void checkImmunity(struct PlayerStaffData* P)
 {
-	if(P->hasImmunity)
+	if(P->immunityTime > 0)
 	{
-		if(P->immunityTime > 0)
-		{
-			P->immunityTime--;
-		}
-		else
-		{
-			P->hasImmunity = false;
-		}
-		printf("We are immune for : %d\n", P->immunityTime);
+		P->immunityTime--;
 	}
+	else
+	{
+		P->hasImmunity = false;
+	}
+	printf("We are immune for : %d\n", P->immunityTime);
 }
 
 /*
@@ -387,7 +402,9 @@ void sendCast(struct PlayerStaffData* P)
 				P->shieldStart = clock();
 
 				// restore 5 + (5*timesCast)
-				P->healthPercent += 5 + (5 * timesCast);
+				P->isHealing = true;
+				P->healthRestorePerSecond += 5 + (5 * timesCast);
+				P->healthRestoreTime = 10; // seconds
 
 				P->coolDownMask[maxSpell] = 30;
 
@@ -425,7 +442,6 @@ void sendCast(struct PlayerStaffData* P)
 				printf("bastion!\n");
 				P->hasBastion += 1;
 				P->hasImmunity = true;
-				P->immunityStart = clock();
 				P->immunityTime = 4 + timesCast;
 
 				P->coolDownMask[maxSpell] = 30;
@@ -507,7 +523,6 @@ void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 		{
 			// burned affect == 1 (active)
 			P->isBurning = true;
-			P->burnStart = clock();
 			P->burnPerSecond = damageValues[3] / damageValues[4];
 			P->burnTotalTime = damageValues[4];
 		}
