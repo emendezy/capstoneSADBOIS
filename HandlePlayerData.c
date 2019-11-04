@@ -479,7 +479,7 @@ void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 		// 1 - spell put on cooldown (index of spell in activeSpells)
 		for(int s = 0; s < TOTAL_SPELLS_IN_SPELLBOOK; s++)
 		{
-			if(P->activeSpells[s] > 0)
+			if(damageValues[1] > 0 && P->activeSpells[s] > 0)
 			{
 				// set cooldown time
 				P->coolDownMask[s] = damageValues[1];
