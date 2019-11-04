@@ -172,6 +172,11 @@ void imuInputHandler(struct PlayerStaffData* P)
 	// 	printf("Spell was properly dequeued - %d\n", spellType);
 	// 	P->activeSpells[spellType]++;
 	// }
+	P->activeSpells[0] = 4;
+	P->activeSpells[1] = 0;
+	P->activeSpells[2] = 0;
+	P->activeSpells[3] = 0;
+	P->activeSpells[4] = 0;
 }
 
 void attackHandler(struct PlayerStaffData* P, int damageTaken)
@@ -339,6 +344,7 @@ void checkImmunity(struct PlayerStaffData* P)
 void sendCast(struct PlayerStaffData* P)
 {
 	// -> processDamageRecieved() will do the damage application after being hit with a damage payload
+	printf("Sending a cast! ----\n");
 
 	int maxSpell, timesCast;
 	maxSpell = 0;
@@ -440,6 +446,8 @@ int calcTotalDamage(int shieldPercent, int dmg)
  */
 void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 {
+	printf("Under Attack! :o\n");
+
 	// check for shield ability
 	if(!(P->hasBastion) && !(P->hasImmunity))
 	{
@@ -479,6 +487,7 @@ void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 		// can be a value of 0 - use up one bastion shield
 		P->hasBastion--;
 	}
+	printf("Player health = %d, isBurning = %d, isWeakened =%d", P->healthPercent, P->isBurning, P->isWeakened);
 }
 
 // -----------------------------------------------
