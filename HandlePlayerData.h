@@ -98,7 +98,6 @@ struct PlayerStaffData
 	bool isShielding;
 	int shieldPercent; /* 0(empty) -> 100(full) */
 	int shieldTime;
-	clock_t shieldStart;
 
 	int healthPercent; /* 0(dead) -> 100(full) */
 	bool isHealing;

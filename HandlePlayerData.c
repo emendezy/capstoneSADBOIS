@@ -169,6 +169,9 @@ void imuInputHandler(struct PlayerStaffData* P)
 	 *	 - i.e. if spell counter is incr, which spell was drawn, variations
 	 * TODO - add sections that represent a managed variable that tracks the
 	 * 		current spell being drawn
+	 * TODO - add cooldown starts when a spell is activated.
+	 * 			(from spell logic - cooldown starts when rune begins to be
+	 *			drawn)
 	 */
 	// short spellType = dequeueSpell();
 	// if(spellType != -1) {
@@ -343,9 +346,11 @@ void checkWeakness(struct PlayerStaffData* P)
 
 void checkShield(struct PlayerStaffData* P)
 {
-	clock_t currentTime = clock();
-	clock_t shieldTime = (clock_t)(P->shieldTime);
-	if(P->shieldStart + shieldTime < currentTime)
+	if(P->shieldTime > 0)
+	{
+		P->shieldTime--;
+	}
+	else
 	{
 		P->isShielding = false;
 		P->shieldPercent = 0;
