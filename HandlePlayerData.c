@@ -351,6 +351,7 @@ void sendCast(struct PlayerStaffData* P)
 	maxSpell = 0;
 	for(int i = 0; i < TOTAL_SPELLS_IN_SPELLBOOK; i++)
 	{
+		printf("%d\n", P->activeSpells[i]);
 		if(P->activeSpells[i] > maxSpell) maxSpell = i;
 	}
 
