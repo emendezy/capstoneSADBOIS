@@ -289,7 +289,7 @@ void endCasting(struct PlayerStaffData* P, bool successfulCast)
 
 void healPlayer(struct PlayerStaffData* P)
 {
-	if(P->healthPercent < 100 && P->healthRestoreTime > 0)
+	if(P->healthRestoreTime > 0)
 	{
 		P->healthPercent += P->healthRestorePerSecond;
 		if(P->healthPercent > 100)
@@ -301,7 +301,7 @@ void healPlayer(struct PlayerStaffData* P)
 		P->isHealing = false;
 		P->healthRestorePerSecond = 0;
 	}
-	printf("Healing Ourselves ######## health level : %d\n", P->healthPercent);
+	printf("Healing Ourselves ######## health level : %d\n | time left : %d", P->healthPercent, P->healthRestoreTime);
 
 }
 
