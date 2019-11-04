@@ -406,7 +406,7 @@ void sendCast(struct PlayerStaffData* P)
 
 				// restore 5 + (5*timesCast)
 				P->isHealing = true;
-				P->healthRestorePerSecond = 5 + (5 * timesCast);
+				P->healthRestorePerSecond = (5 + (5 * timesCast)) / 10;
 				P->healthRestoreTime = 10; // seconds
 
 				P->coolDownMask[maxSpell] = 30;
