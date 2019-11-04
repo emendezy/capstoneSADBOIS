@@ -62,8 +62,8 @@ void playTheGame()
 		else if(isBeingAttacked)
 		{
 			attackHandler(P, damageType);
-
 		}
+		updatePlayerFields(P);
 
 		// unblock signals
 		sigprocmask(SIG_SETMASK, &prev_mask, NULL);

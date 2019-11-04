@@ -207,7 +207,6 @@ void attackHandler(struct PlayerStaffData* P, int damageTaken)
 void spellCaster(struct PlayerStaffData* P, int damageType)
 {
 	int level;
-	P->backOfOneSecond = clock();
 
 	bool stopCasting = isDoneCasting(P); /* handle send spell logic */
 
@@ -237,9 +236,13 @@ void spellCaster(struct PlayerStaffData* P, int damageType)
 		/* Spell has been started and now process the IMU input */
 		imuInputHandler(P);
 	}
+}
 
+void updatePlayerFields(struct PlayerStaffData* P)
+{
 	/* Clean up code - dealing with timing gaurds */
 	double oneSec = 1;
+	P->backOfOneSecond = clock();
 	if(oneSec <= ((double)(P->backOfOneSecond - P->frontOfOneSecond)) / CLOCKS_PER_SEC)
 	{
 		printf("1 second mark\n");
@@ -274,6 +277,7 @@ void endCasting(struct PlayerStaffData* P, bool successfulCast)
 
 void handleBurning(struct PlayerStaffData* P)
 {
+	printf("Handle Burning code : time left - %d\n", P->burnTotalTime);
 	if(P->burnTotalTime == 0)
 	{
 		P->isBurning = false;
