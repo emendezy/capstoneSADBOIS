@@ -208,13 +208,15 @@ void spellCaster(struct PlayerStaffData* P, int damageType)
 	clock_t clockStart, clockEnd;
 	clockStart = clock();
 
+	bool stopCasting = isDoneCasting(P); /* handle send spell logic */
+
 	if(damageType > -1)
 	{
 		/* need to STOP SPELL CASTING and call attackHandler */
 		attackHandler(P, damageType);
 	}
 	/* Run spell starting steps */
-	else /* damageType == -1 */
+	else if(damageType == -1 && !stopCasting) /* damageType == -1 */
 	{
 		if(P->startOfSpell == true)
 		{
