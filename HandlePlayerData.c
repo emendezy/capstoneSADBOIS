@@ -299,7 +299,7 @@ void healPlayer(struct PlayerStaffData* P)
 		P->isHealing = false;
 		P->healthRestorePerSecond = 0;
 	}
-	printf("Healing Ourselves ######## health level : %d| time left : %d\n", P->healthPercent, P->healthRestoreTime);
+	printf("Healing Ourselves ###%d### health level : %d| time left : %d\n", P->healthRestorePerSecond, P->healthPercent, P->healthRestoreTime);
 
 }
 
@@ -406,7 +406,7 @@ void sendCast(struct PlayerStaffData* P)
 
 				// restore 5 + (5*timesCast)
 				P->isHealing = true;
-				P->healthRestorePerSecond += 5 + (5 * timesCast);
+				P->healthRestorePerSecond = 5 + (5 * timesCast);
 				P->healthRestoreTime = 10; // seconds
 
 				P->coolDownMask[maxSpell] = 30;
@@ -465,7 +465,6 @@ void sendCast(struct PlayerStaffData* P)
 	/* Fake test code
 		run this spell on the user's self for now
 	*/
-	P->healthPercent = 80; // start fake damaged
 	processDamageRecieved(P, P->damageValues);
 }
 

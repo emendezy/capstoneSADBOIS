@@ -25,6 +25,11 @@ void playTheGame()
 	signal(SIGCHLD, sigchld_handler); // Handles terminated or stopped child
 	sigset_t prev_mask, mask;
 
+	/* Fake test code
+		run this spell on the user's self for now
+	*/
+	P->healthPercent = 80; // start fake damaged
+
 	//-------------------------------------
 	// Loop while game is active
 	//-------------------------------------
