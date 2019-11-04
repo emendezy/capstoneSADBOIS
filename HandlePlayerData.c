@@ -203,7 +203,6 @@ void attackHandler(struct PlayerStaffData* P, int damageTaken)
 
 void spellCaster(struct PlayerStaffData* P, int damageType)
 {
-	printf("In spellCaster\n");
 	int level;
 	clock_t clockStart, clockEnd;
 	clockStart = clock();
@@ -239,7 +238,7 @@ void spellCaster(struct PlayerStaffData* P, int damageType)
 
 	/* Clean up code - dealing with timing gaurds */
 	clockEnd = clock();
-	double oneSec = 1.0;
+	double oneSec = 1;
 	if(oneSec <= ((double)(clockEnd - clockStart)) / CLOCKS_PER_SEC)
 	{
 		printf("1 second mark\n");
@@ -252,6 +251,7 @@ void spellCaster(struct PlayerStaffData* P, int damageType)
 		{
 			handleBurning(P);
 		}
+		clockStart = clock();
 	}
 }
 
