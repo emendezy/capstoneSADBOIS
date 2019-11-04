@@ -354,7 +354,7 @@ void checkShield(struct PlayerStaffData* P)
 		P->isShielding = false;
 		P->shieldPercent = 0;
 	}
-	printf("We've got our shield up!\n");
+	printf("We've got our shield up! time remaining : %d\n", P->shieldTime);
 }
 
 void checkImmunity(struct PlayerStaffData* P)
