@@ -176,8 +176,8 @@ void imuInputHandler(struct PlayerStaffData* P)
 	// 	P->activeSpells[spellType]++;
 	// }
 	P->activeSpells[0] = 0;
-	P->activeSpells[1] = 0;
-	P->activeSpells[2] = 5;
+	P->activeSpells[1] = 5;
+	P->activeSpells[2] = 0;
 	P->activeSpells[3] = 0;
 	P->activeSpells[4] = 0;
 }
