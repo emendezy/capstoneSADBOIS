@@ -487,7 +487,7 @@ void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 		// can be a value of 0 - use up one bastion shield
 		P->hasBastion--;
 	}
-	printf("Player health = %d, isBurning = %d, isWeakened =%d", P->healthPercent, P->isBurning, P->isWeakened);
+	printf("Player health = %d", P->healthPercent);
 }
 
 // -----------------------------------------------
