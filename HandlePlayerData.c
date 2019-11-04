@@ -301,7 +301,7 @@ void healPlayer(struct PlayerStaffData* P)
 		P->isHealing = false;
 		P->healthRestorePerSecond = 0;
 	}
-	printf("Healing Ourselves ######## health level : %d\n | time left : %d", P->healthPercent, P->healthRestoreTime);
+	printf("Healing Ourselves ######## health level : %d| time left : %d\n", P->healthPercent, P->healthRestoreTime);
 
 }
 
