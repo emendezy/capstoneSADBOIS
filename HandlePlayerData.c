@@ -180,9 +180,7 @@ void imuInputHandler(struct PlayerStaffData* P)
 	// }
 
 	/* fake code - create fake imu data */
-	P->healthPercent = 80;
 	P->activeSpells[0] = 3;
-
 	// P->activeSpells[1] = 3;
 	// P->activeSpells[2] = 3;
 	// P->activeSpells[3] = 3;
@@ -501,6 +499,8 @@ int calcTotalDamage(int shieldPercent, int dmg)
 void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 {
 	printf("Under Attack! :o\n");
+	/* fake test code */
+	P->healthPercent = 80; // start fake damaged
 
 	// check for shield ability
 	if(!(P->hasBastion) && !(P->hasImmunity))
