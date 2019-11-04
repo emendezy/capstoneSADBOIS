@@ -277,7 +277,7 @@ void endCasting(struct PlayerStaffData* P, bool successfulCast)
 
 void handleBurning(struct PlayerStaffData* P)
 {
-	printf("Handle Burning code : time left - %d\n", P->burnTotalTime);
+	printf("Handle Burning code : health left - %d | time left - %d\n", P->healthPercent, P->burnTotalTime);
 	if(P->burnTotalTime == 0)
 	{
 		P->isBurning = false;
