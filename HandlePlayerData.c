@@ -179,11 +179,9 @@ void imuInputHandler(struct PlayerStaffData* P)
 	/* fake code - create fake imu data */
 	// P->activeSpells[0] = 3;
 	// P->activeSpells[1] = 3;
-	P->activeSpells[2] = 3;
-	// P->activeSpells[3] = 3;
+	// P->activeSpells[2] = 3;
+	P->activeSpells[3] = 3;
 	// P->activeSpells[4] = 3;
-	P->coolDownMask[2] = 30;
-	P->coolDownMask[2] = 30;
 }
 
 void attackHandler(struct PlayerStaffData* P, int damageTaken)
