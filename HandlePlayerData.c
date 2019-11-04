@@ -83,6 +83,9 @@ struct PlayerStaffData* initPlayerStruct(bool* isTheGameInProgress)
 
 	P->healthPercent = MAX_HEALTH;
 
+	P->frontOfOneSecond = clock();
+	P->backOfOneSecond = clock();
+
 	return P;
 }
 
@@ -204,8 +207,7 @@ void attackHandler(struct PlayerStaffData* P, int damageTaken)
 void spellCaster(struct PlayerStaffData* P, int damageType)
 {
 	int level;
-	clock_t clockStart, clockEnd;
-	clockStart = clock();
+	P->backOfOneSecond = clock();
 
 	bool stopCasting = isDoneCasting(P); /* handle send spell logic */
 
@@ -237,9 +239,8 @@ void spellCaster(struct PlayerStaffData* P, int damageType)
 	}
 
 	/* Clean up code - dealing with timing gaurds */
-	clockEnd = clock();
 	double oneSec = 1;
-	if(oneSec <= ((double)(clockEnd - clockStart)) / CLOCKS_PER_SEC)
+	if(oneSec <= ((double)(P->backOfOneSecond - P->frontOfOneSecond)) / CLOCKS_PER_SEC)
 	{
 		printf("1 second mark\n");
 		editCoolDownValues(P, 1);
@@ -251,7 +252,8 @@ void spellCaster(struct PlayerStaffData* P, int damageType)
 		{
 			handleBurning(P);
 		}
-		clockStart = clock();
+		P->frontOfOneSecond = clock();
+		P->backOfOneSecond = clock();
 	}
 }
 

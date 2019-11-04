@@ -104,6 +104,9 @@ struct PlayerStaffData
 
 	int healthPercent; /* 0(dead) -> 100(full) */
 
+	clock_t frontOfOneSecond;
+	clock_t backOfOneSecond;
+
 	sigset_t prev_mask;// for forking (masks for block/unblock)
 };
 
