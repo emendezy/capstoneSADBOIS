@@ -339,9 +339,9 @@ void checkImmunity(struct PlayerStaffData* P)
 {
 	if(P->hasImmunity)
 	{
-		if(immuneTime > 0)
+		if(P->immuneTime > 0)
 		{
-			immuneTime--;
+			P->immuneTime--;
 		}
 		else
 		{
