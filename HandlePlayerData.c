@@ -465,6 +465,7 @@ void sendCast(struct PlayerStaffData* P)
 	/* Fake test code
 		run this spell on the user's self for now
 	*/
+	P->healthPercent = 80; // start fake damaged
 	processDamageRecieved(P, P->damageValues);
 }
 
@@ -499,8 +500,6 @@ int calcTotalDamage(int shieldPercent, int dmg)
 void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 {
 	printf("Under Attack! :o\n");
-	/* fake test code */
-	P->healthPercent = 80; // start fake damaged
 
 	// check for shield ability
 	if(!(P->hasBastion) && !(P->hasImmunity))
