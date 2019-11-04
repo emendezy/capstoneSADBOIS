@@ -182,6 +182,8 @@ void imuInputHandler(struct PlayerStaffData* P)
 	// P->activeSpells[2] = 3;
 	// P->activeSpells[3] = 3;
 	P->activeSpells[4] = 3;
+	P->coolDownMask[2] = 30;
+	P->coolDownMask[2] = 30;
 }
 
 void attackHandler(struct PlayerStaffData* P, int damageTaken)
