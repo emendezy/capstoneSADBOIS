@@ -128,11 +128,11 @@ bool isDoneCasting(struct PlayerStaffData* P)
 	if(isPressed)
 	{
 		P->isCasting = false;
+		isSuccessful = true;
+		endCasting(P, isSuccessful);
 		for (int i = 0; i < TOTAL_SPELLS_IN_SPELLBOOK; i++) {
 			P->activeSpells[i] = 0;
 		}
-		isSuccessful = true;
-		endCasting(P, isSuccessful);
 		return true;
 	}
 
