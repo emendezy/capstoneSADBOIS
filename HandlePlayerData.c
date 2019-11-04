@@ -339,15 +339,15 @@ void checkImmunity(struct PlayerStaffData* P)
 {
 	if(P->hasImmunity)
 	{
-		if(P->immuneTime > 0)
+		if(P->immunityTime > 0)
 		{
-			P->immuneTime--;
+			P->immunityTime--;
 		}
 		else
 		{
 			P->hasImmunity = false;
 		}
-		printf("We are immune for : %d\n", (double)immuneTime);
+		printf("We are immune for : %d\n", (double)immunityTime);
 	}
 }
 
