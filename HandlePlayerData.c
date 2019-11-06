@@ -624,15 +624,14 @@ void lightHandler(struct PlayerStaffData* P, int lightMode)
 void soundHandler(struct PlayerStaffData* P, int soundType)
 {
 	pid_t pid;
-	char* omxplayerLocation = "/usr/bin/omxplayer";
+	char* omxplayer = "omxplayer --no-keys -o local ";
 
-	char* omxplayer = malloc(sizeof("omxplayer -o local ") + sizeof(bookOfSounds[soundType]));
-	strcpy(omxplayer, "omxplayer -o local ");
-
-	char* file = malloc(sizeof(bookOfSounds[soundType]));
-	strcpy(file, bookOfSounds[soundType]);
-	omxplayer = strcat(omxplayer, file);
-	system("omxplayer --no-keys -o local Sounds/Baby.mp3 &");
+	char* file = malloc(sizeof(omxplayer) + sizeof(bookOfSounds[soundType]));
+	file = strcat(omxplayer, bookOfSounds[soundType]);
+	char* bg = " &";
+	char* cmd = malloc(sizeof(file) + sizeof(bg));
+	cmd = strcat(file, bg);
+	system(cmd);
 	// if((pid = fork()) == 0)
 	// {
 	// 	setpgid(0, 0);
@@ -646,5 +645,6 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 	// 	}
 	// 	_exit(0);
 	// }
-	free(omxplayer);
+	free(file);
+	free(cmd);
 }
