@@ -627,10 +627,10 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 	char* omxplayer = "omxplayer --no-keys -o local ";
 	char* bg = " &";
 
-	char* file = malloc(sizeof(omxplayer) + sizeof(bookOfSounds[soundType]) + sizeof(bg));
-	file = strcpy(file, omxplayer);
-	file = strcat(file, bookOfSounds[soundType]);
-	file = strcat(file, bg);
+	char* cmd = malloc(sizeof(omxplayer) + sizeof(bookOfSounds[soundType]) + sizeof(bg));
+	cmd = strcpy(cmd, omxplayer);
+	cmd = strcat(cmd, bookOfSounds[soundType]);
+	cmd = strcat(cmd, bg);
 	system(cmd);
 	// if((pid = fork()) == 0)
 	// {
@@ -645,6 +645,5 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 	// 	}
 	// 	_exit(0);
 	// }
-	free(file);
 	free(cmd);
 }
