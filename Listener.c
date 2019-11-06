@@ -40,13 +40,6 @@ void playTheGame()
 		sigprocmask(SIG_BLOCK, &mask, &prev_mask);
 		P->prev_mask = prev_mask;
 
-		// fake code
-		if(testOnce == 1)
-		{
-			soundHandler(P, 0);
-			testOnce = 0;
-		}
-
 		/* Be listening for user input or enemy attack */
 		isCurrentlyCasting = isCurrCasting(P);
 		// ^ returns true if button pressed or button was already pressed and

@@ -465,6 +465,8 @@ void sendCast(struct PlayerStaffData* P)
 	/* Fake test code
 		run this spell on the user's self for now
 	*/
+	// fake code
+	soundHandler(P, 0);
 	processDamageRecieved(P, P->damageValues);
 }
 
