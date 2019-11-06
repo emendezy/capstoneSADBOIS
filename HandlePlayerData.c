@@ -638,7 +638,7 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 		sigset_t prev_mask = P->prev_mask;
 		sigprocmask(SIG_SETMASK, &prev_mask, NULL);
 
-		if (execlp(omxplayerLocation, " ", bookOfSounds[soundType], NULL) < 0) {
+		if (execlp(omxplayerLocation, " --no-keys -o local ", bookOfSounds[soundType], " &", NULL) < 0) {
 			printf("%s: ERROR playing sound\n", omxplayerLocation);
 			exit(1);
 		}
