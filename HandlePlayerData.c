@@ -627,7 +627,8 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 	char* omxplayer = "omxplayer --no-keys -o local ";
 
 	char* file = malloc(sizeof(omxplayer) + sizeof(bookOfSounds[soundType]));
-	file = strcat(omxplayer, bookOfSounds[soundType]);
+	file = strcpy(file, omxplayer);
+	file = strcat(file, bookOfSounds[soundType]);
 	char* bg = " &";
 	char* cmd = malloc(sizeof(file) + sizeof(bg));
 	cmd = strcat(file, bg);
