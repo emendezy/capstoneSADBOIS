@@ -632,18 +632,19 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 	char* file = malloc(sizeof(bookOfSounds[soundType]));
 	strcpy(file, bookOfSounds[soundType]);
 	omxplayer = strcat(omxplayer, file);
-	if((pid = fork()) == 0)
-	{
-		setpgid(0, 0);
-		sigset_t prev_mask = P->prev_mask;
-		sigprocmask(SIG_SETMASK, &prev_mask, NULL);
+	system("omxplayer --no-keys -o local Sounds/Baby.mp3 &");
+	// if((pid = fork()) == 0)
+	// {
+	// 	setpgid(0, 0);
+	// 	sigset_t prev_mask = P->prev_mask;
+	// 	sigprocmask(SIG_SETMASK, &prev_mask, NULL);
 
-		printf("Playing Sound!\n");
-		if (execlp(omxplayerLocation, " --no-keys -o local --vol 1000 ", bookOfSounds[soundType], " &", NULL) < 0) {
-			printf("%s: ERROR playing sound\n", omxplayerLocation);
-			exit(1);
-		}
-		_exit(0);
-	}
+	// 	printf("Playing Sound!\n");
+	// 	if (execlp(omxplayerLocation, " --no-keys -o local --vol 1000 ", bookOfSounds[soundType], " &", NULL) < 0) {
+	// 		printf("%s: ERROR playing sound\n", omxplayerLocation);
+	// 		exit(1);
+	// 	}
+	// 	_exit(0);
+	// }
 	free(omxplayer);
 }
