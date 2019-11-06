@@ -637,7 +637,9 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 		setpgid(0, 0);
 		sigset_t prev_mask = P->prev_mask;
 		sigprocmask(SIG_SETMASK, &prev_mask, NULL);
+		system("amixer cset numid=3 1");
 
+		printf("Playing Sound!\n");
 		if (execlp(omxplayerLocation, " --no-keys -o local ", bookOfSounds[soundType], " &", NULL) < 0) {
 			printf("%s: ERROR playing sound\n", omxplayerLocation);
 			exit(1);
