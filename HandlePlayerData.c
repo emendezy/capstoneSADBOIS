@@ -383,6 +383,7 @@ void sendCast(struct PlayerStaffData* P)
 {
 	// -> processDamageRecieved() will do the damage application after being hit with a damage payload
 	printf("Sending a cast! ----\n");
+	system("sudo python3 lightUp.py");
 
 	int maxSpell, timesCast;
 	maxSpell = 0;
