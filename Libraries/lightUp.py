@@ -51,7 +51,7 @@ def rainbow_cycle(wait):
 
 count = 0
 
-while (count <= 5000):
+while (count <= 1):
     # Comment this line out if you have RGBW/GRBW NeoPixels
     pixels.fill((255, 0, 0))
     # Uncomment this line if you have RGBW/GRBW NeoPixels
