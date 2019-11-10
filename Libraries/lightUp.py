@@ -49,11 +49,9 @@ def rainbow_cycle(wait):
         pixels.show()
         time.sleep(wait)
 
-start = time.clock_gettime(time.CLOCK_REALTIME)
-end = start
+count = 0
 
-
-while (end - start < 5000):
+while (count <= 5000):
     # Comment this line out if you have RGBW/GRBW NeoPixels
     pixels.fill((255, 0, 0))
     # Uncomment this line if you have RGBW/GRBW NeoPixels
@@ -77,6 +75,5 @@ while (end - start < 5000):
 
     rainbow_cycle(0.001)    # rainbow cycle with 1ms delay per step
 
-    end = time.clock_gettime(time.CLOCK_REALTIME)
-
+    count++
 
