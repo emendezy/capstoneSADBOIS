@@ -75,5 +75,5 @@ while (count <= 5000):
 
     rainbow_cycle(0.001)    # rainbow cycle with 1ms delay per step
 
-    count++
+    count += 1
 
