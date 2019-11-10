@@ -14,7 +14,7 @@
 
 #define GAME_START_BUTTON 2
 
-#define LED_PIN 1
+#define LED_PIN 15
 #define SPELL_START_BUTTON 3
 #define SPELL_END_BUTTON 4
 

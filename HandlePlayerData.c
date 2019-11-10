@@ -177,6 +177,7 @@ void imuInputHandler(struct PlayerStaffData* P)
 	// 	// Spell in queue that was successfully dequeued
 	// 	printf("Spell was properly dequeued - %d\n", spellType);
 	// 	P->activeSpells[spellType]++;
+	//  soundHandler(P, 2); // play "Burp" everytime spell successfully added
 	// }
 
 	/* fake code - create fake imu data */
@@ -466,7 +467,7 @@ void sendCast(struct PlayerStaffData* P)
 		run this spell on the user's self for now
 	*/
 	// fake code
-	soundHandler(P, 1);
+	soundHandler(P, 0); // send spell - slurp sound
 	processDamageRecieved(P, P->damageValues);
 }
 
@@ -501,6 +502,7 @@ int calcTotalDamage(int shieldPercent, int dmg)
 void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 {
 	printf("Under Attack! :o\n");
+	soundHandler(P, 1); // play baby sound (got hit)
 
 	// check for shield ability
 	if(!(P->hasBastion) && !(P->hasImmunity))
