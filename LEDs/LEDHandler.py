@@ -63,16 +63,16 @@ if __name__ == '__main__':
     	if args.spellType == 'healing_ward':
     		updateCooldown(strip, HEALING_LED_START, Color(255, 77, 255), args.numberOfLights)
 
-		elif args.spellType == 'burning_brand':
+		if args.spellType == 'burning_brand':
 			updateCooldown(strip, BURNING_LED_START, Color(255, 0, 0), args.numberOfLights)
 
-		elif args.spellType == 'crackling_bolt':
+		if args.spellType == 'crackling_bolt':
             updateCooldown(strip, CRACKLING_LED_START, Color(255, 255, 0), args.numberOfLights)
 
-         elif args.spellType == 'bastion':
+        if args.spellType == 'bastion':
             updateCooldown(strip, BASTION_LED_START, Color(179, 89, 0), args.numberOfLights)
 
-         elif args.spellType == 'second_wind':
+        if args.spellType == 'second_wind':
             updateCooldown(strip, SECOND_LED_START, Color(255, 255, 255), args.numberOfLights)
         ws2811_fini();
 
