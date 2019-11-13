@@ -328,8 +328,18 @@ void editCoolDownValues(struct PlayerStaffData* P, int amount)
 		{
 			P->coolDownMask[i] -= amount;
 		}
+		if(P->coolDownMask[i] % 5 = 0)
+		{
+			updateCooldownLightsOnStaff((30 - P->coolDownMask[i]) / 5, i);
+		}
 	}
+
 	printf("(amount = %d)Cooldown values = [%d, %d, %d, %d, %d]\n", amount, P->coolDownMask[0], P->coolDownMask[1], P->coolDownMask[2], P->coolDownMask[3], P->coolDownMask[4]);
+}
+
+void updateCooldownLightsOnStaff(int numLit, int spellIndex)
+{
+	system("sudo PYTHONPATH='/home/pi/Desktop/rpi_ws281x/python/.:build/lib.linux-armv7l-2.7' python /home/pi/Desktop/capstoneSADBOIS/LEDs/ LEDHandler.py -c -spell %s -lights %d", bookOfSpells[spellIndex], numLit);
 }
 
 void checkWeakness(struct PlayerStaffData* P)

@@ -7,7 +7,7 @@ sudo PYTHONPATH="/home/pi/Desktop/rpi_ws281x/python/.:build/lib.linux-armv7l-2.7
 
 Command to run this led handler:
 
-sudo PYTHONPATH="/home/pi/Desktop/rpi_ws281x/python/.:build/lib.linux-armv7l-2.7" python /home/pi/Desktop/capstoneSADBOIS/LEDs/LEDHandler.py -c
+sudo PYTHONPATH="/home/pi/Desktop/rpi_ws281x/python/.:build/lib.linux-armv7l-2.7" python /home/pi/Desktop/capstoneSADBOIS/LEDs/ LEDHandler.py -c -spell "<spellType>" -lights <# of lights / 6>
 
 """
 import time
@@ -74,6 +74,7 @@ if __name__ == '__main__':
 
          elif args.spellType == 'second_wind':
             updateCooldown(strip, SECOND_LED_START, Color(255, 255, 255), args.numberOfLights)
+        ws2811_fini();
 
         # while True:
             # print ('Color wipe animations.')
