@@ -183,6 +183,8 @@ void handleBurning(struct PlayerStaffData*);
 
 void editCoolDownValues(struct PlayerStaffData*, int);
 
+void updateCooldownLightsOnStaff(int, int);
+
 void checkWeakness(struct PlayerStaffData*);
 
 void checkShield(struct PlayerStaffData*);
