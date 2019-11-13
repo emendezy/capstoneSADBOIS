@@ -332,7 +332,7 @@ void editCoolDownValues(struct PlayerStaffData* P, int amount)
 		{
 			P->coolDownMask[i] -= amount;
 		}
-		if(P->coolDownMask[i] % 5 = 0)
+		if(P->coolDownMask[i] % 5 == 0)
 		{
 			updateCooldownLightsOnStaff((30 - P->coolDownMask[i]) / 5, i);
 		}
