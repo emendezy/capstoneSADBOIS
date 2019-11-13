@@ -74,7 +74,6 @@ if __name__ == '__main__':
 
         if args.spellType == 'second_wind':
             updateCooldown(strip, SECOND_LED_START, Color(255, 255, 255), args.numberOfLights)
-        ws2811_fini();
 
     except KeyboardInterrupt:
         if args.clear:
