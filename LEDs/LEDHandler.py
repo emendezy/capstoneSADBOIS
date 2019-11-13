@@ -35,8 +35,8 @@ SECOND_LED_START     = 24
 # Define some LED fns
 
 def updateCooldown(strip, start, color, numLit):
-	for i in range(start, start + numLit):
-		strip.setPixelColor(i, color)
+    for i in range(start, start + numLit):
+        strip.setPixelColor(i, color)
         strip.show()
 
 
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     parser.add_argument('-spell', dest='spellType', required=True,
         help='this is the spellType string')
     parser.add_argument('-lights', dest='numberOfLights', required=True,
-    	type=int, help='this represents the number of lights on out of 6')
+        type=int, help='this represents the number of lights on out of 6')
     args = parser.parse_args()
 
     # Create NeoPixel object with appropriate configuration.
@@ -60,13 +60,13 @@ if __name__ == '__main__':
         print('Use "-c" argument to clear LEDs on exit')
 
     try:
-    	if args.spellType == 'healing_ward':
-    		updateCooldown(strip, HEALING_LED_START, Color(255, 77, 255), args.numberOfLights)
+        if args.spellType == 'healing_ward':
+            updateCooldown(strip, HEALING_LED_START, Color(255, 77, 255), args.numberOfLights)
 
-		if args.spellType == 'burning_brand':
-			updateCooldown(strip, BURNING_LED_START, Color(255, 0, 0), args.numberOfLights)
+        if args.spellType == 'burning_brand':
+            updateCooldown(strip, BURNING_LED_START, Color(255, 0, 0), args.numberOfLights)
 
-		if args.spellType == 'crackling_bolt':
+        if args.spellType == 'crackling_bolt':
             updateCooldown(strip, CRACKLING_LED_START, Color(255, 255, 0), args.numberOfLights)
 
         if args.spellType == 'bastion':
@@ -75,20 +75,6 @@ if __name__ == '__main__':
         if args.spellType == 'second_wind':
             updateCooldown(strip, SECOND_LED_START, Color(255, 255, 255), args.numberOfLights)
         ws2811_fini();
-
-        # while True:
-            # print ('Color wipe animations.')
-            # colorWipe(strip, Color(255, 0, 0))  # Red wipe
-            # colorWipe(strip, Color(0, 255, 0))  # Blue wipe
-            # colorWipe(strip, Color(0, 0, 255))  # Green wipe
-            # print ('Theater chase animations.')
-            # theaterChase(strip, Color(127, 127, 127))  # White theater chase
-            # theaterChase(strip, Color(127,   0,   0))  # Red theater chase
-            # theaterChase(strip, Color(  0,   0, 127))  # Blue theater chase
-            # print ('Rainbow animations.')
-            # rainbow(strip)
-            # rainbowCycle(strip)
-            # theaterChaseRainbow(strip)
 
     except KeyboardInterrupt:
         if args.clear:
