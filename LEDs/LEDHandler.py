@@ -34,11 +34,11 @@ SECOND_LED_START     = 24
 #######################################
 # Define some LED fns
 
-def updateCooldown(strip, start, color, numLit):
+def updateCooldown(strip, start, color, numLit, wait_ms=50):
     for i in range(start, start + numLit):
         strip.setPixelColor(i, color)
         strip.show()
-
+        time.sleep(wait_ms/1000.0)
 
 if __name__ == '__main__':
     # Process arguments
