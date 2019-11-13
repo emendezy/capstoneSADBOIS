@@ -40,7 +40,7 @@ def updateCooldown(strip, start, color, numLit, wait_ms=50):
         strip.show()
         time.sleep(wait_ms/1000.0)
 
-if __name__ == '__main__':
+def __main__:
     # Process arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--clear', action='store_true', help='clear the display on exit')
