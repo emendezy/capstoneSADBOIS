@@ -29,6 +29,10 @@ const char* bookOfSounds[] =
 	"Sounds/Burp.mp3" // 2
 };
 
+#define CMD_BUFFER_SIZE 240
+
+char lightCMD[CMD_BUFFER_SIZE];
+
 // -----------------------------------------------
 // Initialization Steps
 // -----------------------------------------------
@@ -339,7 +343,18 @@ void editCoolDownValues(struct PlayerStaffData* P, int amount)
 
 void updateCooldownLightsOnStaff(int numLit, int spellIndex)
 {
-	system("sudo PYTHONPATH='/home/pi/Desktop/rpi_ws281x/python/.:build/lib.linux-armv7l-2.7' python /home/pi/Desktop/capstoneSADBOIS/LEDs/ LEDHandler.py -c -spell %s -lights %d", bookOfSpells[spellIndex], numLit);
+	int result = snprintf(lightCMD, CMD_BUFFER_SIZE, "sudo PYTHONPATH='/home/pi/Desktop/rpi_ws281x/python/.:build/lib.linux-armv7l-2.7' python /home/pi/Desktop/capstoneSADBOIS/LEDs/ LEDHandler.py -c -spell %s -lights %d", bookOfSpells[spellIndex], numLit);
+
+	if (result >= CMD_BUFFER_SIZE) {
+	    fprintf(stderr, "PIN truncated\n");
+	    exit(EXIT_FAILURE);  // or handle it some less-drastic way
+	} else if (result < 0) {
+	    // should not happen, but we're being thorough
+	    fprintf(stderr, "Internal I/O error\n");
+	    exit(EXIT_FAILURE);  // or handle it some less-drastic way
+	}
+
+	system(lightCMD);
 }
 
 void checkWeakness(struct PlayerStaffData* P)
