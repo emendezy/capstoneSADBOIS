@@ -356,7 +356,7 @@ void updateCooldownLightsOnStaff(int numLit, int spellIndex)
 
 	// system(lightCMD);
 
-	system("sudo PYTHONPATH='/home/pi/Desktop/rpi_ws281x/python/.:build/lib.linux-armv7l-2.7' python /home/pi/Desktop/rpi_ws281x/python/examples/strandtest.py");
+	system("sudo PYTHONPATH='/home/pi/Desktop/rpi_ws281x/python/.:build/lib.linux-armv7l-2.7' python /home/pi/Desktop/rpi_ws281x/python/examples/strandtest.py &");
 }
 
 void checkWeakness(struct PlayerStaffData* P)
