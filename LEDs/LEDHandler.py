@@ -34,11 +34,20 @@ SECOND_LED_START     = 24
 #######################################
 # Define some LED fns
 
-def updateCooldown(strip, start, color, numLit):
+def colorWipe(strip, color, wait_ms=50):
+    """Wipe color across display a pixel at a time."""
+    for i in range(strip.numPixels()):
+        strip.setPixelColor(i, color)
+        strip.show()
+        time.sleep(wait_ms/1000.0)
+
+def updateCooldown(strip, start, color, numLit, wait_ms=50):
 	end = start + numLit
 	for i in range(start, end):
 		strip.setPixelColor(i, color)
 		strip.show()
+		time.sleep(wait_ms/1000.0)
+	colorWipe(strip, Color(0,0,0), 10)
 
 if __name__ == "__main__":
 	# Process arguments
