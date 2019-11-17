@@ -36,7 +36,7 @@ SECOND_LED_START     = 24
 
 def updateCooldown(strip, start, color, numLit):
 	end = start + numLit
-	for i in range(strip.numPixels()):#start, end):
+	for i in range(start, end):
 		print(i)
 		strip.setPixelColor(i, color)
 		strip.show()
@@ -56,6 +56,7 @@ if __name__ == "__main__":
 	# Intialize the library (must be called once before other functions).
 	strip.begin()
 
+	print('spell: ' + args.spellType + ' and lightsOn: ' args.numberOfLights)
 
 	if args.spellType == 'healing_ward':
 		updateCooldown(strip, HEALING_LED_START, Color(255, 102, 204), args.numberOfLights)
