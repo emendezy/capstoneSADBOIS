@@ -60,7 +60,7 @@ if __name__ == "__main__":
 		print('Use "-c" argument to clear LEDs on exit')
 
 	if args.spellType == 'healing_ward':
-		updateCooldown(strip, HEALING_LED_START, Color(255, 77, 255), args.numberOfLights)
+		updateCooldown(strip, HEALING_LED_START, Color(255, 102, 204), args.numberOfLights)
 
 	if args.spellType == 'burning_brand':
 		updateCooldown(strip, BURNING_LED_START, Color(255, 0, 0), args.numberOfLights)
