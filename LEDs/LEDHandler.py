@@ -15,7 +15,7 @@ from neopixel import *
 import argparse
 
 # LED strip configuration:
-LED_COUNT         = 30      # num of LED pixels
+LED_COUNT         = 6      # num of LED pixels
 LEDS_PER_SECTION  = 6       # num of leds in each cooldown strip
 LED_PIN           = 18      # GPIO pin connected to the pixels (18 uses PWM!).
 LED_FREQ_HZ       = 800000  # LED signal frequency in hertz (usually 800khz)
@@ -43,7 +43,7 @@ def updateCooldown(strip, start, color, numLit, wait_ms=50):
 if __name__ == "__main__":
 	# Process arguments
 	parser = argparse.ArgumentParser()
-	parser.add_argument('-c', '--clear', action='store_true', help='clear the display on exit')
+	# parser.add_argument('-c', '--clear', action='store_true', help='clear the display on exit')
 	parser.add_argument('-spell', dest='spellType', required=True,
 		help='this is the spellType string')
 	parser.add_argument('-lights', dest='numberOfLights', required=True,
@@ -59,22 +59,17 @@ if __name__ == "__main__":
 	if not args.clear:
 		print('Use "-c" argument to clear LEDs on exit')
 
-	try:
-		if args.spellType == 'healing_ward':
-			updateCooldown(strip, HEALING_LED_START, Color(255, 77, 255), args.numberOfLights)
+	if args.spellType == 'healing_ward':
+		updateCooldown(strip, HEALING_LED_START, Color(255, 77, 255), args.numberOfLights)
 
-		if args.spellType == 'burning_brand':
-			updateCooldown(strip, BURNING_LED_START, Color(255, 0, 0), args.numberOfLights)
+	if args.spellType == 'burning_brand':
+		updateCooldown(strip, BURNING_LED_START, Color(255, 0, 0), args.numberOfLights)
 
-		if args.spellType == 'crackling_bolt':
-			updateCooldown(strip, CRACKLING_LED_START, Color(255, 255, 0), args.numberOfLights)
+	if args.spellType == 'crackling_bolt':
+		updateCooldown(strip, CRACKLING_LED_START, Color(255, 255, 0), args.numberOfLights)
 
-		if args.spellType == 'bastion':
-			updateCooldown(strip, BASTION_LED_START, Color(179, 89, 0), args.numberOfLights)
+	if args.spellType == 'bastion':
+		updateCooldown(strip, BASTION_LED_START, Color(179, 89, 0), args.numberOfLights)
 
-		if args.spellType == 'second_wind':
-			updateCooldown(strip, SECOND_LED_START, Color(255, 255, 255), args.numberOfLights)
-
-	except KeyboardInterrupt:
-		if args.clear:
-			colorWipe(strip, Color(0,0,0), 10)
+	if args.spellType == 'second_wind':
+		updateCooldown(strip, SECOND_LED_START, Color(255, 255, 255), args.numberOfLights)
