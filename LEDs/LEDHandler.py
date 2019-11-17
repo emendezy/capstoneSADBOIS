@@ -36,7 +36,7 @@ SECOND_LED_START     = 24
 
 def updateCooldown(strip, start, color, numLit):
 	end = start + numLit
-	for i in range(start, end):
+	for i in range(strip.numPixels()):#start, end):
 		print(i)
 		strip.setPixelColor(i, color)
 		strip.show()
