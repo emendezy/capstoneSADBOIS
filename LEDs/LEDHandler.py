@@ -35,46 +35,46 @@ SECOND_LED_START     = 24
 # Define some LED fns
 
 def updateCooldown(strip, start, color, numLit, wait_ms=50):
-    for i in range(start, start + numLit):
-        strip.setPixelColor(i, color)
-
-    strip.show()
+	for i in range(start, start + numLit):
+		strip.setPixelColor(i, color)
+		strip.show()
+		time.sleep(wait_ms/1000.0)
 
 if __name__ == "__main__":
-    # Process arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-c', '--clear', action='store_true', help='clear the display on exit')
-    parser.add_argument('-spell', dest='spellType', required=True,
-        help='this is the spellType string')
-    parser.add_argument('-lights', dest='numberOfLights', required=True,
-        type=int, help='this represents the number of lights on out of 6')
-    args = parser.parse_args()
+	# Process arguments
+	parser = argparse.ArgumentParser()
+	parser.add_argument('-c', '--clear', action='store_true', help='clear the display on exit')
+	parser.add_argument('-spell', dest='spellType', required=True,
+		help='this is the spellType string')
+	parser.add_argument('-lights', dest='numberOfLights', required=True,
+		type=int, help='this represents the number of lights on out of 6')
+	args = parser.parse_args()
 
-    # Create NeoPixel object with appropriate configuration.
-    strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
-    # Intialize the library (must be called once before other functions).
-    strip.begin()
+	# Create NeoPixel object with appropriate configuration.
+	strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
+	# Intialize the library (must be called once before other functions).
+	strip.begin()
 
-    print ('Press Ctrl-C to quit.')
-    if not args.clear:
-        print('Use "-c" argument to clear LEDs on exit')
+	print ('Press Ctrl-C to quit.')
+	if not args.clear:
+		print('Use "-c" argument to clear LEDs on exit')
 
-    try:
-        if args.spellType == 'healing_ward':
-            updateCooldown(strip, HEALING_LED_START, Color(255, 77, 255), args.numberOfLights)
+	try:
+		if args.spellType == 'healing_ward':
+			updateCooldown(strip, HEALING_LED_START, Color(255, 77, 255), args.numberOfLights)
 
-        if args.spellType == 'burning_brand':
-            updateCooldown(strip, BURNING_LED_START, Color(255, 0, 0), args.numberOfLights)
+		if args.spellType == 'burning_brand':
+			updateCooldown(strip, BURNING_LED_START, Color(255, 0, 0), args.numberOfLights)
 
-        if args.spellType == 'crackling_bolt':
-            updateCooldown(strip, CRACKLING_LED_START, Color(255, 255, 0), args.numberOfLights)
+		if args.spellType == 'crackling_bolt':
+			updateCooldown(strip, CRACKLING_LED_START, Color(255, 255, 0), args.numberOfLights)
 
-        if args.spellType == 'bastion':
-            updateCooldown(strip, BASTION_LED_START, Color(179, 89, 0), args.numberOfLights)
+		if args.spellType == 'bastion':
+			updateCooldown(strip, BASTION_LED_START, Color(179, 89, 0), args.numberOfLights)
 
-        if args.spellType == 'second_wind':
-            updateCooldown(strip, SECOND_LED_START, Color(255, 255, 255), args.numberOfLights)
+		if args.spellType == 'second_wind':
+			updateCooldown(strip, SECOND_LED_START, Color(255, 255, 255), args.numberOfLights)
 
-    except KeyboardInterrupt:
-        if args.clear:
-            colorWipe(strip, Color(0,0,0), 10)
+	except KeyboardInterrupt:
+		if args.clear:
+			colorWipe(strip, Color(0,0,0), 10)
