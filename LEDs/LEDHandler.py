@@ -20,7 +20,7 @@ LEDS_PER_SECTION  = 6       # num of leds in each cooldown strip
 LED_PIN           = 18      # GPIO pin connected to the pixels (18 uses PWM!).
 LED_FREQ_HZ       = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA           = 10      # DMA channel to use for generating signal (try 10)
-LED_BRIGHTNESS    = 255     # Set to 0 for darkest and 255 for brightest
+LED_BRIGHTNESS    = 200     # Set to 0 for darkest and 255 for brightest
 LED_INVERT        = False   # True to invert the signal (when using NPN transistor level shift)
 LED_CHANNEL       = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
@@ -55,9 +55,6 @@ if __name__ == "__main__":
 	# Intialize the library (must be called once before other functions).
 	strip.begin()
 
-	print ('Press Ctrl-C to quit.')
-	if not args.clear:
-		print('Use "-c" argument to clear LEDs on exit')
 
 	if args.spellType == 'healing_ward':
 		updateCooldown(strip, HEALING_LED_START, Color(255, 102, 204), args.numberOfLights)
