@@ -334,7 +334,7 @@ void editCoolDownValues(struct PlayerStaffData* P, int amount)
 		}
 		if(P->coolDownMask[i] % 5 == 0)
 		{
-			updateCooldownLightsOnStaff((30 - P->coolDownMask[i]) / 5, i);
+			// updateCooldownLightsOnStaff((30 - P->coolDownMask[i]) / 5, i);
 		}
 	}
 
@@ -531,6 +531,9 @@ void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 {
 	printf("Under Attack! :o\n");
 	soundHandler(P, 1); // play baby sound (got hit)
+
+	// fake code - test updateCooldownLights
+	updateCooldownLightsOnStaff(0,0);
 
 	// check for shield ability
 	if(!(P->hasBastion) && !(P->hasImmunity))
