@@ -29,7 +29,7 @@ const char* bookOfSounds[] =
 	"Sounds/Burp.mp3" // 2
 };
 
-#define CMD_BUFFER_SIZE 240
+#define CMD_BUFFER_SIZE 300
 
 char lightCMD[CMD_BUFFER_SIZE];
 
@@ -343,7 +343,7 @@ void editCoolDownValues(struct PlayerStaffData* P, int amount)
 
 void updateCooldownLightsOnStaff(int numLit, int spellIndex)
 {
-	int result = snprintf(lightCMD, CMD_BUFFER_SIZE, "sudo PYTHONPATH=\"%s\" python /home/pi/Desktop/capstoneSADBOIS/LEDs/LEDHandler.py -spell %s -lights %d &", "/home/pi/Desktop/rpi_ws281x/python/.:build/lib.linux-armv7l-2.7", bookOfSpells[spellIndex], numLit);
+	int result = snprintf(lightCMD, CMD_BUFFER_SIZE, "sudo PYTHONPATH=\"%s\" python /home/pi/Desktop/capstoneSADBOIS/LEDs/LEDHandler.py -spell %s -lights %d", "/home/pi/Desktop/rpi_ws281x/python/.:build/lib.linux-armv7l-2.7", bookOfSpells[spellIndex], numLit);
 
 	printf("light display cmd: %s\n", lightCMD);
 

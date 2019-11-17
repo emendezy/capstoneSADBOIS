@@ -55,6 +55,8 @@ if __name__ == "__main__":
 	# Intialize the library (must be called once before other functions).
 	strip.begin()
 
+	print(args.spellType, args.numberOfLights)
+
 	if args.spellType == 'healing_ward':
 		updateCooldown(strip, HEALING_LED_START, Color(255, 102, 204), args.numberOfLights)
 
