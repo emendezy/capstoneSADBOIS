@@ -345,6 +345,8 @@ void updateCooldownLightsOnStaff(int numLit, int spellIndex)
 {
 	int result = snprintf(lightCMD, CMD_BUFFER_SIZE, "sudo PYTHONPATH=\"%s\" /home/pi/Desktop/capstoneSADBOIS/LEDs/LEDHandler.py -spell %s -lights %d", "/home/pi/Desktop/rpi_ws281x/python/.:build/lib.linux-armv7l-2.7", bookOfSpells[spellIndex], numLit);
 
+	printf("light display cmd: %s\n", lightCMD);
+
 	if (result >= CMD_BUFFER_SIZE) {
 		fprintf(stderr, "******************PIN truncated\n");
 	} else if (result < 0) {
