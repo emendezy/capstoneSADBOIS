@@ -35,7 +35,8 @@ SECOND_LED_START     = 24
 # Define some LED fns
 
 def updateCooldown(strip, start, color, numLit, wait_ms=50):
-	for i in range(start, start + numLit):
+	for i in range(start, (start + numLit)):
+		print i
 		strip.setPixelColor(i, color)
 		strip.show()
 		time.sleep(wait_ms/1000.0)
@@ -43,7 +44,7 @@ def updateCooldown(strip, start, color, numLit, wait_ms=50):
 if __name__ == "__main__":
 	# Process arguments
 	parser = argparse.ArgumentParser()
-	# parser.add_argument('-c', '--clear', action='store_true', help='clear the display on exit')
+
 	parser.add_argument('-spell', dest='spellType', required=True,
 		help='this is the spellType string')
 	parser.add_argument('-lights', dest='numberOfLights', required=True,
