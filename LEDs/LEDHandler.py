@@ -37,7 +37,6 @@ SECOND_LED_START     = 24
 def updateCooldown(strip, start, color, numLit):
 	end = start + numLit
 	for i in range(start, end):
-		print(i)
 		strip.setPixelColor(i, color)
 		strip.show()
 
@@ -55,8 +54,6 @@ if __name__ == "__main__":
 	strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
 	# Intialize the library (must be called once before other functions).
 	strip.begin()
-
-	print(args.spellType, args.numberOfLights)
 
 	if args.spellType == 'healing_ward':
 		updateCooldown(strip, HEALING_LED_START, Color(255, 102, 204), args.numberOfLights)
