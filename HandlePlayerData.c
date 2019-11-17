@@ -343,20 +343,19 @@ void editCoolDownValues(struct PlayerStaffData* P, int amount)
 
 void updateCooldownLightsOnStaff(int numLit, int spellIndex)
 {
-	// int result = snprintf(lightCMD, CMD_BUFFER_SIZE, "sudo PYTHONPATH='/home/pi/Desktop/rpi_ws281x/python/.:build/lib.linux-armv7l-2.7' python /home/pi/Desktop/capstoneSADBOIS/LEDs/ LEDHandler.py -c -spell %s -lights %d", bookOfSpells[spellIndex], numLit);
+	int result = snprintf(lightCMD, CMD_BUFFER_SIZE, "sudo PYTHONPATH='/home/pi/Desktop/rpi_ws281x/python/.:build/lib.linux-armv7l-2.7' python/home/pi/Desktop/capstoneSADBOIS/LEDs/LEDHandler.py -c -spell %s -lights %d", bookOfSpells[spellIndex], numLit);
 
-	// if (result >= CMD_BUFFER_SIZE) {
-	//     fprintf(stderr, "PIN truncated\n");
-	//     exit(EXIT_FAILURE);  // or handle it some less-drastic way
-	// } else if (result < 0) {
-	//     // should not happen, but we're being thorough
-	//     fprintf(stderr, "Internal I/O error\n");
-	//     exit(EXIT_FAILURE);  // or handle it some less-drastic way
-	// }
+	if (result >= CMD_BUFFER_SIZE) {
+		fprintf(stderr, "******************PIN truncated\n");
+	} else if (result < 0) {
+		// should not happen, but we're being thorough
+		fprintf(stderr, "Internal I/O error\n");
+	}
+	else {
+		system(lightCMD);
+	}
 
-	// system(lightCMD);
-
-	system("sudo PYTHONPATH='/home/pi/Desktop/rpi_ws281x/python/.:build/lib.linux-armv7l-2.7' python /home/pi/Desktop/rpi_ws281x/python/examples/strandtest.py &");
+	// system("sudo PYTHONPATH='/home/pi/Desktop/rpi_ws281x/python/.:build/lib.linux-armv7l-2.7' python /home/pi/Desktop/rpi_ws281x/python/examples/strandtest.py &");
 }
 
 void checkWeakness(struct PlayerStaffData* P)
@@ -533,7 +532,7 @@ void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 	soundHandler(P, 1); // play baby sound (got hit)
 
 	// fake code - test updateCooldownLights
-	updateCooldownLightsOnStaff(0,0);
+	updateCooldownLightsOnStaff(5,0);
 
 	// check for shield ability
 	if(!(P->hasBastion) && !(P->hasImmunity))
