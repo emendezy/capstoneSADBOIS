@@ -343,7 +343,7 @@ void editCoolDownValues(struct PlayerStaffData* P, int amount)
 
 void updateCooldownLightsOnStaff(int numLit, int spellIndex)
 {
-	int result = snprintf(lightCMD, CMD_BUFFER_SIZE, "sudo PYTHONPATH='/home/pi/Desktop/rpi_ws281x/python/.:build/lib.linux-armv7l-2.7' python/home/pi/Desktop/capstoneSADBOIS/LEDs/LEDHandler.py -c -spell %s -lights %d", bookOfSpells[spellIndex], numLit);
+	int result = snprintf(lightCMD, CMD_BUFFER_SIZE, "sudo PYTHONPATH='/home/pi/Desktop/rpi_ws281x/python/.:build/lib.linux-armv7l-2.7' python/home/pi/Desktop/capstoneSADBOIS/LEDs/LEDHandler.py -spell %s -lights %d", bookOfSpells[spellIndex], numLit);
 
 	if (result >= CMD_BUFFER_SIZE) {
 		fprintf(stderr, "******************PIN truncated\n");
