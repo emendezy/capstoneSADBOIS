@@ -682,5 +682,5 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 	// 	}
 	// 	_exit(0);
 	// }
-	free(cmd);
+	// free(cmd);
 }
