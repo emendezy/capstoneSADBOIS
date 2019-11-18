@@ -667,6 +667,7 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 	// cmd = strcat(cmd, bg);
 
 	// system(cmd);
+	// free(cmd);
 	// ----------------------------------------------------------
 
 	// if((pid = fork()) == 0)
@@ -682,5 +683,4 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 	// 	}
 	// 	_exit(0);
 	// }
-	// free(cmd);
 }
