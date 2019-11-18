@@ -665,7 +665,10 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 	cmd = strcpy(cmd, omxplayer);
 	cmd = strcat(cmd, bookOfSounds[soundType]);
 	cmd = strcat(cmd, bg);
-	system(cmd);
+
+	// system(cmd);
+
+
 	// if((pid = fork()) == 0)
 	// {
 	// 	setpgid(0, 0);
