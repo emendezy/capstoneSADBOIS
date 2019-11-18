@@ -46,8 +46,8 @@ def updateCooldown(strip, start, color, numLit, wait_ms=50):
 	for i in range(start, end):
 		strip.setPixelColor(i, color)
 		strip.show()
-		time.sleep(1)
-		# time.sleep(wait_ms/1000.0)
+		time.sleep(wait_ms/1000.0)
+	time.sleep(1)
 	colorWipe(strip, Color(0,0,0), 10)
 
 if __name__ == "__main__":
