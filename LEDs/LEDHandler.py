@@ -43,10 +43,11 @@ def colorWipe(strip, color, wait_ms=50):
 
 def updateCooldown(strip, start, color, numLit, wait_ms=50):
 	end = start + numLit
+	colorWipe(strip, Color(0,0,0), 10)
 	for i in range(start, end):
 		strip.setPixelColor(i, color)
 		strip.show()
-		time.sleep(wait_ms/1000.0)
+		# time.sleep(wait_ms/1000.0)
 
 if __name__ == "__main__":
 	# Process arguments
@@ -80,9 +81,9 @@ if __name__ == "__main__":
 	if args.spellType == 'second_wind':
 		updateCooldown(strip, SECOND_LED_START, Color(255, 255, 255), args.numberOfLights)
 
-	startTime = time.clock()
-	currTime = time.clock()
-	while(currTime - startTime < startTime + 3.0):
-		currTime = time.clock()
+	# startTime = time.clock()
+	# currTime = time.clock()
+	# while(currTime - startTime < startTime + 3.0):
+	# 	currTime = time.clock()
 
-	colorWipe(strip, Color(0,0,0), 10)
+	# colorWipe(strip, Color(0,0,0), 10)

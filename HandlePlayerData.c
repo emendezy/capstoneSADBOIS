@@ -334,7 +334,7 @@ void editCoolDownValues(struct PlayerStaffData* P, int amount)
 		}
 		if(P->coolDownMask[i] % 5 == 0)
 		{
-			// updateCooldownLightsOnStaff((30 - P->coolDownMask[i]) / 5, i);
+			updateCooldownLightsOnStaff((30 - P->coolDownMask[i]) / 5, i);
 		}
 	}
 
@@ -657,17 +657,17 @@ void lightHandler(struct PlayerStaffData* P, int lightMode)
  */
 void soundHandler(struct PlayerStaffData* P, int soundType)
 {
-	pid_t pid;
-	char* omxplayer = "omxplayer --no-keys -o local ";
-	char* bg = " &";
+	// pid_t pid;
+	// char* omxplayer = "omxplayer --no-keys -o local ";
+	// char* bg = " &";
 
-	char* cmd = malloc(sizeof(omxplayer) + sizeof(bookOfSounds[soundType]) + sizeof(bg));
-	cmd = strcpy(cmd, omxplayer);
-	cmd = strcat(cmd, bookOfSounds[soundType]);
-	cmd = strcat(cmd, bg);
+	// char* cmd = malloc(sizeof(omxplayer) + sizeof(bookOfSounds[soundType]) + sizeof(bg));
+	// cmd = strcpy(cmd, omxplayer);
+	// cmd = strcat(cmd, bookOfSounds[soundType]);
+	// cmd = strcat(cmd, bg);
 
 	// system(cmd);
-
+	// ----------------------------------------------------------
 
 	// if((pid = fork()) == 0)
 	// {
