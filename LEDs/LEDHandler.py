@@ -83,6 +83,6 @@ if __name__ == "__main__":
 	startTime = time.clock()
 	currTime = time.clock()
 	while(currTime - startTime < startTime + 3.0):
-		currTime = clock()
+		currTime = time.clock()
 
 	colorWipe(strip, Color(0,0,0), 10)
