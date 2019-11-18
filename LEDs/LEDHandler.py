@@ -80,4 +80,9 @@ if __name__ == "__main__":
 	if args.spellType == 'second_wind':
 		updateCooldown(strip, SECOND_LED_START, Color(255, 255, 255), args.numberOfLights)
 
+	startTime = time.clock()
+	currTime = time.clock()
+	while(currTime - startTime < startTime + 3.0):
+		currTime = clock()
+
 	colorWipe(strip, Color(0,0,0), 10)
