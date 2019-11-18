@@ -47,8 +47,6 @@ def updateCooldown(strip, start, color, numLit, wait_ms=50):
 		strip.setPixelColor(i, color)
 		strip.show()
 		time.sleep(wait_ms/1000.0)
-	time.sleep(1)
-	colorWipe(strip, Color(0,0,0), 10)
 
 if __name__ == "__main__":
 	# Process arguments
@@ -81,3 +79,5 @@ if __name__ == "__main__":
 
 	if args.spellType == 'second_wind':
 		updateCooldown(strip, SECOND_LED_START, Color(255, 255, 255), args.numberOfLights)
+
+	colorWipe(strip, Color(0,0,0), 10)
