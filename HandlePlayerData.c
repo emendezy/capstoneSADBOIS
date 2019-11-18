@@ -15,12 +15,13 @@ const char* const bookOfSpells[] =
 	"crackling_bolt", // 2
 	"bastion", // 3
 	"second_wind" // 4
-	"infernal_pact" // 5
-	"molten_bombardment" // 6
-	"healing_surge" // 7
-	"thundering_devastation" // 8
-
 };
+// 	"infernal_pact" // 5
+// 	"molten_bombardment" // 6
+// 	"healing_surge" // 7
+// 	"thundering_devastation" // 8
+
+// };
 
 const char* bookOfSounds[] =
 {

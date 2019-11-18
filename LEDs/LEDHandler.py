@@ -15,7 +15,7 @@ from neopixel import *
 import argparse
 
 # LED strip configuration:
-LED_COUNT         = 6      # num of LED pixels
+LED_COUNT         = 30      # num of LED pixels
 LEDS_PER_SECTION  = 6       # num of leds in each cooldown strip
 LED_PIN           = 18      # GPIO pin connected to the pixels (18 uses PWM!).
 LED_FREQ_HZ       = 800000  # LED signal frequency in hertz (usually 800khz)
