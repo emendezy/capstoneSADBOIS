@@ -667,6 +667,8 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 	cmd = strcat(cmd, bookOfSounds[soundType]);
 	// cmd = strcat(cmd, bg);
 
+	sigset_t prev_mask = P->prev_mask;
+	sigprocmask(SIG_SETMASK, &prev_mask, NULL);
 	system(cmd);
 	free(cmd);
 	// ----------------------------------------------------------
