@@ -665,7 +665,7 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 	char* cmd = malloc(sizeof(omxplayer) + sizeof(bookOfSounds[soundType]) + sizeof(bg));
 	cmd = strcpy(cmd, omxplayer);
 	cmd = strcat(cmd, bookOfSounds[soundType]);
-	cmd = strcat(cmd, bg);
+	// cmd = strcat(cmd, bg);
 
 	system(cmd);
 	free(cmd);

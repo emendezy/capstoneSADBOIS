@@ -22,7 +22,7 @@ void playTheGame()
 	int testOnce = 1;
 
 	/* Install Signal Handler(s) */
-	// signal(SIGCHLD, sigchld_handler); // Handles terminated or stopped child
+	signal(SIGCHLD, sigchld_handler); // Handles terminated or stopped child
 	sigset_t prev_mask, mask;
 
 	/* Fake test code
