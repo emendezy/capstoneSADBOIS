@@ -658,14 +658,15 @@ void lightHandler(struct PlayerStaffData* P, int lightMode)
  */
 void soundHandler(struct PlayerStaffData* P, int soundType)
 {
+	// nohup omxplayer -o local ring.wav <&- >&- 2>&- & disown
 	pid_t pid;
-	char* omxplayer = "omxplayer --no-keys -o local ";
-	char* bg = " &";
+	char* omxplayer = "nohup omxplayer --no-keys -o local ";
+	char* end = " <&- >&- 2>&- & disown";
 
-	char* cmd = malloc(sizeof(omxplayer) + sizeof(bookOfSounds[soundType]) + sizeof(bg));
+	char* cmd = malloc(sizeof(omxplayer) + sizeof(bookOfSounds[soundType]) + sizeof(end));
 	cmd = strcpy(cmd, omxplayer);
 	cmd = strcat(cmd, bookOfSounds[soundType]);
-	// cmd = strcat(cmd, bg);
+	cmd = strcat(cmd, end);
 
 	sigset_t prev_mask = P->prev_mask;
 	sigprocmask(SIG_SETMASK, &prev_mask, NULL);
