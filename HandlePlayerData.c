@@ -667,6 +667,7 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 	cmd = strcpy(cmd, omxplayer);
 	cmd = strcat(cmd, bookOfSounds[soundType]);
 	cmd = strcat(cmd, end);
+	printf("Audio Command: %s\n", cmd);
 
 	sigset_t prev_mask = P->prev_mask;
 	sigprocmask(SIG_SETMASK, &prev_mask, NULL);
