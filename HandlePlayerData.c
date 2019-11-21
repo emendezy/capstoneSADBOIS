@@ -497,7 +497,7 @@ void sendCast(struct PlayerStaffData* P)
 		run this spell on the user's self for now
 	*/
 	// fake code
-	soundHandler(P, 0); // send spell - slurp sound
+	// soundHandler(P, 0); // send spell - slurp sound
 	processDamageRecieved(P, P->damageValues);
 }
 
@@ -665,7 +665,7 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 	char* cmd = malloc(sizeof(omxplayer) + sizeof(bookOfSounds[soundType]) + sizeof(bg));
 	cmd = strcpy(cmd, omxplayer);
 	cmd = strcat(cmd, bookOfSounds[soundType]);
-	// cmd = strcat(cmd, bg);
+	cmd = strcat(cmd, bg);
 
 	system(cmd);
 	free(cmd);
