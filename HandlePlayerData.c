@@ -660,8 +660,8 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 {
 	// nohup omxplayer -o local ring.wav <&- >&- 2>&- & disown
 	pid_t pid;
-	char* omxplayer = "nohup omxplayer --no-keys -o local ";
-	char* end = " <&- >&- 2>&- &";
+	char* omxplayer = "omxplayer --no-keys -o local ";
+	char* end = " &";
 
 	char* cmd = malloc(sizeof(omxplayer) + sizeof(bookOfSounds[soundType]) + sizeof(end));
 	cmd = strcpy(cmd, omxplayer);
