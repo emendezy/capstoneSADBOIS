@@ -669,8 +669,8 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 	cmd = strcat(cmd, end);
 	printf("Audio Command: %s\n", cmd);
 
-	sigset_t prev_mask = P->prev_mask;
-	sigprocmask(SIG_SETMASK, &prev_mask, NULL);
+	// sigset_t prev_mask = P->prev_mask;
+	// sigprocmask(SIG_SETMASK, &prev_mask, NULL);
 	system(cmd);
 	free(cmd);
 	// ----------------------------------------------------------
