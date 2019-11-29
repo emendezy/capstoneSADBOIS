@@ -663,10 +663,10 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 	char* omxplayer = "omxplayer --no-keys -o local ";
 	// char* end = " &";
 
-	char* cmd = malloc(sizeof(omxplayer) + sizeof(bookOfSounds[soundType]) + sizeof(end));
+	char* cmd = malloc(sizeof(omxplayer) + sizeof(bookOfSounds[soundType]));// + sizeof(end));
 	cmd = strcpy(cmd, omxplayer);
 	cmd = strcat(cmd, bookOfSounds[soundType]);
-	cmd = strcat(cmd, end);
+	// cmd = strcat(cmd, end);
 	printf("Audio Command: %s\n", cmd);
 
 	sigset_t prev_mask = P->prev_mask;
