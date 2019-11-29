@@ -660,32 +660,32 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 {
 	// nohup omxplayer -o local ring.wav <&- >&- 2>&- & disown
 	pid_t pid;
-	char* omxplayer = "omxplayer --no-keys -o local ";
+	char* omxplayer = "--no-keys -o local "; //"omxplayer --no-keys -o local ";
 	char* end = " &";
 
-	char* cmd = malloc(sizeof(omxplayer) + sizeof(bookOfSounds[soundType]) + sizeof(end));
+	char* cmd = malloc(sizeof(omxplayer) + sizeof(bookOfSounds[soundType])); // + sizeof(end));
 	cmd = strcpy(cmd, omxplayer);
 	cmd = strcat(cmd, bookOfSounds[soundType]);
-	cmd = strcat(cmd, end);
+	// cmd = strcat(cmd, end);
 	printf("Audio Command: %s\n", cmd);
 
-	// sigset_t prev_mask = P->prev_mask;
-	// sigprocmask(SIG_SETMASK, &prev_mask, NULL);
-	system(cmd);
-	free(cmd);
+	sigset_t prev_mask = P->prev_mask;
+	sigprocmask(SIG_SETMASK, &prev_mask, NULL);
+	// system(cmd);
 	// ----------------------------------------------------------
 
-	// if((pid = fork()) == 0)
-	// {
-	// 	setpgid(0, 0);
-	// 	sigset_t prev_mask = P->prev_mask;
-	// 	sigprocmask(SIG_SETMASK, &prev_mask, NULL);
+	if((pid = fork()) == 0)
+	{
+		setpgid(0, 0);
+		sigset_t prev_mask = P->prev_mask;
+		sigprocmask(SIG_SETMASK, &prev_mask, NULL);
 
-	// 	printf("Playing Sound!\n");
-	// 	if (execlp(omxplayerLocation, " --no-keys -o local --vol 1000 ", bookOfSounds[soundType], " &", NULL) < 0) {
-	// 		printf("%s: ERROR playing sound\n", omxplayerLocation);
-	// 		exit(1);
-	// 	}
-	// 	_exit(0);
-	// }
+		printf("Playing Sound!\n");
+		if (execlp("/usr/bin/omxplayer", " ", cmd, NULL) < 0) {
+			printf("%s: ERROR playing sound\n", "/usr/bin/omxplayer");
+			exit(1);
+		}
+		_exit(0);
+	}
+	free(cmd);
 }
