@@ -22,8 +22,8 @@ void playTheGame()
 	int testOnce = 1;
 
 	/* Install Signal Handler(s) */
-	// signal(SIGCHLD, sigchld_handler); // Handles terminated or stopped child
-	// sigset_t prev_mask, mask;
+	signal(SIGCHLD, sigchld_handler); // Handles terminated or stopped child
+	sigset_t prev_mask, mask;
 
 	/* Fake test code
 		run this spell on the user's self for now
@@ -36,9 +36,9 @@ void playTheGame()
 	printf("game is active\n");
 	while(gameIsActive)
 	{
-		// sigfillset(&mask);
-		// sigprocmask(SIG_BLOCK, &mask, &prev_mask);
-		// P->prev_mask = prev_mask;
+		sigfillset(&mask);
+		sigprocmask(SIG_BLOCK, &mask, &prev_mask);
+		P->prev_mask = prev_mask;
 
 		/* Be listening for user input or enemy attack */
 		isCurrentlyCasting = isCurrCasting(P);
@@ -64,7 +64,7 @@ void playTheGame()
 		updatePlayerFields(P);
 
 		// unblock signals
-		// sigprocmask(SIG_SETMASK, &prev_mask, NULL);
+		sigprocmask(SIG_SETMASK, &prev_mask, NULL);
 	}
 
 	//-------------------------------------
@@ -82,7 +82,6 @@ void waitForGameToStart()
 	if (gameStartButtonPressed())
 	{
 		printf("game button set to true\n");
-		delay(1000);
 		gameIsActive = true;
 	}
 
