@@ -681,7 +681,7 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 		sigprocmask(SIG_SETMASK, &prev_mask, NULL);
 
 		printf("Playing Sound!\n");
-		if (execlp("/usr/bin/omxplayer", " ", cmd, NULL) < 0) {
+		if (execlp("/usr/bin/omxplayer", " ", "--no-keys", " ", "-o", " ", "local", " ", "Sounds/Baby.mp3", NULL) < 0) {
 			printf("%s: ERROR playing sound\n", "/usr/bin/omxplayer");
 			exit(1);
 		}
