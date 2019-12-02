@@ -447,7 +447,7 @@ void sendCast(struct PlayerStaffData* P)
 			case 1:
 				printf("burning_brand!\n");
 				P->damageValues[0] = calcSendingSpellDamage(P, 10); // damage
-				P->damageValues[1] = -1; // no cooldown affect
+				P->damageValues[1] = 0; // no cooldown affect
 				P->damageValues[2] = 1; // burned affect is true
 				P->damageValues[3] = 5 + (5 * timesCast); // damage over time
 				P->damageValues[4] = 10; // damage time duration in seconds
