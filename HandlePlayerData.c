@@ -25,9 +25,9 @@ const char* const bookOfSpells[] =
 
 const char* bookOfSounds[] =
 {
-	"Sounds/Slurp.mp3", // 0 (default case)
-	"Sounds/Baby.mp3", // 1
-	"Sounds/Burp.mp3" // 2
+	"Sounds/Slurp.wav", // 0 (default case)
+	"Sounds/Baby.wav", // 1
+	"Sounds/Burp.wav" // 2
 };
 
 #define CMD_BUFFER_SIZE 300
@@ -672,7 +672,7 @@ void soundHandler(struct PlayerStaffData* P, int soundType)
 	// sigset_t prev_mask = P->prev_mask;
 	// sigprocmask(SIG_SETMASK, &prev_mask, NULL);
 	system(cmd);
-	system("omxplayer");
+	// system("omxplayer");
 	// ----------------------------------------------------------
 
 	// if((pid = fork()) == 0)
