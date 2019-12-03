@@ -4,6 +4,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <errno.h>
+#include <math.h>
 
 #include "getbno055.h"
 #include "imumodule.h"
@@ -18,7 +19,7 @@ int main()
         get initial hrp values
         passes to global pointer
     */
-    calibrateImu();
+    initializeImu();
     /*
         main loop
     */
@@ -38,6 +39,10 @@ int main()
             return retval;
         }
         currSpellType = classifyShape(&currEulStruct, &currLinStruct);
+        if (0 <= currSpellType <= 4)
+        {
+            enqueueSpell(currSpellType);
+        }
     }
     return retval;
 }
@@ -50,41 +55,59 @@ int main()
     returns WATER if water (vertical circle)
     returns NOTCIRCLE otherwise
 */
-short checkCircle(struct bnoeul *starteulptr, struct bnolin *bnolinptr)
+short checkCircle()
 {
-    int errval;
-    double final_h;
-    double final_r;
-    double final_p;
-    struct bnoeul *finaleulptr;
     short retval = NOTCIRCLE;
     double init_h = initEulStruct.eul_head;
     double init_r = initEulStruct.eul_roll;
     double init_p = initEulStruct.eul_pitc;
-    double start_h = starteulptr->eul_head;
-    double start_r = starteulptr->eul_roll;
-    double start_p = starteulptr->eul_pitc;
+    int counter;
+    int errval;
+    double start_h;
+    double start_r;
+    double start_p;
+    double h;
+    double r;
+    double p;
+    struct bnoeul *tempeulptr;
+    struct bnoeul *starteulptr;
+    
+    
     clock_t time_start = clock();
     // allocate memory for struct
-    finaleulptr = (struct bnoeul *) malloc(sizeof(struct bnoeul));
+    starteulptr = (struct bnoeul *) malloc(sizeof(struct bnoeul));
+    tempeulptr = (struct bnoeul *) malloc(sizeof(struct bnoeul));
+    
 
     // wait POLYWAITTIME
-    sleep(POLYWAITTIME);
-    errval = get_eul(finaleulptr);
+    errval = get_eul(starteulptr);
     if (errval < 0)
     {
         retval = ERRORVAL;
     }
-    else if (final_h - start_h > MAXPOLYDEV)
+    start_h = starteulptr->eul_head;
+    start_r = starteulptr->eul_roll;
+    start_p = starteulptr->eul_pitc;
+    h = start_h;
+    r = start_r;
+    p = start_p;
+    sleep(POLYWAITTIME);
+    errval = get_eul(tempeulptr);
+    if (errval < 0)
+    {
+        retval = ERRORVAL;
+    }
+    else if (fabs(h - start_h) > MAXPOLYDEV)
     {
         retval = WIND;
     }
-    else if (final_r - start_r > MAXPOLYDEV)
+    else if (fabs(r - start_r) > MAXPOLYDEV)
     {
         retval = WATER;
     }
     // free memory after casting to void*
-    free((void *)finaleulptr);
+    free((void *)tempeulptr);
+    free((void *)starteulptr);
     return retval;
 }
 
@@ -99,6 +122,7 @@ bool checkLightning(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr)
     double h = bnoeulptr->eul_head;
     double r = bnoeulptr->eul_roll;
     double p = bnoeulptr->eul_pitc;
+    
     if (init_r - r < ANGLETOLROLL)
     {
         return false;
@@ -111,6 +135,8 @@ bool checkLightning(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr)
     {
         return false;
     }
+
+
 }
 
 short classifyShape(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr)
@@ -145,7 +171,22 @@ double getDistance(clock_t start, clock_t end, struct bnoeul *bnoeulptr, struct 
     double acc_z = bnolinptr->linacc_z;
 }
 
-void calibrateImu()
+bool hasValidLength(short spellType, double drawLen)
+{
+    if (spellType == WATER || spellType == WIND ||
+        spellType == FIRE || spellType == EARTH)
+    {
+        return drawLen > MINDRAWLEN;
+    }
+    else if (spellType == LIGHTNING)
+    {
+        return drawLen > MINDRAWLENLIGHT;
+    }
+    return false;
+}
+
+
+void initializeImu()
 {
     int retval = 0;
     bno_reset();

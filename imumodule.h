@@ -22,6 +22,10 @@ static double POLYANGLETRI = 60;
 static double POLYANGLELIGHT = 150;
 static double POLYANGLESQUARE = 90;
     /*
+        canonical axis
+
+    */
+    /*
         values of each type
         0 = earth
         1 = fire
@@ -95,12 +99,18 @@ extern struct bnolin currLinStruct; // stores current velocity
     function declarations
 */
 extern int main();
-extern short checkCircle(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr);
+extern short checkCircle();
 extern bool checkLightning(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr);
 extern short classifyShape(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr);
-extern double getVelocity(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr);
-extern void calibrateImu();
+
+extern void initializeImu();
+
 extern bool isValidSpell(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr);
+extern bool hasValidLength(short spellType, double drawLen);
+
+    /*
+        Functions modifying global spell queue
+    */
 extern void enqueueSpell(short spell);
 extern short dequeueSpell(); // returns -1 on error
 extern void initQueue(); // initialize spellQueueStart
