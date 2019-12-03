@@ -164,11 +164,7 @@ struct PlayerStaffData* initPlayerStruct(bool*);
 
 void unloadPlayerData(struct PlayerStaffData*);
 
-void rumbleHandler(struct PlayerStaffData*, int, int);
 
-void lightHandler(struct PlayerStaffData*, int);
-
-void soundHandler(struct PlayerStaffData*, int);
 
 bool isCurrCasting(struct PlayerStaffData*);
 
@@ -210,5 +206,12 @@ void processDamageRecieved(struct PlayerStaffData*, int*);
 
 void endCasting(struct PlayerStaffData*, bool);
 
+void rumbleHandler(struct PlayerStaffData*, int);
+
+void alternateRumble(int);
+
+void lightHandler(struct PlayerStaffData*, int);
+
+void soundHandler(struct PlayerStaffData*, int);
 
 #endif

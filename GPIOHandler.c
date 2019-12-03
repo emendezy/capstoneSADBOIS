@@ -63,8 +63,6 @@ bool endCastButtonPressed()
 
 void changeRumbleMode(int mode)
 {
-	printf("changing rumbleMode, %d\n", level);
-
 	if(mode == 1)
 		digitalWrite(RUMBLER_PIN, HIGH);
 	else /* mode == 0 */

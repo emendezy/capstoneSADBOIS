@@ -255,10 +255,10 @@ void updatePlayerFields(struct PlayerStaffData* P)
 	P->mostRecentTime = clock();
 	/* Clean up code - dealing with timing gaurds */
 	double fullQuarterSecond = 1;
-	double timePassedQuarter = ((double)(P->mostRecentTime - P->frontOfOneQuarterSecond)) / (CLOCKS_PER_SEC/4)
+	double timePassedQuarter = ((double)(P->mostRecentTime - P->frontOfOneQuarterSecond)) / (CLOCKS_PER_SEC/4);
 
 	double fullSecond = 1;
-	double timePassed = ((double)(P->mostRecentTime - P->frontOfOneSecond)) / (CLOCKS_PER_SEC)
+	double timePassed = ((double)(P->mostRecentTime - P->frontOfOneSecond)) / (CLOCKS_PER_SEC);
 
 	// ##################### 1/4 SEC #####################
 	if(fullQuarterSecond <= timePassedQuarter && P->rumbleType == END_CAST)
