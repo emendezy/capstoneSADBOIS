@@ -36,6 +36,12 @@
 #define INCR 2
 #define DECR 3
 
+#define NO_RUMBLE -1
+#define END_CAST 0
+#define SPELL_CASTING 1
+
+#define ENDING_RUMBLE_ALT 7 /* Even numbers mean on | Odd numbers mean off */
+
 // EARTH = 0;
 // FIRE = 1;
 // LIGHTNING = 2;
@@ -62,20 +68,31 @@ struct PlayerStaffData
 	bool* gameInProgress;
 	int* activeSpells; // from book of spells
 	bool isCasting;
+	bool startOfSpell;
 	int castDamage; // damage of spell created by this user
 
 	struct spellQueueStruct *spellQueue;
 
 	int hasBastion;
 	bool hasImmunity;
-	clock_t immunityStart;
 	int immunityTime;
+
+	bool isBurning;
+	int burnPerSecond;
+	int burnTotalTime;
+
+	bool isWeakened;
+	int weaknessPercent;
+	int weaknessTime;
+	clock_t weaknessStart;
 
 	int* coolDownMask;
 
+	int* damageValues;
+
 	bool isRumbling;
-	int rumbleLevel; /* 0 -> 10 */
-	clock_t rumbleStartTime;
+	int rumbleType; /* Can be END_CAST (0) or SPELL_START (1) */
+	int rumbleCount;
 
 	bool isLit;
 	int lightLevel; /* 0 -> 10 */
@@ -87,9 +104,15 @@ struct PlayerStaffData
 	bool isShielding;
 	int shieldPercent; /* 0(empty) -> 100(full) */
 	int shieldTime;
-	clock_t shieldStart;
 
 	int healthPercent; /* 0(dead) -> 100(full) */
+	bool isHealing;
+	int healthRestorePerSecond;
+	int healthRestoreTime;
+
+	clock_t frontOfOneQuarterSecond;
+	clock_t frontOfOneSecond;
+	clock_t mostRecentTime;
 
 	sigset_t prev_mask;// for forking (masks for block/unblock)
 };
@@ -141,11 +164,7 @@ struct PlayerStaffData* initPlayerStruct(bool*);
 
 void unloadPlayerData(struct PlayerStaffData*);
 
-void rumbleHandler(struct PlayerStaffData*, int, int);
 
-void lightHandler(struct PlayerStaffData*, int);
-
-void soundHandler(struct PlayerStaffData*, int);
 
 bool isCurrCasting(struct PlayerStaffData*);
 
@@ -155,11 +174,21 @@ int wasAttacked(struct PlayerStaffData*);
 
 void imuInputHandler(struct PlayerStaffData*);
 
+void updatePlayerFields(struct PlayerStaffData*);
+
 void attackHandler(struct PlayerStaffData*, int);
 
 void spellCaster(struct PlayerStaffData*, int);
 
+void healPlayer(struct PlayerStaffData*);
+
+void handleBurning(struct PlayerStaffData*);
+
 void editCoolDownValues(struct PlayerStaffData*, int);
+
+void updateCooldownLightsOnStaff(int, int);
+
+void checkWeakness(struct PlayerStaffData*);
 
 void checkShield(struct PlayerStaffData*);
 
@@ -169,11 +198,20 @@ void sendCast(struct PlayerStaffData*);
 
 void sendDamagePackage(int*);
 
+int calcSendingSpellDamage(struct PlayerStaffData*, int);
+
 int calcShieldAffect(int, int);
 
 void processDamageRecieved(struct PlayerStaffData*, int*);
 
 void endCasting(struct PlayerStaffData*, bool);
 
+void rumbleHandler(struct PlayerStaffData*, int);
+
+void alternateRumble(int);
+
+void lightHandler(struct PlayerStaffData*, int);
+
+void soundHandler(struct PlayerStaffData*, int);
 
 #endif

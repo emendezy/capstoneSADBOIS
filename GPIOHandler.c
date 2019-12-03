@@ -22,10 +22,11 @@ void setupPinsOnRaspberryPi()
 	pinMode(SPELL_END_BUTTON, INPUT);
 	// pullUpDnControl (SPELL_END_BUTTON, PUD_UP);
 
-	/* Analog Pins with PWM setup (range 0 - 100) */
-	softPwmCreate(RUMBLER_PIN, 0, MAX_ANALOG_RANGE);
+	pinMode(RUMBLER_PIN, OUTPUT);
+	// Output - deliver pulses to user as haptic feedback;
 
-	/* TODO - add more setup code */
+	/* Analog Pins with PWM setup (range 0 - 100) */
+	// softPwmCreate(RUMBLER_PIN, 0, MAX_ANALOG_RANGE);
 }
 
 bool gameStartButtonPressed()
@@ -60,11 +61,12 @@ bool endCastButtonPressed()
 	return false;
 }
 
-void changeRumbleMode(int level)
+void changeRumbleMode(int mode)
 {
-	printf("changing rumbleMode, %d\n", level);
-
-	softPwmWrite(RUMBLER_PIN, level);
+	if(mode == 1)
+		digitalWrite(RUMBLER_PIN, HIGH);
+	else /* mode == 0 */
+		digitalWrite(RUMBLER_PIN, LOW);
 }
 
 void changeLEDMode(int mode)

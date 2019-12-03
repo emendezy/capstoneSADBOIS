@@ -22,8 +22,13 @@ void playTheGame()
 	int testOnce = 1;
 
 	/* Install Signal Handler(s) */
-	signal(SIGCHLD, sigchld_handler); // Handles terminated or stopped child
-	sigset_t prev_mask, mask;
+	// signal(SIGCHLD, sigchld_handler); // Handles terminated or stopped child
+	// sigset_t prev_mask, mask;
+
+	/* Fake test code
+		run this spell on the user's self for now
+	*/
+	P->healthPercent = 80; // start fake damaged
 
 	//-------------------------------------
 	// Loop while game is active
@@ -31,22 +36,14 @@ void playTheGame()
 	printf("game is active\n");
 	while(gameIsActive)
 	{
-		sigfillset(&mask);
-		sigprocmask(SIG_BLOCK, &mask, &prev_mask);
-		P->prev_mask = prev_mask;
-
-		// fake code
-		if(testOnce == 1)
-		{
-			soundHandler(P, 0);
-			testOnce = 0;
-		}
+		// sigfillset(&mask);
+		// sigprocmask(SIG_BLOCK, &mask, &prev_mask);
+		// P->prev_mask = prev_mask;
 
 		/* Be listening for user input or enemy attack */
 		isCurrentlyCasting = isCurrCasting(P);
 		// ^ returns true if button pressed or button was already pressed and
 		//     P->isCasting was set to true
-		stopCasting = isDoneCasting(P); /* handle send spell logic */
 
 		damageType = wasAttacked(P);
 		// TODO - look up damage Type's value to apply the damage done
@@ -58,21 +55,16 @@ void playTheGame()
 
 		if (isCurrentlyCasting && !isBeingAttacked)
 		{
-			if(!stopCasting)
-			{
-				spellCaster(P, damageType);
-				/* ^ handle attack interupt in spellCaster */
-			}
-			/* successful cast end is handled in isDoneCasting() */
+			spellCaster(P, damageType);
 		}
 		else if(isBeingAttacked)
 		{
 			attackHandler(P, damageType);
-
 		}
+		updatePlayerFields(P);
 
 		// unblock signals
-		sigprocmask(SIG_SETMASK, &prev_mask, NULL);
+		// sigprocmask(SIG_SETMASK, &prev_mask, NULL);
 	}
 
 	//-------------------------------------
@@ -90,7 +82,6 @@ void waitForGameToStart()
 	if (gameStartButtonPressed())
 	{
 		printf("game button set to true\n");
-		delay(1000);
 		gameIsActive = true;
 	}
 
@@ -103,9 +94,9 @@ void waitForGameToStart()
 int main()
 {
 	initializeRaspberryPi();
+	printf("in main loop\n");
 	while(1)
 	{
-		printf("in main loop\n");
 		if (gameIsActive)
 			playTheGame();
 		else
