@@ -263,7 +263,7 @@ void updatePlayerFields(struct PlayerStaffData* P)
 	// ##################### 1/4 SEC #####################
 	if(fullQuarterSecond <= timePassedQuarter && P->rumbleType == END_CAST)
 	{
-		if(P->rumbleCount <= ENDING_RUMBLE_COUNT)
+		if(P->rumbleCount <= ENDING_RUMBLE_ALT)
 		{
 			alternateRumble(P->rumbleCount); /* Even - on | Odd - off */
 			P->rumbleCount++;
@@ -304,7 +304,7 @@ void endCasting(struct PlayerStaffData* P, bool successfulCast)
 {
 	P->isCasting = false;
 
-	rumbleHandler(P, END_CAST, 0);
+	rumbleHandler(P, END_CAST);
 	lightHandler(P, TURN_OFF);
 
 	if(successfulCast)
