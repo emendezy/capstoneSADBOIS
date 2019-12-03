@@ -69,8 +69,8 @@ struct PlayerStaffData* initPlayerStruct(bool* isTheGameInProgress)
 	P->damageValues = calloc(NUM_DAMAGE_VALUES, sizeof(int));
 
 	P->isRumbling = false;
-	P->rumbleLevel = 0;
-	P->rumbleStartTime = 0;
+	P->rumbleType = NO_RUMBLE;
+	P->rumbleCount = 0;
 
 	P->isLit = false;
 	P->lightLevel = 0;
@@ -89,7 +89,8 @@ struct PlayerStaffData* initPlayerStruct(bool* isTheGameInProgress)
 	P->healthRestoreTime = 0;
 
 	P->frontOfOneSecond = clock();
-	P->backOfOneSecond = clock();
+	P->frontOfOneQuarterSecond = clock();
+	P->mostRecentTime = clock();
 
 	return P;
 }
@@ -238,7 +239,7 @@ void spellCaster(struct PlayerStaffData* P, int damageType)
 			level = MAX_ANALOG_RANGE / 2;
 			if(!(P->isRumbling))
 			{
-				rumbleHandler(P, TURN_ON, level);
+				rumbleHandler(P, SPELL_CASTING);
 				// lightHandler(P, TURN_ON);
 			}
 			P->startOfSpell = false;
@@ -251,10 +252,27 @@ void spellCaster(struct PlayerStaffData* P, int damageType)
 
 void updatePlayerFields(struct PlayerStaffData* P)
 {
+	P->mostRecentTime = clock();
 	/* Clean up code - dealing with timing gaurds */
-	double oneSec = 1;
-	P->backOfOneSecond = clock();
-	if(oneSec <= ((double)(P->backOfOneSecond - P->frontOfOneSecond)) / CLOCKS_PER_SEC)
+	double fullQuarterSecond = 1;
+	double timePassedQuarter = ((double)(P->mostRecentTime - P->frontOfOneQuarterSecond)) / (CLOCKS_PER_SEC/4)
+
+	double fullSecond = 1;
+	double timePassed = ((double)(P->mostRecentTime - P->frontOfOneSecond)) / (CLOCKS_PER_SEC)
+
+	// ##################### 1/4 SEC #####################
+	if(fullQuarterSecond <= timePassedQuarter && P->rumbleType == END_CAST)
+	{
+		if(P->rumbleCount <= ENDING_RUMBLE_COUNT)
+		{
+			alternateRumble(P->rumbleCount); /* Even - on | Odd - off */
+			P->rumbleCount++;
+		}
+		P->frontOfOneQuarterSecond = clock();
+	}
+
+	// ##################### 1 SEC #####################
+	if(fullSecond <= timePassed)
 	{
 		printf("-----------------------------\n1 second mark\n");
 
@@ -270,9 +288,13 @@ void updatePlayerFields(struct PlayerStaffData* P)
 			checkImmunity(P);
 		if(P->isBurning)
 			handleBurning(P);
+		if(P->rumbleType == SPELL_CASTING)
+		{
+			alternateRumble(P->rumbleCount);
+			P->rumbleCount++;
+		}
 
 		P->frontOfOneSecond = clock();
-		P->backOfOneSecond = clock();
 	}
 }
 
@@ -282,7 +304,7 @@ void endCasting(struct PlayerStaffData* P, bool successfulCast)
 {
 	P->isCasting = false;
 
-	rumbleHandler(P, TURN_OFF, 0);
+	rumbleHandler(P, END_CAST, 0);
 	lightHandler(P, TURN_OFF);
 
 	if(successfulCast)
@@ -590,33 +612,40 @@ void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
  *  Handle Rumbling sequences based on Player data
  *	isCasting - rumble at a low frequency to provide haptic feedback
  */
-void rumbleHandler(struct PlayerStaffData* P, int rumbleMode, int level)
+void rumbleHandler(struct PlayerStaffData* P, int rumbleMode)
 {
 	switch (rumbleMode)
 	{
-		case 0: /* Case for turning rumbler OFF */
+		case 0: /* Case for END_CAST - alert user spell succesfully ended */
 			P->isRumbling = false;
-			P->rumbleLevel = 0;
-			P->rumbleStartTime = 0;
-			changeRumbleMode(TURN_OFF);
+			P->rumbleType = END_CAST;
+			P->rumbleCount = 0;
 			break;
-		case 1: /* Case for turning rumbler ON */
+		case 1: /* Case for SPELL_CASTING - slow drone rumble while casting */
 			P->isRumbling = true;
-			P->rumbleStartTime = clock();
-			P->rumbleLevel = 1;
-			changeRumbleMode(level);
+			P->rumbleType = SPELL_CASTING;
+			P->rumbleCount = ENDING_RUMBLE_ALT + 1;
+			/* This rumble stays on until user presses the 'end cast button'
+			 *   - Alternate rumbling every sec using updatePlayerFields()
+			 *   - Set rumbleCount to (ENDING_RUMBLE_ALT+1) so end cast rumble
+			 *   isn't triggered by accident if the buttons were clicked to
+			 *   close together
+			 */
 			break;
-		/* Utilize this code later for fine tuning rumbling */
-		// case 2: /* Case for increasing rumbler by 1 level step */
-		// 	assert(P->isRumbling == true);
-		// 	assert(P->rumbleLevel < (MAX_ANALOG_RANGE * 9)/ 10);
-		// 	P->rumbleLevel += ANALOG_STEP;
-		// 	break;
-		// case 3: /* Case for decreasing the rumbler by 1 level step */
-		// 	assert(P->isRumbling == true);
-		// 	assert(P->rumbleLevel > ANALOG_STEP);
-		// 	P->rumbleLevel -= ANALOG_STEP;
-		// 	break;
+	}
+}
+
+void alternateRumble(int rumbleCount)
+{
+	if(rumbleCount % 2 == 0)
+	{
+		changeRumbleMode(TURN_ON);
+		printf("Rumble on");
+	}
+	else
+	{
+		changeRumbleMode(TURN_OFF);
+		printf("Rumble off");
 	}
 }
 

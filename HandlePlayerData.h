@@ -36,6 +36,12 @@
 #define INCR 2
 #define DECR 3
 
+#define NO_RUMBLE -1
+#define END_CAST 0
+#define SPELL_CASTING 1
+
+#define ENDING_RUMBLE_ALT 7 /* Even numbers mean on | Odd numbers mean off */
+
 // EARTH = 0;
 // FIRE = 1;
 // LIGHTNING = 2;
@@ -85,8 +91,8 @@ struct PlayerStaffData
 	int* damageValues;
 
 	bool isRumbling;
-	int rumbleLevel; /* 0 -> 10 */
-	clock_t rumbleStartTime;
+	int rumbleType; /* Can be END_CAST (0) or SPELL_START (1) */
+	int rumbleCount;
 
 	bool isLit;
 	int lightLevel; /* 0 -> 10 */
@@ -104,8 +110,9 @@ struct PlayerStaffData
 	int healthRestorePerSecond;
 	int healthRestoreTime;
 
+	clock_t frontOfOneQuarterSecond;
 	clock_t frontOfOneSecond;
-	clock_t backOfOneSecond;
+	clock_t mostRecentTime;
 
 	sigset_t prev_mask;// for forking (masks for block/unblock)
 };
