@@ -554,7 +554,7 @@ int calcTotalDamage(int shieldPercent, int dmg)
 void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 {
 	printf("Under Attack! :o\n");
-	soundHandler(P, 1); // play baby sound (got hit)
+	// soundHandler(P, 1); // play baby sound (got hit)
 
 	// fake code - test updateCooldownLights
 	updateCooldownLightsOnStaff(5,0);
