@@ -18,7 +18,7 @@
 #define SPELL_START_BUTTON 3
 #define SPELL_END_BUTTON 4
 
-#define RUMBLER_PIN 0
+#define RUMBLER_PIN 17
 #define MAX_ANALOG_RANGE 100
 #define ANALOG_STEP 5
 
