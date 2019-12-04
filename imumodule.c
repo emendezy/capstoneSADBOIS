@@ -38,19 +38,7 @@ int imuMain(struct PlayerStaffData *P)
         {
             numloop++;
         }
-        retval = get_eul(&currEulStruct);
-        // error getting euler orientation
-        if (retval < 0)
-        {
-            return retval;
-        }
-        retval = get_lin(&currLinStruct);
-        // error getting linear acceleration
-        if (retval < 0)
-        {
-            return retval;
-        }
-        // legacy: classifyShape(&currEulStruct, &currLinStruct);
+        
         currSpellType = classifyShape();
         if ((0 <= currSpellType) && (currSpellType <= 4))
         {
