@@ -159,8 +159,9 @@ short classifyShape()
     while (true)
     {
         curr_t = clock();
+        printf("imumodule: starting classifyShape\n");
         time_passed = ((double)(curr_t - start_t)) / CLOCKS_PER_SEC;
-        if (time_passed > POLYWAITTIME && time_passed < LIGHTNINGWAITTIME)
+        if ((time_passed > POLYWAITTIME) && (time_passed < LIGHTNINGWAITTIME))
         {
             errval = get_eul(curreulptr);
             if (errval < 0)
@@ -186,9 +187,7 @@ short classifyShape()
             if (isLightning)
             {
                 currSpellType = LIGHTNING;
-                free((void *) starteulptr);
-                free((void *) curreulptr);
-                return currSpellType;
+                break;
             }
             isFire = checkFire(starteulptr, curreulptr);
             if (isFire)
