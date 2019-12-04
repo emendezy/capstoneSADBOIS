@@ -54,7 +54,7 @@ int main()
         }
         // legacy: classifyShape(&currEulStruct, &currLinStruct);
         currSpellType = classifyShape();
-        if (0 <= currSpellType <= 4)
+        if ((0 <= currSpellType) && (currSpellType <= 4))
         {
             enqueueSpell(currSpellType);
         }
