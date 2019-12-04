@@ -30,7 +30,6 @@
 #include "csapp.h"
 #include "tsh_helper.h"
 
-#include "playerstruct.h"
 
 // #define NDEBUG /* Comment for no debug mode */
 #define TURN_OFF 0
