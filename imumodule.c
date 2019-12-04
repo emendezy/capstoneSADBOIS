@@ -235,7 +235,7 @@ void initializeImu()
 {
     printf("imumodule.c: entered initializeImu()\n");
     int retval = 0;
-    bno_reset();
+    // bno_reset();
     retval = get_eul(initEulPtr);
     if (retval < 0)
     {
