@@ -49,8 +49,8 @@ struct PlayerStaffData* initPlayerStruct(bool* isTheGameInProgress)
 	P->startOfSpell = false;
 	P->castDamage = 0;
 
-	P->spellQueue = malloc(sizeof(struct spellQueueStruct));
-	// initQueue();
+	//P->spellQueue = malloc(sizeof(struct spellQueueStruct));
+	initQueue();
 	P->hasBastion = 0;
 	P->hasImmunity = false;
 	P->immunityTime = 0;
@@ -218,6 +218,7 @@ void attackHandler(struct PlayerStaffData* P, int damageTaken)
 
 void spellCaster(struct PlayerStaffData* P, int damageType)
 {
+	int errval;
 	int level;
 
 	bool stopCasting = isDoneCasting(P); /* handle send spell logic */
@@ -244,7 +245,11 @@ void spellCaster(struct PlayerStaffData* P, int damageType)
 			}
 			P->startOfSpell = false;
 		}
-
+	errval = imuMain(P);
+	if (errval < 0)
+	{
+		printf("error value after calling imuMain\n");
+	}
 		/* Spell has been started and now process the IMU input */
 		imuInputHandler(P);
 	}
