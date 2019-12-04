@@ -100,14 +100,14 @@ extern struct bnoeul *initEulPtr; // stores initial orientation
     function declarations
 */
 extern int main();
-extern short checkCircle(struct bnoeul *, struct bnoeul *);
-extern bool checkLightning(struct bnoeul *, struct bnoeul *);
-extern bool checkFire(struct bnoeul *, struct bnoeul *);
+extern short checkCircle(struct bnoeul*, struct bnoeul*);
+extern bool checkLightning(struct bnoeul*, struct bnoeul*);
+extern bool checkFire(struct bnoeul*, struct bnoeul*);
 extern short classifyShape();
 
 extern void initializeImu();
 
-extern bool isValidSpell(struct bnoeul *, struct bnolin *);
+extern bool isValidSpell(struct bnoeul*, struct bnolin*);
 extern bool hasValidLength(short, double);
 
     /*
@@ -122,4 +122,4 @@ extern void initQueue(); // initialize spellQueueStart
     */
 double angDiffWrap(double, double);
 
-int imuMain(struct PlayerStaffData *);
+int imuMain(struct PlayerStaffData*);
