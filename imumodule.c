@@ -233,6 +233,7 @@ bool hasValidLength(short spellType, double drawLen)
 
 void initializeImu()
 {
+    printf("imumodule.c: entered initializeImu()\n");
     int retval = 0;
     bno_reset();
     retval = get_eul(initEulPtr);
