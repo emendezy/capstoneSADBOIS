@@ -30,6 +30,8 @@
 #include "csapp.h"
 #include "tsh_helper.h"
 
+#include "playerstruct.h"
+
 // #define NDEBUG /* Comment for no debug mode */
 #define TURN_OFF 0
 #define TURN_ON 1
@@ -63,59 +65,7 @@
 #define NUM_DAMAGE_VALUES 6
 /* ------------------------------------------------------------------------- */
 
-struct PlayerStaffData
-{
-	bool* gameInProgress;
-	int* activeSpells; // from book of spells
-	bool isCasting;
-	bool startOfSpell;
-	int castDamage; // damage of spell created by this user
 
-	struct spellQueueStruct *spellQueue;
-
-	int hasBastion;
-	bool hasImmunity;
-	int immunityTime;
-
-	bool isBurning;
-	int burnPerSecond;
-	int burnTotalTime;
-
-	bool isWeakened;
-	int weaknessPercent;
-	int weaknessTime;
-	clock_t weaknessStart;
-
-	int* coolDownMask;
-
-	int* damageValues;
-
-	bool isRumbling;
-	int rumbleType; /* Can be END_CAST (0) or SPELL_START (1) */
-	int rumbleCount;
-
-	bool isLit;
-	int lightLevel; /* 0 -> 10 */
-	clock_t lightStartTime;
-
-	bool isLoud;
-	int keyOfSoundToPlay; /* if none -> -1, else -> key for soundBook */
-
-	bool isShielding;
-	int shieldPercent; /* 0(empty) -> 100(full) */
-	int shieldTime;
-
-	int healthPercent; /* 0(dead) -> 100(full) */
-	bool isHealing;
-	int healthRestorePerSecond;
-	int healthRestoreTime;
-
-	clock_t frontOfOneQuarterSecond;
-	clock_t frontOfOneSecond;
-	clock_t mostRecentTime;
-
-	sigset_t prev_mask;// for forking (masks for block/unblock)
-};
 
 /*
  * when the player casts a self-buff, or when the player is hit by an enemy spell, use this:

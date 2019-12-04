@@ -9,7 +9,7 @@
 #include "getbno055.h"
 #include "imumodule.h"
 
-int imuMain()
+int imuMain(struct PlayerstaffData *P)
 {
     clock_t start_t = 0;
     clock_t curr_t = 0;

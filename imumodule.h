@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <math.h>
+#include "playerstruct.h"
 
 /*
     global constants
@@ -123,4 +124,4 @@ extern void initQueue(); // initialize spellQueueStart
     */
 double angDiffWrap(double angle1, double angle2);
 
-int imuMain();
+int imuMain(struct PlayerStaffData *P);
