@@ -9,7 +9,7 @@
 #include "getbno055.h"
 #include "imumodule.h"
 
-int main()
+int imuMain()
 {
     clock_t start_t = 0;
     clock_t curr_t = 0;
@@ -324,4 +324,5 @@ double angDiffWrap(double angle1, double angle2)
     {
         result = 360 - result;
     }
+    return result;
 }
