@@ -42,6 +42,7 @@ int imuMain(struct PlayerStaffData *P)
         main loop
     */
     start_t = clock();
+    printf("imumodule.c: about to start inner while loop before iscasting\n");
     while (P->isCasting)
     {
         curr_t = clock();
@@ -59,6 +60,8 @@ int imuMain(struct PlayerStaffData *P)
         if ((0 <= currSpellType) && (currSpellType <= 4))
         {
             enqueueSpell(currSpellType);
+            printf("imumodule.c: spellqueued!!!\n");
+            printf("imumodule.c: spell type is %d\n", (int)currSpellType);
         }
     }
     printf("imumodule.c: exiting imuMain\n");
