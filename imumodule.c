@@ -11,6 +11,8 @@
 
 int imuMain(struct PlayerStaffData *P)
 {
+    initEulPtr = (struct bnoeul *) malloc(sizeof(struct bnoeul));
+    short currSpellType;
     clock_t start_t = 0;
     clock_t curr_t = 0;
     int numloop = 1;
@@ -45,6 +47,7 @@ int imuMain(struct PlayerStaffData *P)
             enqueueSpell(currSpellType);
         }
     }
+    free((void *)initEulPtr);
     return retval;
 }
 
@@ -59,11 +62,6 @@ int imuMain(struct PlayerStaffData *P)
 short checkCircle(struct bnoeul *starteulptr, struct bnoeul *curreulptr)
 {
     short retval = NOTCIRCLE;
-    /*
-    double init_h = initEulStruct.eul_head;
-    double init_r = initEulStruct.eul_roll;
-    double init_p = initEulStruct.eul_pitc;
-    */
     double start_h;
     double start_r;
     double h;
@@ -126,6 +124,7 @@ bool checkFire(struct bnoeul *starteulptr, struct bnoeul *curreulptr)
 
 short classifyShape()
 {
+    short currSpellType;
     int errval;
     double time_passed;
     clock_t start_t;
@@ -221,7 +220,7 @@ void initializeImu()
 {
     int retval = 0;
     bno_reset();
-    retval = get_eul(&initEulStruct);
+    retval = get_eul(initEulPtr);
     if (retval < 0)
     {
         printf("Error in initializeIMU\n");
