@@ -1,17 +1,21 @@
 #include <stdbool.h>
+#include <math.h>
 
 /*
     global constants
 */
-static unsigned FRAMEWAITTIME = 10;
-static unsigned POLYWAITTIME = 20; // time in ms must be unsigned to be passed to sleep()
+static double FRAMEWAITTIME = 0.0001; // time in seconds
+static double POLYWAITTIME = 0.1; // time in seconds;
+static double LIGHTNINGWAITTIME = 0.5;
 static double MAXPOLYDEV = 30; // angle in degrees
+static double ANGLELIGHT = 20;
     /*
         angle tolerances in degrees used when there should be no movement in that direction
     */
-static double ANGLETOLHEAD = 15;
-static double ANGLETOLROLL = 15;
-static double ANGLETOLPITCH = 15;
+static double ANGLETOLHEAD = 30;
+static double ANGLETOLROLL = 30;
+static double ANGLETOLPITCH = 30;
+static double ANGLETOLLIGHT = 15;
     /*
         multiplier used when movement exists in that  direction
     */
@@ -21,10 +25,7 @@ static double MINDRAWLENLIGHT = 0.3; // in meters
 static double POLYANGLETRI = 60;
 static double POLYANGLELIGHT = 150;
 static double POLYANGLESQUARE = 90;
-    /*
-        canonical axis
-
-    */
+    
     /*
         values of each type
         0 = earth
@@ -95,13 +96,15 @@ extern struct bnoeul initEulStruct; // stores initial orientation
 extern struct bnoeul currEulStruct; // stores current orientation
 extern struct bnolin currLinStruct; // stores current velocity
 
+// struct bnolin *bnolinptr
 /*
     function declarations
 */
 extern int main();
-extern short checkCircle();
-extern bool checkLightning(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr);
-extern short classifyShape(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr);
+extern short checkCircle(struct bnoeul *starteulptr, struct bnoeul *curreulptr);
+extern bool checkLightning(struct bnoeul *starteulptr, struct bnoeul *curreulptr);
+extern bool checkFire(struct bnoeul *starteulptr, struct bnoeul *curreulptr);
+extern short classifyShape();
 
 extern void initializeImu();
 
@@ -114,3 +117,8 @@ extern bool hasValidLength(short spellType, double drawLen);
 extern void enqueueSpell(short spell);
 extern short dequeueSpell(); // returns -1 on error
 extern void initQueue(); // initialize spellQueueStart
+
+    /*
+        function do convert angle differences
+    */
+double angDiffWrap(double angle1, double angle2);

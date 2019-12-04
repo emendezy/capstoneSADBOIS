@@ -13,6 +13,10 @@ int main()
 {
     bool isCircle = false;
     bool isLightning = false;
+    clock_t start_t = 0;
+    clock_t curr_t = 0;
+    int numloop = 1;
+    double time_passed = 0;
     int retval = 0;
 
     /*
@@ -23,9 +27,19 @@ int main()
     /*
         main loop
     */
+    start_t = clock();
     while (isCasting)
     {
-        sleep(FRAMEWAITTIME);
+        curr_t = clock();
+        time_passed = ((double)(curr_t - start_t)) / CLOCKS_PER_SEC;
+        if (time_passed < FRAMEWAITTIME * numloop)
+        {
+            continue;
+        }
+        else
+        {
+            numloop++;
+        }
         retval = get_eul(&currEulStruct);
         // error getting euler orientation
         if (retval < 0)
@@ -38,7 +52,8 @@ int main()
         {
             return retval;
         }
-        currSpellType = classifyShape(&currEulStruct, &currLinStruct);
+        // legacy: classifyShape(&currEulStruct, &currLinStruct);
+        currSpellType = classifyShape();
         if (0 <= currSpellType <= 4)
         {
             enqueueSpell(currSpellType);
@@ -55,112 +70,143 @@ int main()
     returns WATER if water (vertical circle)
     returns NOTCIRCLE otherwise
 */
-short checkCircle()
+short checkCircle(struct bnoeul *starteulptr, struct bnoeul *curreulptr)
 {
     short retval = NOTCIRCLE;
+    /*
     double init_h = initEulStruct.eul_head;
     double init_r = initEulStruct.eul_roll;
     double init_p = initEulStruct.eul_pitc;
-    int counter;
-    int errval;
+    */
     double start_h;
     double start_r;
-    double start_p;
     double h;
     double r;
-    double p;
-    struct bnoeul *tempeulptr;
-    struct bnoeul *starteulptr;
     
-    
-    clock_t time_start = clock();
-    // allocate memory for struct
-    starteulptr = (struct bnoeul *) malloc(sizeof(struct bnoeul));
-    tempeulptr = (struct bnoeul *) malloc(sizeof(struct bnoeul));
-    
-
-    // wait POLYWAITTIME
-    errval = get_eul(starteulptr);
-    if (errval < 0)
-    {
-        retval = ERRORVAL;
-    }
     start_h = starteulptr->eul_head;
     start_r = starteulptr->eul_roll;
-    start_p = starteulptr->eul_pitc;
-    h = start_h;
-    r = start_r;
-    p = start_p;
-    sleep(POLYWAITTIME);
-    errval = get_eul(tempeulptr);
-    if (errval < 0)
-    {
-        retval = ERRORVAL;
-    }
-    else if (fabs(h - start_h) > MAXPOLYDEV)
-    {
-        retval = WIND;
-    }
-    else if (fabs(r - start_r) > MAXPOLYDEV)
+    h = curreulptr->eul_head;
+    r = curreulptr->eul_roll;
+
+    if (angDiffWrap(r, start_r) > MAXPOLYDEV)
     {
         retval = WATER;
     }
-    // free memory after casting to void*
-    free((void *)tempeulptr);
-    free((void *)starteulptr);
+    else if (angDiffWrap(h, start_h) > MAXPOLYDEV)
+    {
+        retval = WIND;
+    }
+
     return retval;
 }
 
 /*
     checks if rune is for lightning
 */
-bool checkLightning(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr)
+bool checkLightning(struct bnoeul *starteulptr, struct bnoeul *curreulptr)
 {
-    double init_h = initEulStruct.eul_head;
-    double init_r = initEulStruct.eul_roll;
-    double init_p = initEulStruct.eul_pitc;
-    double h = bnoeulptr->eul_head;
-    double r = bnoeulptr->eul_roll;
-    double p = bnoeulptr->eul_pitc;
+    bool result = true;
+    double start_h;
+    double h;
+    struct bnoeul *tempeulptr;
+    double angle;
+
+    start_h = starteulptr->eul_head;
+    h = curreulptr->eul_head;
+    angle = angDiffWrap(starteulptr->eul_head, h);
     
-    if (init_r - r < ANGLETOLROLL)
+    if (angle < ANGLETOLLIGHT)
     {
-        return false;
+        result = false;
     }
-    else if (init_h - h < ANGLETOLHEAD)
+    else if (angle > ANGLELIGHT + ANGLETOLLIGHT)
     {
-        return false;
+        result = false;
     }
-    else if (init_p - p < ANGLETOLPITCH)
-    {
-        return false;
-    }
-
-
+    return result;
 }
 
-short classifyShape(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr)
+bool checkFire(struct bnoeul *starteulptr, struct bnoeul *curreulptr)
 {
+    double start_p;
+    double p;
+    start_p = starteulptr->eul_pitc;
+    p = curreulptr->eul_pitc;
+    if (angDiffWrap(p, start_p) > ANGLETOLPITCH)
+    {
+        return true;
+    }
+    return false;
+}
+
+short classifyShape()
+{
+    int errval;
+    double time_passed;
+    clock_t start_t;
+    clock_t curr_t;
+    struct bnoeul *starteulptr;
+    struct bnoeul *curreulptr;
     short circleType = 0;
     bool isLightning;
+    bool isFire;
 
-    circleType = checkCircle(bnoeulptr, bnolinptr);
-    isLightning = checkLightning(bnoeulptr, bnolinptr);
-    if (circleType == WATER)
+    /*
+        get starting angle
+    */
+    curreulptr = (struct bnoeul *) malloc(sizeof(struct bnoeul));
+    starteulptr = (struct bnoeul *) malloc(sizeof(struct bnoeul));
+    
+    start_t = clock();
+
+    
+
+    while (true)
     {
-        currSpellType = WATER;
-        return currSpellType;
+        curr_t = clock();
+        time_passed = ((double)(curr_t - start_t)) / CLOCKS_PER_SEC;
+        if (time_passed > POLYWAITTIME && time_passed < LIGHTNINGWAITTIME)
+        {
+            errval = get_eul(curreulptr);
+            if (errval < 0)
+            {
+                currSpellType = ERRORVAL;
+            }
+            currSpellType = checkCircle(starteulptr, curreulptr);
+            if (currSpellType == WATER)
+            {
+                currSpellType = WATER;
+                break;
+            }
+            else if (currSpellType == WIND)
+            {
+                currSpellType = WIND;
+                break;
+            }
+            break;
+        }
+        if (time_passed > LIGHTNINGWAITTIME)
+        {
+            errval = get_eul(curreulptr);
+            isLightning = checkLightning(starteulptr, curreulptr);
+            if (isLightning)
+            {
+                currSpellType = LIGHTNING;
+                free((void *) starteulptr);
+                free((void *) curreulptr);
+                return currSpellType;
+            }
+            isFire = checkFire(starteulptr, curreulptr);
+            if (isFire)
+            {
+                currSpellType = FIRE;
+                break;
+            }
+            break;
+        }
     }
-    else if (circleType == WIND)
-    {
-        currSpellType = WIND;
-        return currSpellType;
-    }
-    else if (isLightning)
-    {
-        currSpellType = LIGHTNING;
-        return currSpellType;
-    }
+    free((void *) starteulptr);
+    free((void *) curreulptr);
     return currSpellType;
 }
 
@@ -260,4 +306,20 @@ void initQueue()
 {
     spellQueueStart = NULL;
     spellQueueEnd = NULL;
+}
+
+
+/* 
+    convert two angles from -180~180  to 0~360
+*/
+double angDiffWrap(double angle1, double angle2)
+{
+    double result = 0;
+    double abig = fmax(angle1, angle2);
+    double asmall = fmin(angle1, angle2);
+    result = fmax - fmin;
+    if (result > 180)
+    {
+        result = 360 - result;
+    }
 }
