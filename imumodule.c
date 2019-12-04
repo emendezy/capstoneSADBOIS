@@ -23,6 +23,7 @@ struct bnoeul *initEulPtr; // stores initial orientation
 
 int imuMain(struct PlayerStaffData *P)
 {
+    printf("imumodule.c: starting imuMain\n");
     short currSpellType;
     clock_t start_t = 0;
     clock_t curr_t = 0;
@@ -35,6 +36,7 @@ int imuMain(struct PlayerStaffData *P)
         get initial hrp values
         passes to global pointer
     */
+    printf("imumodule.c: initializeImu()\n");
     initializeImu();
     /*
         main loop
@@ -59,6 +61,7 @@ int imuMain(struct PlayerStaffData *P)
             enqueueSpell(currSpellType);
         }
     }
+    printf("imumodule.c: exiting imuMain\n");
     free((void *)initEulPtr);
     return retval;
 }
