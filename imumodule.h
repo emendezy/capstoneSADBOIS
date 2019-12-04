@@ -122,3 +122,5 @@ extern void initQueue(); // initialize spellQueueStart
         function do convert angle differences
     */
 double angDiffWrap(double angle1, double angle2);
+
+int imuMain();
