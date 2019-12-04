@@ -570,7 +570,7 @@ bool list_jobs(int output_fd) {
  * usage - Print the usage of the tiny shell
  * Not async-signal-safe
  */
-void usage(void) {
+void tsh_usage(void) {
     printf("Usage: shell [-hvp]\n");
     printf("   -h   print this message\n");
     printf("   -v   print additional diagnostic information\n");

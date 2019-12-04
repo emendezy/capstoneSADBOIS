@@ -257,7 +257,7 @@ bool list_jobs(int output_fd);
  *
  * Async-signal-safety: Not async-signal-safe.
  */
-void usage(void);
+void tsh_usage(void);
 
 /*
  * Gets the process ID of a job.
