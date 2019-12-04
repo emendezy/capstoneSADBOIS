@@ -178,7 +178,6 @@ short classifyShape()
                 currSpellType = WIND;
                 break;
             }
-            break;
         }
         if (time_passed > LIGHTNINGWAITTIME)
         {
@@ -197,7 +196,6 @@ short classifyShape()
                 currSpellType = FIRE;
                 break;
             }
-            break;
         }
     }
     free((void *) starteulptr);
