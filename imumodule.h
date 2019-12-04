@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <math.h>
+#include "spellQueueStruct.h"
 #include "playerstruct.h"
 #include "getbno055.h"
 
@@ -55,20 +56,7 @@ typedef struct runeClassStruct
     bool isLightning;
 } runeClassDataAlias;
 
-typedef struct spellQueueStruct
-{
-    struct spellQueueStruct *next;
-    /*
-        spellType
-        0 = earth
-        1 = fire
-        2 = lightning
-        3 = water
-        4 = wind
-        other = various errors
-    */
-    short spellType;
-} spellQueueAlias;
+
 
 /*
     global variables
