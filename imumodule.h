@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <math.h>
 #include "playerstruct.h"
+#include "getbno055.h"
 
 /*
     global constants
