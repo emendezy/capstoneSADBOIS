@@ -317,8 +317,13 @@ void initQueue()
 double angDiffWrap(double angle1, double angle2)
 {
     double result = 0;
-    double abig = fmax(angle1, angle2);
-    double asmall = fmin(angle1, angle2);
+    double abig = angle1;
+    double asmall = angle2;
+    if (angle1 < angle2)
+    {
+        abig = angle2;
+        asmall = angle1;
+    }
     result = abig - asmall;
     if (result > 180)
     {
