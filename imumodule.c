@@ -11,8 +11,6 @@
 
 int main()
 {
-    bool isCircle = false;
-    bool isLightning = false;
     clock_t start_t = 0;
     clock_t curr_t = 0;
     int numloop = 1;
@@ -108,12 +106,11 @@ bool checkLightning(struct bnoeul *starteulptr, struct bnoeul *curreulptr)
     bool result = true;
     double start_h;
     double h;
-    struct bnoeul *tempeulptr;
     double angle;
 
     start_h = starteulptr->eul_head;
     h = curreulptr->eul_head;
-    angle = angDiffWrap(starteulptr->eul_head, h);
+    angle = angDiffWrap(start_h, h);
     
     if (angle < ANGLETOLLIGHT)
     {
@@ -147,7 +144,6 @@ short classifyShape()
     clock_t curr_t;
     struct bnoeul *starteulptr;
     struct bnoeul *curreulptr;
-    short circleType = 0;
     bool isLightning;
     bool isFire;
 
@@ -215,6 +211,7 @@ double getDistance(clock_t start, clock_t end, struct bnoeul *bnoeulptr, struct 
     double acc_x = bnolinptr->linacc_x;
     double acc_y = bnolinptr->linacc_y;
     double acc_z = bnolinptr->linacc_z;
+    return acc_x + acc_y + acc_z;
 }
 
 bool hasValidLength(short spellType, double drawLen)
@@ -237,6 +234,10 @@ void initializeImu()
     int retval = 0;
     bno_reset();
     retval = get_eul(&initEulStruct);
+    if (retval < 0)
+    {
+        printf("Error in initializeIMU\n");
+    }
 }
 
 /*
