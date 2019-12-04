@@ -233,7 +233,7 @@ void spellCaster(struct PlayerStaffData* P, int damageType)
 	{
 		if(P->startOfSpell == true)
 		{
-			printf("first time in spellCaster\n");
+			printf("\nfirst time in spellCaster\n");
 			/* This is the FIRST time we've started the spell Casting seq
 			 * Run initialization steps
 			 */
@@ -244,6 +244,7 @@ void spellCaster(struct PlayerStaffData* P, int damageType)
 				// lightHandler(P, TURN_ON);
 			}
 			P->startOfSpell = false;
+			printf("\nhandleplayerdata.c 256\n");
 		}
 	errval = imuMain(P);
 	if (errval < 0)
