@@ -94,7 +94,6 @@ extern spellQueueAlias *spellQueueEnd; // end of queue
 */
 extern runeClassDataAlias runeClassData; // other files access this global struct
 extern struct bnoeul *initEulPtr; // stores initial orientation
-extern struct bnolin *currLinPtr; // stores current velocity
 
 // struct bnolin *bnolinptr
 /*

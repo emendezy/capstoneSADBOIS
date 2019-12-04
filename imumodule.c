@@ -11,13 +11,13 @@
 
 int imuMain(struct PlayerStaffData *P)
 {
-    initEulPtr = (struct bnoeul *) malloc(sizeof(struct bnoeul));
     short currSpellType;
     clock_t start_t = 0;
     clock_t curr_t = 0;
     int numloop = 1;
     double time_passed = 0;
     int retval = 0;
+    initEulPtr = (struct bnoeul *) malloc(sizeof(struct bnoeul));
 
     /*
         get initial hrp values
