@@ -6,7 +6,6 @@
 #include <errno.h>
 #include <math.h>
 
-#include "getbno055.h"
 #include "imumodule.h"
 
 int imuMain(struct PlayerStaffData *P)
