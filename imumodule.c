@@ -318,7 +318,7 @@ double angDiffWrap(double angle1, double angle2)
     double result = 0;
     double abig = fmax(angle1, angle2);
     double asmall = fmin(angle1, angle2);
-    result = fmax - fmin;
+    result = abig - asmall;
     if (result > 180)
     {
         result = 360 - result;
