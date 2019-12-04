@@ -241,6 +241,7 @@ void initializeImu()
     {
         printf("Error in initializeIMU\n");
     }
+    printf("imumodule.c: exiting initializeImu()\n");
 }
 
 /*
