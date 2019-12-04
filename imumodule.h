@@ -88,13 +88,13 @@ extern bool isCasting;
     /*
         we can use pointers for these as they start as NULL
     */
-extern spellQueueAlias *spellQueueStart; // other files read spells from this guy
-extern spellQueueAlias *spellQueueEnd; // end of queue
+extern spellQueueAlias* spellQueueStart; // other files read spells from this guy
+extern spellQueueAlias* spellQueueEnd; // end of queue
 /*
     we can't use pointers here because we
 */
 extern runeClassDataAlias runeClassData; // other files access this global struct
-extern struct bnoeul *initEulPtr; // stores initial orientation
+extern struct bnoeul* initEulPtr; // stores initial orientation
 
 // struct bnolin *bnolinptr
 /*

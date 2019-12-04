@@ -27,7 +27,7 @@ int imuMain(struct PlayerStaffData *P)
         main loop
     */
     start_t = clock();
-    while (isCasting)
+    while (P->isCasting)
     {
         curr_t = clock();
         time_passed = ((double)(curr_t - start_t)) / CLOCKS_PER_SEC;
