@@ -102,26 +102,26 @@ extern struct bnolin currLinStruct; // stores current velocity
     function declarations
 */
 extern int main();
-extern short checkCircle(struct bnoeul *starteulptr, struct bnoeul *curreulptr);
-extern bool checkLightning(struct bnoeul *starteulptr, struct bnoeul *curreulptr);
-extern bool checkFire(struct bnoeul *starteulptr, struct bnoeul *curreulptr);
+extern short checkCircle(struct bnoeul *, struct bnoeul *);
+extern bool checkLightning(struct bnoeul *, struct bnoeul *);
+extern bool checkFire(struct bnoeul *, struct bnoeul *);
 extern short classifyShape();
 
 extern void initializeImu();
 
-extern bool isValidSpell(struct bnoeul *bnoeulptr, struct bnolin *bnolinptr);
-extern bool hasValidLength(short spellType, double drawLen);
+extern bool isValidSpell(struct bnoeul *, struct bnolin *);
+extern bool hasValidLength(short, double);
 
     /*
         Functions modifying global spell queue
     */
-extern void enqueueSpell(short spell);
+extern void enqueueSpell(short);
 extern short dequeueSpell(); // returns -1 on error
 extern void initQueue(); // initialize spellQueueStart
 
     /*
         function do convert angle differences
     */
-double angDiffWrap(double angle1, double angle2);
+double angDiffWrap(double, double);
 
-int imuMain(struct PlayerStaffData *P);
+int imuMain(struct PlayerStaffData *);
