@@ -25,7 +25,7 @@
 /* ------------------------------------------------------------ *
  * Global variables and defaults                                *
  * ------------------------------------------------------------ */
-int verbose = 0;
+int verboseflag = 0;
 int outflag = 0;
 int argflag = 0; // 1 dump, 2 reset, 3 load calib, 4 write calib
 char opr_mode[9] = {0};
@@ -102,14 +102,14 @@ void parseargs(int argc, char* argv[]) {
 
    while ((arg = (int) getopt (argc, argv, "a:dm:p:rt:l:w:o:hv")) != -1) {
       switch (arg) {
-         // arg -v verbose, type: flag, optional
+         // arg -v verboseflag, type: flag, optional
          case 'v':
-            verbose = 1; break;
+            verboseflag = 1; break;
 
          // arg -a + sensor address, type: string
          // mandatory, example: 0x29
          case 'a':
-            if(verbose == 1) printf("Debug: arg -a, value %s\n", optarg);
+            if(verboseflag == 1) printf("Debug: arg -a, value %s\n", optarg);
             if (strlen(optarg) != 4) {
                printf("Error: Cannot get valid -a sensor address argument.\n");
                exit(-1);
@@ -120,33 +120,33 @@ void parseargs(int argc, char* argv[]) {
          // arg -d
          // optional, dumps the complete register map data
          case 'd':
-            if(verbose == 1) printf("Debug: arg -d, value %s\n", optarg);
+            if(verboseflag == 1) printf("Debug: arg -d, value %s\n", optarg);
             argflag = 1;
             break;
 
          // arg -m sets operations mode, type: string
          case 'm':
-            if(verbose == 1) printf("Debug: arg -m, value %s\n", optarg);
+            if(verboseflag == 1) printf("Debug: arg -m, value %s\n", optarg);
             strncpy(opr_mode, optarg, sizeof(opr_mode));
             break;
 
          // arg -p sets power mode, type: string
          case 'p':
-            if(verbose == 1) printf("Debug: arg -p, value %s\n", optarg);
+            if(verboseflag == 1) printf("Debug: arg -p, value %s\n", optarg);
             strncpy(pwr_mode, optarg, sizeof(pwr_mode));
             break;
 
          // arg -r
          // optional, resets sensor
          case 'r':
-            if(verbose == 1) printf("Debug: arg -r, value %s\n", optarg);
+            if(verboseflag == 1) printf("Debug: arg -r, value %s\n", optarg);
             argflag = 2;
             break;
 
          // arg -t + sensor component, type: string
          // mandatory, example: mag (magnetometer)
          case 't':
-            if(verbose == 1) printf("Debug: arg -t, value %s\n", optarg);
+            if(verboseflag == 1) printf("Debug: arg -t, value %s\n", optarg);
             if (strlen(optarg) != 3) {
                printf("Error: Cannot get valid -t data type argument.\n");
                exit(-1);
@@ -158,7 +158,7 @@ void parseargs(int argc, char* argv[]) {
          // loads the sensor calibration from file. example: ./bno055.cal
          case 'l':
             argflag = 3;
-            if(verbose == 1) printf("Debug: arg -l, value %s\n", optarg);
+            if(verboseflag == 1) printf("Debug: arg -l, value %s\n", optarg);
             strncpy(calfile, optarg, sizeof(calfile));
             break;
 
@@ -166,7 +166,7 @@ void parseargs(int argc, char* argv[]) {
          // writes sensor calibration to file. example: ./bno055.cal
          case 'w':
             argflag = 4;
-            if(verbose == 1) printf("Debug: arg -w, value %s\n", optarg);
+            if(verboseflag == 1) printf("Debug: arg -w, value %s\n", optarg);
             strncpy(calfile, optarg, sizeof(calfile));
             break;
 
@@ -174,7 +174,7 @@ void parseargs(int argc, char* argv[]) {
          // writes the sensor output to file. example: /tmp/sensor.htm
          case 'o':
             outflag = 1;
-            if(verbose == 1) printf("Debug: arg -o, value %s\n", optarg);
+            if(verboseflag == 1) printf("Debug: arg -o, value %s\n", optarg);
             strncpy(htmfile, optarg, sizeof(htmfile));
             break;
 
@@ -291,10 +291,10 @@ int main(int argc, char *argv[]) {
    parseargs(argc, argv);
 
    /* ----------------------------------------------------------- *
-    * get current time (now), write program start if verbose      *
+    * get current time (now), write program start if verboseflag      *
     * ----------------------------------------------------------- */
    time_t tsnow = time(NULL);
-   if(verbose == 1) printf("Debug: ts=[%lld] date=%s", (long long) tsnow, ctime(&tsnow));
+   if(verboseflag == 1) printf("Debug: ts=[%lld] date=%s", (long long) tsnow, ctime(&tsnow));
 
    /* ----------------------------------------------------------- *
     * "-a" open the I2C bus and connect to the sensor i2c address *
@@ -370,7 +370,7 @@ int main(int argc, char *argv[]) {
       }
 
       if(newmode == get_power()) {
-         if(verbose == 1) printf("Debug: Sensor already in mode %s [0x%02X].\n", pwr_mode, newmode);
+         if(verboseflag == 1) printf("Debug: Sensor already in mode %s [0x%02X].\n", pwr_mode, newmode);
          exit(0);
       }
 
