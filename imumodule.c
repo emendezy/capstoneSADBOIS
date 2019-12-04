@@ -288,7 +288,8 @@ void enqueueSpell(short spell)
 short dequeueSpell()
 {
     short spell;
-    struct spellQueue *start;
+    struct spellQueue *oldstart;
+    oldstart = spellQueueStart;
     if (spellQueueStart == NULL)
     {
         return -1;
@@ -298,7 +299,7 @@ short dequeueSpell()
     /*
         free memory
     */
-    free((void *) start);
+    free((void *) oldstart);
     return spell;
 }
 

@@ -12,19 +12,19 @@ static double ANGLELIGHT = 20;
     /*
         angle tolerances in degrees used when there should be no movement in that direction
     */
-static double ANGLETOLHEAD = 30;
-static double ANGLETOLROLL = 30;
+//static double ANGLETOLHEAD = 30;
+//static double ANGLETOLROLL = 30;
 static double ANGLETOLPITCH = 30;
 static double ANGLETOLLIGHT = 15;
     /*
         multiplier used when movement exists in that  direction
     */
-static double ANGLETOLMULTIPLIER = 0.25; // y = a*(1+x)
+//static double ANGLETOLMULTIPLIER = 0.25; // y = a*(1+x)
 static double MINDRAWLEN = 1.8; // in meters
 static double MINDRAWLENLIGHT = 0.3; // in meters
-static double POLYANGLETRI = 60;
-static double POLYANGLELIGHT = 150;
-static double POLYANGLESQUARE = 90;
+//static double POLYANGLETRI = 60;
+//static double POLYANGLELIGHT = 150;
+//static double POLYANGLESQUARE = 90;
     
     /*
         values of each type
