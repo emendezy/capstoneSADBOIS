@@ -288,7 +288,7 @@ void enqueueSpell(short spell)
 short dequeueSpell()
 {
     short spell;
-    struct spellQueue *oldstart;
+    spellQueueAlias *oldstart;
     oldstart = spellQueueStart;
     if (spellQueueStart == NULL)
     {
