@@ -70,7 +70,7 @@ int bno_dump() {
       if(read(i2cfd, &data, 16) != 16) {
          printf("Error: I2C read failure for register 0x%02X\n", reg);
          exit(-1);
-       
+
       }
       printf("[0x%02X] %02X %02X %02X %02X %02X %02X %02X %02X",
              (reg*16), data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
@@ -98,7 +98,7 @@ int bno_dump() {
       if(read(i2cfd, &data, 16) != 16) {
          printf("Error: I2C read failure for register 0x%02X\n", reg);
          exit(-1);
-       
+
       }
       printf("[0x%02X] %02X %02X %02X %02X %02X %02X %02X %02X",
              (reg*16), data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
@@ -124,7 +124,7 @@ int bno_reset() {
       exit(-1);
    }
    if(verboseflag == 1) printf("Debug: BNO055 Sensor Reset complete\n");
-   
+
    /* ------------------------------------------------------------ *
     * After a reset, the sensor needs at leat 650ms to boot up.    *
     * ------------------------------------------------------------ */
@@ -645,15 +645,15 @@ int get_mag(struct bnomag *bnod_ptr) {
       return(-1);
    }
 
-   int16_t buf = ((int16_t)data[1] << 8) | data[0]; 
+   int16_t buf = ((int16_t)data[1] << 8) | data[0];
    if(verboseflag == 1) printf("Debug: Magnetometer Data X: LSB [0x%02X] MSB [0x%02X] INT16 [%d]\n", data[0], data[1],buf);
    bnod_ptr->mdata_x = (double) buf / 1.6;
 
-   buf = ((int16_t)data[3] << 8) | data[2]; 
+   buf = ((int16_t)data[3] << 8) | data[2];
    if(verboseflag == 1) printf("Debug: Magnetometer Data Y: LSB [0x%02X] MSB [0x%02X] INT16 [%d]\n", data[2], data[3],buf);
    bnod_ptr->mdata_y = (double) buf / 1.6;
 
-   buf = ((int16_t)data[5] << 8) | data[4]; 
+   buf = ((int16_t)data[5] << 8) | data[4];
    if(verboseflag == 1) printf("Debug: Magnetometer Data Z: LSB [0x%02X] MSB [0x%02X] INT16 [%d]\n", data[4], data[5],buf);
    bnod_ptr->mdata_z = (double) buf / 1.6;
    return(0);
@@ -693,6 +693,7 @@ int get_gyr(struct bnogyr *bnod_ptr) {
  *  get_eul() - read Euler orientation into the global struct   *
  * ------------------------------------------------------------ */
 int get_eul(struct bnoeul *bnod_ptr) {
+   printf("i2c_bno055.c: enter eul fn\n");
    char reg = BNO055_EULER_H_LSB_ADDR;
    if(write(i2cfd, &reg, 1) != 1) {
       printf("Error: I2C write failure for register 0x%02X\n", reg);
@@ -706,18 +707,20 @@ int get_eul(struct bnoeul *bnod_ptr) {
       printf("Error: I2C read failure for register data 0x%02X\n", reg);
       return(-1);
    }
-
-   int16_t buf = ((int16_t)data[1] << 8) | data[0]; 
+   printf("i2c_bno055.c: halfway through the eul fn\n");
+   int16_t buf = ((int16_t)data[1] << 8) | data[0];
    if(verboseflag == 1) printf("Debug: Euler Orientation H: LSB [0x%02X] MSB [0x%02X] INT16 [%d]\n", data[0], data[1],buf);
    bnod_ptr->eul_head = (double) buf / 16.0;
 
-   buf = ((int16_t)data[3] << 8) | data[2]; 
+   buf = ((int16_t)data[3] << 8) | data[2];
    if(verboseflag == 1) printf("Debug: Euler Orientation R: LSB [0x%02X] MSB [0x%02X] INT16 [%d]\n", data[2], data[3],buf);
    bnod_ptr->eul_roll = (double) buf / 16.0;
 
-   buf = ((int16_t)data[5] << 8) | data[4]; 
+   buf = ((int16_t)data[5] << 8) | data[4];
    if(verboseflag == 1) printf("Debug: Euler Orientation P: LSB [0x%02X] MSB [0x%02X] INT16 [%d]\n", data[4], data[5],buf);
    bnod_ptr->eul_pitc = (double) buf / 16.0;
+
+   printf("i2c_bno055.c: done with eul fn\n");
    return(0);
 }
 
@@ -739,19 +742,19 @@ int get_qua(struct bnoqua *bnod_ptr) {
       return(-1);
    }
 
-   int16_t buf = ((int16_t)data[1] << 8) | data[0]; 
+   int16_t buf = ((int16_t)data[1] << 8) | data[0];
    if(verboseflag == 1) printf("Debug: Quaternation W: LSB [0x%02X] MSB [0x%02X] INT16 [%d]\n", data[0], data[1],buf);
    bnod_ptr->quater_w = (double) buf / 16384.0;
 
-   buf = ((int16_t)data[3] << 8) | data[2]; 
+   buf = ((int16_t)data[3] << 8) | data[2];
    if(verboseflag == 1) printf("Debug: Quaternation X: LSB [0x%02X] MSB [0x%02X] INT16 [%d]\n", data[2], data[3],buf);
    bnod_ptr->quater_x = (double) buf / 16384.0;
 
-   buf = ((int16_t)data[5] << 8) | data[4]; 
+   buf = ((int16_t)data[5] << 8) | data[4];
    if(verboseflag == 1) printf("Debug: Quaternation Y: LSB [0x%02X] MSB [0x%02X] INT16 [%d]\n", data[4], data[5],buf);
    bnod_ptr->quater_y = (double) buf / 16384.0;
 
-   buf = ((int16_t)data[7] << 8) | data[6]; 
+   buf = ((int16_t)data[7] << 8) | data[6];
    if(verboseflag == 1) printf("Debug: Quaternation Z: LSB [0x%02X] MSB [0x%02X] INT16 [%d]\n", data[6], data[7],buf);
    bnod_ptr->quater_z = (double) buf / 16384.0;
    return(0);
@@ -931,7 +934,7 @@ int get_mode() {
  * ------------------------------------------------------------ */
 int print_mode(int mode) {
    if(mode < 0 || mode > 12) return(-1);
-   
+
    switch(mode) {
       case 0x00:
          printf("CONFIG\n");
@@ -1162,8 +1165,8 @@ int get_remap(char mode) {
 /* ------------------------------------------------------------ *
  * print_remap_conf() - prints the sensor axis configuration.   *
  * the numeric values are located in register 0x41. Valid modes *
- * are: 
- * 0x24 (default), 0x21, 
+ * are:
+ * 0x24 (default), 0x21,
  * ------------------------------------------------------------ */
 int print_remap_conf(int mode) {
 
@@ -1173,7 +1176,7 @@ int print_remap_conf(int mode) {
       case 0x24:     // 0 1 | 1 0 | 0 0
          printf("X==X Y==Y Z==Z (ENU)\n");
          break;
-      case 0x18:     // 0 1 | 0 0 | 1 0 
+      case 0x18:     // 0 1 | 0 0 | 1 0
          printf("X<>Y Y<>X Z==Z (NEU)\n");
          break;
       case 0x09:     // 0 0 | 1 0 | 0 1
