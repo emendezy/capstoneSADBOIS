@@ -12,10 +12,10 @@
 #include <wiringPi.h>
 #include <softPwm.h>
 
-#define GAME_START_BUTTON 2
+#define GAME_START_BUTTON 22
 
 #define LED_PIN 15
-#define SPELL_START_BUTTON 3
+#define SPELL_START_BUTTON 23
 #define SPELL_END_BUTTON 4
 
 #define RUMBLER_PIN 17
