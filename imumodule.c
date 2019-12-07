@@ -8,11 +8,7 @@
 
 #include "imumodule.h"
 
-    /*
-        we can use pointers for these as they start as NULL
-    */
-spellQueueAlias *spellQueueStart; // other files read spells from this guy
-spellQueueAlias *spellQueueEnd; // end of queue
+
 /*
     we can't use pointers here because we
 */
@@ -31,6 +27,7 @@ int imuMain(struct PlayerStaffData *P)
     double time_passed = 0;
     int retval = 0;
     initEulPtr = (struct bnoeul *) malloc(sizeof(struct bnoeul));
+
 
     /*
         get initial hrp values
