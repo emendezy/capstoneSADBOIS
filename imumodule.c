@@ -8,18 +8,35 @@
 
 #include "imumodule.h"
 
+/*
+    Macros for debugging
+*/
+#ifndef __DEBUG_IMU__
+#define __DEBUG_IMU__ 1
+#endif
+
+/*
+    debugging printing code from
+    https://stackoverflow.com/questions/1644868/define-macro-for-debug-printing-in-c
+*/
+#define debug_print(fmt, ...) \
+        do { if (__DEBUG_IMU__) fprintf(stderr, "%s:%d:%s(): " fmt, __FILE__, \
+                                __LINE__, __func__, __VA_ARGS__); } while (0)
 
 /*
     we can't use pointers here because we
 */
 runeClassDataAlias runeClassData; // other files access this global struct
+
+/*
+*/
 struct bnoeul *initEulPtr; // stores initial orientation
 
 
 
 int imuMain(struct PlayerStaffData *P)
 {
-    printf("imumodule.c: starting imuMain\n");
+    debug_print("imumodule.c: starting imuMain Line %s %d\n", __FILE__, __LINE__);
     short currSpellType;
     clock_t start_t = 0;
     clock_t curr_t = 0;
@@ -52,7 +69,7 @@ int imuMain(struct PlayerStaffData *P)
         {
             numloop++;
         }
-        
+        printf("calling classifyShape in imuMain\n");
         currSpellType = classifyShape();
         if ((0 <= currSpellType) && (currSpellType <= 4))
         {

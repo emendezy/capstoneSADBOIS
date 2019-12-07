@@ -105,7 +105,7 @@ double angDiffWrap(double, double);
     /*
         we can use pointers for these as they start as NULL
     */
-spellQueueAlias *spellQueueStart; // other files read spells from this guy
-spellQueueAlias *spellQueueEnd; // end of queue
+extern spellQueueAlias *spellQueueStart; // other files read spells from this guy
+extern spellQueueAlias *spellQueueEnd; // end of queue
 
 int imuMain(struct PlayerStaffData*);
