@@ -26,8 +26,8 @@
 /*
         we can use pointers for these as they start as NULL
     */
-extern spellQueueAlias *spellQueueStart; // other files read spells from this guy
-extern spellQueueAlias *spellQueueEnd; // end of queue
+spellQueueAlias *spellQueueStart; // other files read spells from this guy
+spellQueueAlias *spellQueueEnd; // end of queue
 
 /*
     we can't use pointers here because we
