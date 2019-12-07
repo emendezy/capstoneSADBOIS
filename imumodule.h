@@ -75,6 +75,9 @@ typedef struct runeClassStruct
 // bool isCasting;
 extern spellQueueAlias *spellQueueStart; // other files read spells from this guy
 extern spellQueueAlias *spellQueueEnd; // end of queue
+/*
+*/
+extern struct bnoeul *initEulPtr; // stores initial orientation
 
 
 // struct bnolin *bnolinptr

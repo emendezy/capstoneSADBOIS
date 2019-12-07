@@ -34,9 +34,7 @@ spellQueueAlias *spellQueueEnd; // end of queue
 */
 runeClassDataAlias runeClassData; // other files access this global struct
 
-/*
-*/
-struct bnoeul *initEulPtr; // stores initial orientation
+
 
 
 
@@ -253,8 +251,8 @@ bool hasValidLength(short spellType, double drawLen)
 
 void initializeImu()
 {
-    printf("imumodule.c: entered initializeImu()\n");
     int retval = 0;
+    printf("imumodule.c: entered initializeImu()\n");
     // bno_reset();
     retval = get_eul(initEulPtr);
     if (retval < 0)
