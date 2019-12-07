@@ -693,13 +693,13 @@ int get_gyr(struct bnogyr *bnod_ptr) {
  *  get_eul() - read Euler orientation into the global struct   *
  * ------------------------------------------------------------ */
 int get_eul(struct bnoeul *bnod_ptr) {
-   printf("i2c_bno055.c: enter eul fn\n");
+   printf("enter get_eul %s line %d\n", __FILE__, __LINE__);
    char reg = BNO055_EULER_H_LSB_ADDR;
    if(write(i2cfd, &reg, 1) != 1) {
       printf("Error: I2C write failure for register 0x%02X\n", reg);
       return(-1);
    }
-   printf("   end of first if\n");
+   printf("get_eul %s line %d\n", __FILE__, __LINE__);
 
    if(verboseflag == 1) 
    {
