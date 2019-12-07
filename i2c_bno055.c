@@ -701,7 +701,10 @@ int get_eul(struct bnoeul *bnod_ptr) {
    }
    printf("   end of first if\n");
 
-   if(verboseflag == 1) printf("Debug: I2C read 6 bytes starting at register 0x%02X\n", reg);
+   if(verboseflag == 1) 
+   {
+      printf("Debug: I2C read 6 bytes starting at register 0x%02X\n", reg);
+   }
    printf("   end of second if\n");
 
    unsigned char data[6] = {0, 0, 0, 0, 0, 0};
