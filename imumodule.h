@@ -70,9 +70,11 @@ typedef struct runeClassStruct
         4 = wind
         other = various errors
     */
-extern double currTotalLength;
-extern short currSpellType;
-extern bool isCasting;
+// double currTotalLength;
+// short currSpellType;
+// bool isCasting;
+extern spellQueueAlias *spellQueueStart; // other files read spells from this guy
+extern spellQueueAlias *spellQueueEnd; // end of queue
 
 
 // struct bnolin *bnolinptr
