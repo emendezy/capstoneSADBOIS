@@ -26,9 +26,9 @@
 #include "GPIOHandler.h"
 #include "imumodule.h"
 
-#include "tsh_exec.h"
-#include "csapp.h"
-#include "tsh_helper.h"
+// #include "tsh_exec.h"
+// #include "csapp.h"
+// #include "tsh_helper.h"
 
 
 // #define NDEBUG /* Comment for no debug mode */

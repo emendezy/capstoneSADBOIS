@@ -1,9 +1,6 @@
 #include <time.h>
 #include <stdbool.h>
 #include <signal.h>
-#include "tsh_exec.h"
-#include "tsh_helper.h"
-
 
 
 struct PlayerStaffData
