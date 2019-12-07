@@ -33,7 +33,7 @@ spellQueueAlias *spellQueueEnd; // end of queue
     we can't use pointers here because we
 */
 runeClassDataAlias runeClassData; // other files access this global struct
-initEulPtr = NULL;
+struct bnoeul *initEulPtr;
 
 
 
