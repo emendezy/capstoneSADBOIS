@@ -708,6 +708,7 @@ int get_eul(struct bnoeul *bnod_ptr) {
    printf("   end of second if\n");
 
    unsigned char data[6] = {0, 0, 0, 0, 0, 0};
+   printf("i2cfd is %d in %s line %d\n", i2cfd, __FILE__, __LINE__);
    if(read(i2cfd, data, 6) != 6) {
       printf("i2c register values is %d in %s line %d\n", read(i2cfd, data, 6), __FILE__, __LINE__);
       printf("Error: I2C read failure for register data 0x%02X\n", reg);
