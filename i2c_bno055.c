@@ -705,16 +705,17 @@ int get_eul(struct bnoeul *bnod_ptr) {
    {
       printf("Debug: I2C read 6 bytes starting at register 0x%02X\n", reg);
    }
-   printf("   end of second if\n");
+   printf("end of second if in %s line %d\n", __FILE__, __LINE__);
 
    unsigned char data[6] = {0, 0, 0, 0, 0, 0};
    printf("i2cfd is %d in %s line %d\n", i2cfd, __FILE__, __LINE__);
+   printf("data is %s in %s line %d\n", data, __FILE__, __LINE__);
    if(read(i2cfd, data, 6) != 6) {
       printf("i2c register values is %d in %s line %d\n", read(i2cfd, data, 6), __FILE__, __LINE__);
       printf("Error: I2C read failure for register data 0x%02X\n", reg);
       return(-1);
    }
-   printf("i2c_bno055.c: halfway through the eul fn\n");
+   printf("i2cfd is %d in %s line %d\n", i2cfd, __FILE__, __LINE__);
    int16_t buf = ((int16_t)data[1] << 8) | data[0];
    if(verboseflag == 1) printf("Debug: Euler Orientation H: LSB [0x%02X] MSB [0x%02X] INT16 [%d]\n", data[0], data[1],buf);
    bnod_ptr->eul_head = (double) buf / 16.0;
