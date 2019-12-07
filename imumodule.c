@@ -24,6 +24,12 @@
                                 __LINE__, __func__, __VA_ARGS__); } while (0)
 
 /*
+        we can use pointers for these as they start as NULL
+    */
+extern spellQueueAlias *spellQueueStart; // other files read spells from this guy
+extern spellQueueAlias *spellQueueEnd; // end of queue
+
+/*
     we can't use pointers here because we
 */
 runeClassDataAlias runeClassData; // other files access this global struct
