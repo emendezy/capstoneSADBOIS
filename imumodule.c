@@ -191,7 +191,7 @@ bool checkFire(struct bnoeul *starteulptr, struct bnoeul *curreulptr,
     gravdir = checkGravDir(startgraptr);
     start_h = starteulptr->eul_head;
     h = curreulptr->eul_head;
-    if (angle > ANGLETOLHEAD && gravdir == GRAVX)
+    if (angle > FIRETHRESHOLD && gravdir == GRAVX)
     {
         return true;
     }

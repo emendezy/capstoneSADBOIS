@@ -13,6 +13,7 @@ static double LIGHTNINGWAITTIME = 0.5;
 static double MAXPOLYDEV = 20; // angle in degrees
 static double ANGLELIGHT = 20;
 static double MAXCIRCLE = 90;
+static double FIRETHRESHOLD = 15; // degrees
     /*
         angle tolerances in degrees used when there should be no movement in that direction
     */
