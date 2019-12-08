@@ -81,27 +81,27 @@ int imuMain(struct PlayerStaffData *P)
             enqueueSpell(currSpellType);
             if (currSpellType == 0)
             {
-                printf("spell type is EARTH %s line %d\n", __FILE__, __LINE__);
+                debug_printf("spell type is EARTH %s line %d\n", __FILE__, __LINE__);
             }
             else if (currSpellType == 1)
             {
-                printf("spell type is FIRE %s line %d\n", __FILE__, __LINE__);
+                debug_printf("spell type is FIRE %s line %d\n", __FILE__, __LINE__);
             }
             else if (currSpellType == 2)
             {
-                printf("spell type is LIGHTNING %s line %d\n", __FILE__, __LINE__);
+                debug_printf("spell type is LIGHTNING %s line %d\n", __FILE__, __LINE__);
             }
             else if (currSpellType == 3)
             {
-                printf("spell type is WATER %s line %d\n", __FILE__, __LINE__);
+                debug_printf("spell type is WATER %s line %d\n", __FILE__, __LINE__);
             }
             else if (currSpellType == 4)
             {
-                printf("spell type is WIND %s line %d\n", __FILE__, __LINE__);
+                debug_printf("spell type is WIND %s line %d\n", __FILE__, __LINE__);
             }
         }
     }
-    printf("imumodule.c: exiting imuMain\n");
+    debug_printf("exiting imuMain %s %d\n", __FILE__, __LINE__);
     free((void *)initEulPtr);
     return retval;
 }
