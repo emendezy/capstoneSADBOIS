@@ -7,7 +7,7 @@
 /*
     global constants
 */
-static double FRAMEWAITTIME = 1; // time in seconds
+static double FRAMEWAITTIME = 0.01; // time in seconds
 static double POLYWAITTIME = 0.1; // time in seconds;
 static double LIGHTNINGWAITTIME = 0.1;
 static double MAXCLASSTIME = 0.2;
