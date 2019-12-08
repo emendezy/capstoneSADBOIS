@@ -270,7 +270,10 @@ short classifyShape()
                 break;
             }
         }
-        break;
+        else if (time_passed > POLYWAITTIME * 10)
+        {
+            break;
+        }
     }
     free((void *) starteulptr);
     free((void *) curreulptr);
