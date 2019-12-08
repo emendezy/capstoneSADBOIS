@@ -230,7 +230,7 @@ short classifyShape()
     {
         curr_t = clock();
         time_passed = ((double)(curr_t - start_t)) / CLOCKS_PER_SEC;
-        if ((time_passed > POLYWAITTIME) && (time_passed < LIGHTNINGWAITTIME))
+        if ((time_passed > POLYWAITTIME))
         {
             errval = get_eul(curreulptr);
             if (errval < 0)
