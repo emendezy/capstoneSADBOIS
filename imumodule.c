@@ -270,6 +270,7 @@ short classifyShape()
                 break;
             }
         }
+        break;
     }
     free((void *) starteulptr);
     free((void *) curreulptr);
