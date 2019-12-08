@@ -253,6 +253,8 @@ void initializeImu()
 {
     int retval = 0;
     time_t tsnow = time(NULL);
+    printf("about to call get_i2cbus %s line %d\n", __FILE__, __LINE__);
+    printf("senaddr is %s %s line %d\n", senaddr, __FILE__, __LINE__);
     get_i2cbus(senaddr);
     printf("entered initializeImu() %s line %d\n", __FILE__, __LINE__);
     // bno_reset();
