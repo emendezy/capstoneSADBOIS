@@ -48,6 +48,7 @@ int imuMain(struct PlayerStaffData *P)
     double time_passed = 0;
     int retval = 0;
     initEulPtr = (struct bnoeul *) malloc(sizeof(struct bnoeul));
+    senaddr = (char *) malloc(sizeof(char)*256);
 
 
     /*
