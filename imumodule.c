@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include <time.h>
+//#include <time.h>
 #include <unistd.h>
 #include <errno.h>
 #include <math.h>
@@ -252,6 +252,8 @@ bool hasValidLength(short spellType, double drawLen)
 void initializeImu()
 {
     int retval = 0;
+    time_t tsnow = time(NULL);
+    get_i2cbus(senaddr);
     printf("entered initializeImu() %s line %d\n", __FILE__, __LINE__);
     // bno_reset();
     printf("initEulPtr == %d,%s line %d\n", ((int) initEulPtr), __FILE__, __LINE__);
