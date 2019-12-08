@@ -191,7 +191,7 @@ bool checkFire(struct bnoeul *starteulptr, struct bnoeul *curreulptr,
     gravdir = checkGravDir(startgraptr);
     start_h = starteulptr->eul_head;
     h = curreulptr->eul_head;
-    if (angle > FIRETHRESHOLD && gravdir == GRAVX)
+    if (angle > ANGLEFIRE && gravdir == GRAVX)
     {
         return true;
     }
@@ -384,7 +384,10 @@ void initQueue()
 
 
 /* 
-    convert two angles from -180~180  to 0~360
+    convert the difference between two angles
+    such that it is easier to compare differences
+    result will be no more than 180 degrees;
+    direction will not matter
 */
 double angDiffWrap(double angle1, double angle2)
 {
@@ -404,6 +407,12 @@ double angDiffWrap(double angle1, double angle2)
     return result;
 }
 
+/*
+    outputs the direction in which gravity is greatest:
+    GRAVX == 0
+    GRAVY == 1
+    GRAVZ == 2
+*/
 short checkGravDir(struct bnogra *startgraptr)
 {
     short gravdir;
