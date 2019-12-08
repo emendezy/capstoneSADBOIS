@@ -19,7 +19,7 @@
     debugging printing code from
     https://stackoverflow.com/questions/1644868/define-macro-for-debug-printing-in-c
 */
-#define debug_print(fmt, ...) \
+#define debug_printf(fmt, ...) \
         do { if (__DEBUG_IMU__) fprintf(stderr, "%s:%d:%s(): " fmt, __FILE__, \
                                 __LINE__, __func__, __VA_ARGS__); } while (0)
 
@@ -40,7 +40,7 @@ struct bnoeul *initEulPtr;
 
 int imuMain(struct PlayerStaffData *P)
 {
-    debug_print("imumodule.c: starting imuMain Line %s %d\n", __FILE__, __LINE__);
+    debug_printf("imumodule.c: starting imuMain Line %s %d\n", __FILE__, __LINE__);
     short currSpellType;
     clock_t start_t = 0;
     clock_t curr_t = 0;
