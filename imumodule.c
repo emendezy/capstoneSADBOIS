@@ -183,7 +183,6 @@ short classifyShape()
     while (true)
     {
         curr_t = clock();
-        printf("imumodule: starting classifyShape\n");
         time_passed = ((double)(curr_t - start_t)) / CLOCKS_PER_SEC;
         if ((time_passed > POLYWAITTIME) && (time_passed < LIGHTNINGWAITTIME))
         {
