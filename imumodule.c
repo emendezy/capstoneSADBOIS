@@ -212,7 +212,7 @@ short classifyShape()
     struct bnoeul *starteulptr;
     struct bnoeul *curreulptr;
     struct bnogra *startgraptr;
-    bool isLightning;
+    //bool isLightning;
     bool isFire;
 
     /*
@@ -255,12 +255,14 @@ short classifyShape()
         if (time_passed > POLYWAITTIME)
         {
             errval = get_eul(curreulptr);
+            /*
             isLightning = checkLightning(starteulptr, curreulptr, startgraptr);
             if (isLightning)
             {
                 currSpellType = LIGHTNING;
                 break;
             }
+            */
             isFire = checkFire(starteulptr, curreulptr, startgraptr);
             if (isFire)
             {
