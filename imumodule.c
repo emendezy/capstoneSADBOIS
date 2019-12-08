@@ -421,7 +421,7 @@ short checkGravDir(struct bnogra *startgraptr)
 {
     short gravdir;
     double gx; double gy; double gz;
-    gravdir = GRAVX;
+    gravdir = GRAVUNKNOWN;
     gx = fabs(startgraptr->gravityx);
     gy = fabs(startgraptr->gravityy);    
     gz = fabs(startgraptr->gravityz);

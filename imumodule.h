@@ -27,6 +27,7 @@ static double ANGLETOLLIGHT = 15;
 static short GRAVX = 0;
 static short GRAVY = 1;
 static short GRAVZ = 2;
+static short GRAVUNKNOWN = 3;
     /*
         multiplier used when movement exists in that  direction
     */
