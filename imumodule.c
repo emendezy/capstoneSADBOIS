@@ -140,7 +140,7 @@ short checkCircle(struct bnoeul *starteulptr, struct bnoeul *curreulptr,
     droll = angDiffWrap(r, start_r);
     dpitch = angDiffWrap(p, start_p);
     
-    if ((dhead > MAXPOLYDEV || droll > MAXPOLYDEV) && gravdir != GRAVZ)
+    if ((dhead > MAXPOLYDEV || droll > MAXPOLYDEV) && gravdir == GRAVY)
     {
         retval = WATER;
     }
