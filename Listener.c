@@ -109,24 +109,24 @@ int main()
  * waits for pid of child and notifies user of stop/term signals in child
  * child process, deletes terminated and exited jobs
  */
-void sigchld_handler(int sig) {
-	int status;
-	pid_t pid;
-	jid_t jid;
-	int err = errno; //maintain errno
+// void sigchld_handler(int sig) {
+// 	int status;
+// 	pid_t pid;
+// 	jid_t jid;
+// 	int err = errno; //maintain errno
 
-	sigset_t prev_mask, mask;
-	sigfillset(&mask);
+// 	sigset_t prev_mask, mask;
+// 	sigfillset(&mask);
 
-	//wait for the child that has this pid
-	while ((pid = waitpid(-1, &status, WNOHANG|WUNTRACED)) > 0) {
-		sigprocmask(SIG_BLOCK, &mask, &prev_mask);
-		jid = job_from_pid(pid);
+// 	//wait for the child that has this pid
+// 	while ((pid = waitpid(-1, &status, WNOHANG|WUNTRACED)) > 0) {
+// 		sigprocmask(SIG_BLOCK, &mask, &prev_mask);
+// 		jid = job_from_pid(pid);
 
-		delete_job(jid); // only occurs if status was terminated or exited
-		sigprocmask(SIG_SETMASK, &prev_mask, NULL);
-	}
-	errno = err;
-	puts("Child Reaped Successfully\n");
-	return;
-}
+// 		delete_job(jid); // only occurs if status was terminated or exited
+// 		sigprocmask(SIG_SETMASK, &prev_mask, NULL);
+// 	}
+// 	errno = err;
+// 	puts("Child Reaped Successfully\n");
+// 	return;
+// }

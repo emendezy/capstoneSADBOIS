@@ -11,14 +11,14 @@
 #include <stdbool.h>
 #include <string.h>
 
-#include <unistd.h>
-#include <signal.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <errno.h>
-#include <ctype.h>
+// #include <unistd.h>
+// #include <signal.h>
+// #include <sys/types.h>
+// #include <sys/wait.h>
+// #include <errno.h>
+// #include <ctype.h>
 
-#include <pthread.h>
+// #include <pthread.h>
 
 #include <assert.h>
 #include <time.h>
