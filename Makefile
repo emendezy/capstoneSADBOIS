@@ -7,7 +7,7 @@ FLAGS	 = -g -c
 LDLIBS = -lwiringPi
 
 all: $(OBJS)
-	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)
+	$(CC) -g $(OBJS) -o $(OUT) $(LDLIBS)
 
 getbno055.o: getbno055.c
 	$(CC) $(FLAGS) getbno055.c 
