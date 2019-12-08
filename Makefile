@@ -3,7 +3,7 @@ SOURCE	= getbno055.c i2c_bno055.c imumodule.c GPIOHandler.c HandlePlayerData.c L
 HEADER	= getbno055.h spellQueueStruct.h playerstruct.h imumodule.h GPIOHandler.h HandlePlayerData.h Listener.h
 OUT	= gametest
 CC	 = gcc
-FLAGS	 = -g -c -Wall
+FLAGS	 = -g -c
 LDLIBS = -lwiringPi
 
 all: $(OBJS)
