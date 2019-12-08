@@ -12,10 +12,12 @@ static double POLYWAITTIME = 0.1; // time in seconds;
 static double LIGHTNINGWAITTIME = 0.5;
 static double MAXPOLYDEV = 30; // angle in degrees
 static double ANGLELIGHT = 20;
+
+static double MAXCIRCLE = 90;
     /*
         angle tolerances in degrees used when there should be no movement in that direction
     */
-//static double ANGLETOLHEAD = 30;
+static double ANGLETOLHEAD = 30;
 //static double ANGLETOLROLL = 30;
 static double ANGLETOLPITCH = 30;
 static double ANGLETOLLIGHT = 15;

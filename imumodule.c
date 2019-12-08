@@ -119,15 +119,26 @@ short checkCircle(struct bnoeul *starteulptr, struct bnoeul *curreulptr)
     short retval = NOTCIRCLE;
     double start_h;
     double start_r;
+    double start_p;
     double h;
     double r;
+    double p;
+    double headdiff;
+    double rolldiff;
+    double pitchdiff;
     
     start_h = starteulptr->eul_head;
     start_r = starteulptr->eul_roll;
+    start_p = starteulptr->eul_pitc;
     h = curreulptr->eul_head;
     r = curreulptr->eul_roll;
+    p = curreulptr->eul_pitc;
 
-    if (angDiffWrap(r, start_r) > MAXPOLYDEV)
+    headdiff = angDiffWrap(h, start_h);
+    rolldiff = angDiffWrap(r, start_r);
+    pitchdiff = angDiffWrap(p, start_p);
+    
+    if (headdiff > MAXPOLYDEV && pitchdiff > MAXPOLYDEV && rolldiff > MAXPOLYDEV)
     {
         retval = WATER;
     }
@@ -145,13 +156,13 @@ short checkCircle(struct bnoeul *starteulptr, struct bnoeul *curreulptr)
 bool checkLightning(struct bnoeul *starteulptr, struct bnoeul *curreulptr)
 {
     bool result = true;
-    double start_h;
-    double h;
+    double start_r;
+    double r;
     double angle;
 
-    start_h = starteulptr->eul_head;
-    h = curreulptr->eul_head;
-    angle = angDiffWrap(start_h, h);
+    start_r = starteulptr->eul_roll;
+    r = curreulptr->eul_roll;
+    angle = angDiffWrap(start_r, r);
     
     if (angle < ANGLETOLLIGHT)
     {
@@ -166,11 +177,12 @@ bool checkLightning(struct bnoeul *starteulptr, struct bnoeul *curreulptr)
 
 bool checkFire(struct bnoeul *starteulptr, struct bnoeul *curreulptr)
 {
-    double start_p;
-    double p;
-    start_p = starteulptr->eul_pitc;
-    p = curreulptr->eul_pitc;
-    if (angDiffWrap(p, start_p) > ANGLETOLPITCH)
+    double start_h;
+    double h;
+    double angle = angDiffWrap(h, start_h);
+    start_h = starteulptr->eul_head;
+    h = curreulptr->eul_head;
+    if (angle > ANGLETOLHEAD)
     {
         return true;
     }
@@ -209,6 +221,9 @@ short classifyShape()
             {
                 currSpellType = ERRORVAL;
             }
+            /*
+                check for wind or water
+            */
             currSpellType = checkCircle(starteulptr, curreulptr);
             if (currSpellType == WATER)
             {
