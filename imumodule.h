@@ -7,8 +7,8 @@
 /*
     global constants
 */
-static double FRAMEWAITTIME = 0.0001; // time in seconds
-static double POLYWAITTIME = 0.05; // time in seconds;
+static double FRAMEWAITTIME = 0.1; // time in seconds
+static double POLYWAITTIME = 0.1; // time in seconds;
 static double LIGHTNINGWAITTIME = 0.1;
 static double MAXCLASSTIME = 0.2;
 static double MAXPOLYDEV = 20; // angle in degrees

@@ -149,7 +149,7 @@ short checkCircle(struct bnoeul *starteulptr, struct bnoeul *curreulptr,
     {
         retval = WIND;
     }
-
+    debug_printf("dhead = %f droll = %f dpitch = %f gravdir = %d", dhead, droll, dpitch, gravdir);
     return retval;
 }
 
