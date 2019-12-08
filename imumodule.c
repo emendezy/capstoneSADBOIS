@@ -140,7 +140,7 @@ short checkCircle(struct bnoeul *starteulptr, struct bnoeul *curreulptr,
     droll = angDiffWrap(r, start_r);
     dpitch = angDiffWrap(p, start_p);
     
-    if ((dhead > MAXPOLYDEV || droll > MAXPOLYDEV) && gravdir == GRAVY)
+    if ((dhead > MAXPOLYDEV || droll > MAXPOLYDEV) && gravdir != GRAVZ)
     {
         retval = WATER;
     }
@@ -175,6 +175,10 @@ bool checkLightning(struct bnoeul *starteulptr, struct bnoeul *curreulptr,
         result = false;
     }
     else if (angle > ANGLELIGHT + ANGLETOLLIGHT)
+    {
+        result = false;
+    }
+    else if (gravdir != GRAVX)
     {
         result = false;
     }
