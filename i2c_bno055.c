@@ -722,8 +722,6 @@ int get_eul(struct bnoeul *bnod_ptr) {
    buf = ((int16_t)data[5] << 8) | data[4];
    if(verboseflag == 1) printf("Debug: Euler Orientation P: LSB [0x%02X] MSB [0x%02X] INT16 [%d]\n", data[4], data[5],buf);
    bnod_ptr->eul_pitc = (double) buf / 16.0;
-
-   printf("i2c_bno055.c: done with eul fn\n");
    return(0);
 }
 
