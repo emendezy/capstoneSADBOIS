@@ -252,7 +252,7 @@ short classifyShape()
                 break;
             }
         }
-        if (time_passed > LIGHTNINGWAITTIME)
+        if (time_passed > 0)
         {
             errval = get_eul(curreulptr);
             isLightning = checkLightning(starteulptr, curreulptr, startgraptr);
