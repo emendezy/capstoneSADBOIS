@@ -74,7 +74,6 @@ int imuMain(struct PlayerStaffData *P)
         {
             numloop++;
         }
-        printf("calling classifyShape in imuMain\n");
         currSpellType = classifyShape();
 
         if ((0 <= currSpellType) && (currSpellType <= 4))
