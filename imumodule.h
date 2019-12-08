@@ -14,7 +14,7 @@ static double MAXCLASSTIME = 0.2;
 static double MAXPOLYDEV = 20; // angle in degrees
 static double ANGLELIGHT = 20;
 static double MAXCIRCLE = 90;
-static double ANGLEFIRE = 10; // degrees
+static double ANGLEFIRE = 20; // degrees
     /*
         angle tolerances in degrees used when there should be no movement in that direction
     */
