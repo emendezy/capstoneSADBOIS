@@ -114,19 +114,21 @@ int imuMain(struct PlayerStaffData *P)
     returns WATER if water (vertical circle)
     returns NOTCIRCLE otherwise
 */
-short checkCircle(struct bnoeul *starteulptr, struct bnoeul *curreulptr)
+short checkCircle(struct bnoeul *starteulptr, struct bnoeul *curreulptr, 
+    struct bnogra* startgraptr)
 {
     short retval = NOTCIRCLE;
+    short gravdir;
     double start_h;
     double start_r;
     double start_p;
     double h;
     double r;
     double p;
-    double headdiff;
-    double rolldiff;
-    double pitchdiff;
-    
+    double dhead;
+    double droll;
+    double dpitch;
+    gravdir = checkGravDir(startgraptr);
     start_h = starteulptr->eul_head;
     start_r = starteulptr->eul_roll;
     start_p = starteulptr->eul_pitc;
@@ -134,15 +136,16 @@ short checkCircle(struct bnoeul *starteulptr, struct bnoeul *curreulptr)
     r = curreulptr->eul_roll;
     p = curreulptr->eul_pitc;
 
-    headdiff = angDiffWrap(h, start_h);
-    rolldiff = angDiffWrap(r, start_r);
-    pitchdiff = angDiffWrap(p, start_p);
+    dhead = angDiffWrap(h, start_h);
+    droll = angDiffWrap(r, start_r);
+    dpitch = angDiffWrap(p, start_p);
     
-    if (headdiff > MAXPOLYDEV && pitchdiff > MAXPOLYDEV && rolldiff > MAXPOLYDEV)
+    if (dhead > MAXPOLYDEV && gravdir == GRAVY)
     {
         retval = WATER;
     }
-    else if (angDiffWrap(h, start_h) > MAXPOLYDEV)
+    else if (dhead > MAXPOLYDEV && droll < ANGLETOLROLL 
+        && dpitch < ANGLETOLPITCH && gravdir == GRAVZ)
     {
         retval = WIND;
     }
@@ -153,12 +156,15 @@ short checkCircle(struct bnoeul *starteulptr, struct bnoeul *curreulptr)
 /*
     checks if rune is for lightning
 */
-bool checkLightning(struct bnoeul *starteulptr, struct bnoeul *curreulptr)
+bool checkLightning(struct bnoeul *starteulptr, struct bnoeul *curreulptr,
+    struct bnogra *startgraptr)
 {
     bool result = true;
     double start_r;
     double r;
     double angle;
+    short gravdir;
+    gravdir = checkGravDir(startgraptr);
 
     start_r = starteulptr->eul_roll;
     r = curreulptr->eul_roll;
@@ -175,14 +181,17 @@ bool checkLightning(struct bnoeul *starteulptr, struct bnoeul *curreulptr)
     return result;
 }
 
-bool checkFire(struct bnoeul *starteulptr, struct bnoeul *curreulptr)
+bool checkFire(struct bnoeul *starteulptr, struct bnoeul *curreulptr,
+    struct bnogra *startgraptr)
 {
+    short gravdir;
     double start_h;
     double h;
     double angle = angDiffWrap(h, start_h);
+    gravdir = checkGravDir(startgraptr);
     start_h = starteulptr->eul_head;
     h = curreulptr->eul_head;
-    if (angle > ANGLETOLHEAD)
+    if (angle > ANGLETOLHEAD && gravdir == GRAVX)
     {
         return true;
     }
@@ -198,6 +207,7 @@ short classifyShape()
     clock_t curr_t;
     struct bnoeul *starteulptr;
     struct bnoeul *curreulptr;
+    struct bnogra *startgraptr;
     bool isLightning;
     bool isFire;
 
@@ -206,9 +216,11 @@ short classifyShape()
     */
     curreulptr = (struct bnoeul *) malloc(sizeof(struct bnoeul));
     starteulptr = (struct bnoeul *) malloc(sizeof(struct bnoeul));
+    startgraptr = (struct bnogra *) malloc(sizeof(struct bnogra));
     
     start_t = clock();
     errval = get_eul(starteulptr);
+    errval = get_gra(startgraptr);
 
     while (true)
     {
@@ -224,7 +236,7 @@ short classifyShape()
             /*
                 check for wind or water
             */
-            currSpellType = checkCircle(starteulptr, curreulptr);
+            currSpellType = checkCircle(starteulptr, curreulptr, startgraptr);
             if (currSpellType == WATER)
             {
                 currSpellType = WATER;
@@ -239,13 +251,13 @@ short classifyShape()
         if (time_passed > LIGHTNINGWAITTIME)
         {
             errval = get_eul(curreulptr);
-            isLightning = checkLightning(starteulptr, curreulptr);
+            isLightning = checkLightning(starteulptr, curreulptr, startgraptr);
             if (isLightning)
             {
                 currSpellType = LIGHTNING;
                 break;
             }
-            isFire = checkFire(starteulptr, curreulptr);
+            isFire = checkFire(starteulptr, curreulptr, startgraptr);
             if (isFire)
             {
                 currSpellType = FIRE;
@@ -255,6 +267,7 @@ short classifyShape()
     }
     free((void *) starteulptr);
     free((void *) curreulptr);
+    free((void *) startgraptr);
     return currSpellType;
 }
 
@@ -389,4 +402,27 @@ double angDiffWrap(double angle1, double angle2)
         result = 360 - result;
     }
     return result;
+}
+
+short checkGravDir(struct bnogra *startgraptr)
+{
+    short gravdir;
+    double gx; double gy; double gz;
+    gravdir = GRAVX;
+    gx = fabs(startgraptr->gravityx);
+    gy = fabs(startgraptr->gravityy);    
+    gz = fabs(startgraptr->gravityz);
+    if (gx > gy && gx > gz)
+    {
+        gravdir = GRAVX;
+    }
+    else if (gy > gx && gy > gz)
+    {
+        gravdir = GRAVY;
+    }
+    else if (gz > gx && gz > gy)
+    {
+        gravdir = GRAVZ;
+    }
+    return gravdir;
 }
