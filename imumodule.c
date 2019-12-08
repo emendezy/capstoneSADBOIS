@@ -177,8 +177,7 @@ short classifyShape()
     starteulptr = (struct bnoeul *) malloc(sizeof(struct bnoeul));
     
     start_t = clock();
-
-    
+    errval = get_eul(starteulptr);
 
     while (true)
     {
