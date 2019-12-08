@@ -1,6 +1,6 @@
-OBJS	= getbno055.o i2c_bno055.o imumodule.o HandlePlayerData.o Listener.o
-SOURCE	= getbno055.c, i2c_bno055.c, imumodule.c, HandlePlayerData.c, Listener.c
-HEADER	= getbno055.h, spellQueueStruct.h, playerstruct.h, imumodule.h, GPIOHandler.h, HandlePlayerData.h, HandlePlayerDAta.h, Listener.h,
+OBJS	= getbno055.o i2c_bno055.o imumodule.o GPIOHandler.o HandlePlayerData.o Listener.o
+SOURCE	= getbno055.c i2c_bno055.c imumodule.c GPIOHandler.c HandlePlayerData.c Listener.c
+HEADER	= getbno055.h spellQueueStruct.h playerstruct.h imumodule.h GPIOHandler.h HandlePlayerData.h Listener.h
 OUT	= gametest
 CC	 = gcc
 FLAGS	 = -g -c -Wall
@@ -9,17 +9,20 @@ LDLIBS = -lwiringPi
 all: $(OBJS)
 	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)
 
-getbno055.o: getbno055.c,
-	$(CC) $(FLAGS) getbno055.c, 
+getbno055.o: getbno055.c
+	$(CC) $(FLAGS) getbno055.c 
 
-i2c_bno055.o: i2c_bno055.c,
-	$(CC) $(FLAGS) i2c_bno055.c, 
+i2c_bno055.o: i2c_bno055.c
+	$(CC) $(FLAGS) i2c_bno055.c 
 
-imumodule.o: imumodule.c,
-	$(CC) $(FLAGS) imumodule.c, 
+imumodule.o: imumodule.c
+	$(CC) $(FLAGS) imumodule.c 
 
-HandlePlayerData.o: HandlePlayerData.c,
-	$(CC) $(FLAGS) HandlePlayerData.c, 
+GPIOHandler.o: GPIOHandler.c
+	$(CC) $(FLAGS) GPIOHandler.c 
+
+HandlePlayerData.o: HandlePlayerData.c
+	$(CC) $(FLAGS) HandlePlayerData.c 
 
 Listener.o: Listener.c
 	$(CC) $(FLAGS) Listener.c 
