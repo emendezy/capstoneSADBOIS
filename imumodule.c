@@ -76,11 +76,11 @@ int imuMain(struct PlayerStaffData *P)
         }
         printf("calling classifyShape in imuMain\n");
         currSpellType = classifyShape();
+
         if ((0 <= currSpellType) && (currSpellType <= 4))
         {
             enqueueSpell(currSpellType);
-            printf("imumodule.c: spellqueued!!!\n");
-            printf("imumodule.c: spell type is %d\n", (int)currSpellType);
+            printf("imumodule.c: spell type is %d %s line %d\n", (int)currSpellType, __FILE__, __LINE__);
         }
     }
     printf("imumodule.c: exiting imuMain\n");
