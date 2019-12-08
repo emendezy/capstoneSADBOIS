@@ -170,7 +170,7 @@
  * ------------------------------------------------------------ */
 int i2cfd;       // I2C file descriptor
 int verboseflag;     // debug flag, 0 = normal, 1 = debug mode
-extern char* senaddr;
+char senaddr[256];
 
 /* ------------------------------------------------------------ *
  * BNO055 versions, status data and other infos struct          *

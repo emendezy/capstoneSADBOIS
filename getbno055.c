@@ -32,6 +32,7 @@ char opr_mode[9] = {0};
 char pwr_mode[8] = {0};
 char datatype[256];
 //char senaddr[256] = "0x28";
+senaddr = "0x28";
 
 char htmfile[256];
 char calfile[256];
