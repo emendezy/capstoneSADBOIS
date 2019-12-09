@@ -372,7 +372,7 @@ void editCoolDownValues(struct PlayerStaffData* P, int amount)
 		}
 		else if(P->coolDownMask[i] < 0)
 		{
-			P->coolDownMask = 0;
+			P->coolDownMask[i] = 0;
 		}
 		// if(P->coolDownMask[i] % 5 == 0 && P->coolDownMask[i] != 0)
 		// {
