@@ -459,6 +459,11 @@ void sendCast(struct PlayerStaffData* P)
 	maxSpell = 0;
 
 	// Balance the spell cast times with weighting
+	printf("############ Spells with Weighting ############\n");
+	for(int i = 0; i < TOTAL_SPELLS_IN_SPELLBOOK; i++)
+	{
+		printf("Actual Spell Count for %s: %d\n", bookOfSpells[i], P->activeSpells[i]);
+	}
 	P->activeSpells[0] = P->activeSpells[0] / 3;
 	P->activeSpells[1] = P->activeSpells[1] / 5;
 	P->activeSpells[4] = P->activeSpells[4] / 4;
@@ -466,8 +471,7 @@ void sendCast(struct PlayerStaffData* P)
 
 	for(int i = 0; i < TOTAL_SPELLS_IN_SPELLBOOK; i++)
 	{
-		P->activeSpells[i] = P->activeSpells[i] / 4;
-		printf("Spell (%s) - %d\n", bookOfSpells[i], P->activeSpells[i]);
+		printf("Weighted Spell Count for %s: %d\n", bookOfSpells[i], P->activeSpells[i]);
 		if(P->activeSpells[i] > P->activeSpells[maxSpell]) maxSpell = i;
 	}
 
