@@ -85,7 +85,7 @@ int imuMain(struct PlayerStaffData *P)
         if(isDoneCasting(P))
             break;
 
-        currSpellType = classifyShape();
+        currSpellType = classifyShape(P);
 
         if ((0 <= currSpellType) && (currSpellType <= 4))
         {
@@ -213,7 +213,7 @@ bool checkFire(struct bnoeul *starteulptr, struct bnoeul *curreulptr,
     return false;
 }
 
-short classifyShape()
+short classifyShape(struct PlayerStaffData *P)
 {
     short currSpellType;
     int errval;
@@ -239,6 +239,10 @@ short classifyShape()
 
     while (true)
     {
+        updatePlayerFields(P);
+        if(isDoneCasting(P))
+            break;
+
         curr_t = clock();
         time_passed = ((double)(curr_t - start_t)) / CLOCKS_PER_SEC;
         if ((time_passed > POLYWAITTIME))
