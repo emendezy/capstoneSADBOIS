@@ -579,7 +579,7 @@ void processDamageRecieved(struct PlayerStaffData* P, int* damageValues)
 	// soundHandler(P, 1); // play baby sound (got hit)
 
 	// fake code - test updateCooldownLights
-	updateCooldownLightsOnStaff(5,0);
+	// updateCooldownLightsOnStaff(5,0);
 
 	// check for shield ability
 	if(!(P->hasBastion) && !(P->hasImmunity))
