@@ -2,6 +2,7 @@
 #include <math.h>
 #include "spellQueueStruct.h"
 #include "playerstruct.h"
+#include "HandlePlayerData.h"
 #include "getbno055.h"
 
 /*
@@ -38,7 +39,7 @@ static double MINDRAWLENLIGHT = 0.3; // in meters
 //static double POLYANGLETRI = 60;
 //static double POLYANGLELIGHT = 150;
 //static double POLYANGLESQUARE = 90;
-    
+
     /*
         values of each type
         0 = earth

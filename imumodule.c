@@ -100,6 +100,9 @@ int imuMain(struct PlayerStaffData *P)
                 debug_printf("spell type is WIND %s line %d\n", __FILE__, __LINE__);
             }
         }
+
+        // ----------- I/O processing code control ------------ //
+        updatePlayerFields(P);
     }
     debug_printf("exiting imuMain %s %d\n", __FILE__, __LINE__);
     free((void *)initEulPtr);
@@ -114,7 +117,7 @@ int imuMain(struct PlayerStaffData *P)
     returns WATER if water (vertical circle)
     returns NOTCIRCLE otherwise
 */
-short checkCircle(struct bnoeul *starteulptr, struct bnoeul *curreulptr, 
+short checkCircle(struct bnoeul *starteulptr, struct bnoeul *curreulptr,
     struct bnogra* startgraptr)
 {
     short retval = NOTCIRCLE;
@@ -139,12 +142,12 @@ short checkCircle(struct bnoeul *starteulptr, struct bnoeul *curreulptr,
     dhead = angDiffWrap(h, start_h);
     droll = angDiffWrap(r, start_r);
     dpitch = angDiffWrap(p, start_p);
-    
+
     if ((dhead > MAXPOLYDEV || droll > MAXPOLYDEV) && gravdir == GRAVY)
     {
         retval = WATER;
     }
-    else if (dhead > MAXPOLYDEV && droll < ANGLETOLROLL 
+    else if (dhead > MAXPOLYDEV && droll < ANGLETOLROLL
         && dpitch < ANGLETOLPITCH && gravdir == GRAVZ)
     {
         retval = WIND;
@@ -169,7 +172,7 @@ bool checkLightning(struct bnoeul *starteulptr, struct bnoeul *curreulptr,
     start_r = starteulptr->eul_roll;
     r = curreulptr->eul_roll;
     angle = angDiffWrap(start_r, r);
-    
+
     if (angle < ANGLETOLLIGHT)
     {
         result = false;
@@ -221,7 +224,7 @@ short classifyShape()
     curreulptr = (struct bnoeul *) malloc(sizeof(struct bnoeul));
     starteulptr = (struct bnoeul *) malloc(sizeof(struct bnoeul));
     startgraptr = (struct bnogra *) malloc(sizeof(struct bnogra));
-    
+
     start_t = clock();
     errval = get_eul(starteulptr);
     errval = get_gra(startgraptr);
@@ -392,7 +395,7 @@ void initQueue()
 }
 
 
-/* 
+/*
     convert the difference between two angles
     such that it is easier to compare differences
     result will be no more than 180 degrees;
@@ -428,7 +431,7 @@ short checkGravDir(struct bnogra *startgraptr)
     double gx; double gy; double gz;
     gravdir = GRAVUNKNOWN;
     gx = fabs(startgraptr->gravityx);
-    gy = fabs(startgraptr->gravityy);    
+    gy = fabs(startgraptr->gravityy);
     gz = fabs(startgraptr->gravityz);
     if (gx > gy && gx > gz)
     {
