@@ -103,6 +103,8 @@ int imuMain(struct PlayerStaffData *P)
 
         // ----------- I/O processing code control ------------ //
         updatePlayerFields(P);
+        if(isDoneCasting(P))
+            break;
     }
     debug_printf("exiting imuMain %s %d\n", __FILE__, __LINE__);
     free((void *)initEulPtr);

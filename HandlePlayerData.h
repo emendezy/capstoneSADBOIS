@@ -25,6 +25,7 @@
 
 #include "GPIOHandler.h"
 #include "imumodule.h"
+// #include "HandlePlayerDataFunctions.h"
 
 // #include "tsh_exec.h"
 // #include "csapp.h"
@@ -108,7 +109,7 @@
 // 	//instantaneous heal
 // 	int heal = 0;
 // }
-
+/*
 struct PlayerStaffData* initPlayerStruct(bool*);
 
 void unloadPlayerData(struct PlayerStaffData*);
@@ -162,5 +163,6 @@ void alternateRumble(int);
 void lightHandler(struct PlayerStaffData*, int);
 
 void soundHandler(struct PlayerStaffData*, int);
+*/
 
 #endif

@@ -2,7 +2,7 @@
 #include <math.h>
 #include "spellQueueStruct.h"
 #include "playerstruct.h"
-#include "HandlePlayerData.h"
+#include "HandlePlayerDataFunctions.h"
 #include "getbno055.h"
 
 /*
