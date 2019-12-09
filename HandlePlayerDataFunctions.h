@@ -1,5 +1,7 @@
 /* Handle Player Data - function header */
 
+#include "GPIOHandler.h"
+
 struct PlayerStaffData* initPlayerStruct(bool*);
 
 void unloadPlayerData(struct PlayerStaffData*);

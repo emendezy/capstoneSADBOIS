@@ -79,6 +79,12 @@ int imuMain(struct PlayerStaffData *P)
         {
             numloop++;
         }
+
+        // ----------- I/O processing code control ------------ //
+        updatePlayerFields(P);
+        if(isDoneCasting(P))
+            break;
+
         currSpellType = classifyShape();
 
         if ((0 <= currSpellType) && (currSpellType <= 4))
