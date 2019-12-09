@@ -48,10 +48,10 @@ static double MINDRAWLENLIGHT = 0.3; // in meters
         3 = water
         4 = wind
     */
-static short EARTH = 0;
+static short WATER = 0;
 static short FIRE = 1;
 static short LIGHTNING = 2;
-static short WATER = 3;
+static short EARTH = 3;
 static short WIND = 4;
 static short NOTCIRCLE = 5;
 static short ERRORVAL = -1;

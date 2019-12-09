@@ -90,23 +90,23 @@ int imuMain(struct PlayerStaffData *P)
         if ((0 <= currSpellType) && (currSpellType <= 4))
         {
             enqueueSpell(currSpellType);
-            if (currSpellType == 0)
-            {
-                debug_printf("spell type is EARTH %s line %d\n", __FILE__, __LINE__);
-            }
-            else if (currSpellType == 1)
-            {
-                debug_printf("spell type is FIRE %s line %d\n", __FILE__, __LINE__);
-            }
-            else if (currSpellType == 2)
-            {
-                debug_printf("spell type is LIGHTNING %s line %d\n", __FILE__, __LINE__);
-            }
-            else if (currSpellType == 3)
+            if (currSpellType == WATER)
             {
                 debug_printf("spell type is WATER %s line %d\n", __FILE__, __LINE__);
             }
-            else if (currSpellType == 4)
+            else if (currSpellType == FIRE)
+            {
+                debug_printf("spell type is FIRE %s line %d\n", __FILE__, __LINE__);
+            }
+            else if (currSpellType == LIGHTNING)
+            {
+                debug_printf("spell type is LIGHTNING %s line %d\n", __FILE__, __LINE__);
+            }
+            else if (currSpellType == EARTH)
+            {
+                debug_printf("spell type is EARTH %s line %d\n", __FILE__, __LINE__);
+            }
+            else if (currSpellType == WIND)
             {
                 debug_printf("spell type is WIND %s line %d\n", __FILE__, __LINE__);
             }
@@ -375,10 +375,10 @@ void enqueueSpell(short spell)
 /*
     remove spell from start of list: FIFO
     returns -1 on error
-    0 = earth
+    0 = water
     1 = fire
     2 = lightning
-    3 = water
+    3 = earth
     4 = wind
 */
 short dequeueSpell()

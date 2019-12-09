@@ -370,10 +370,14 @@ void editCoolDownValues(struct PlayerStaffData* P, int amount)
 		{
 			P->coolDownMask[i] -= amount;
 		}
-		if(P->coolDownMask[i] % 5 == 0 && P->coolDownMask[i] != 0)
+		else if(P->coolDownMask[i] < 0)
 		{
-			// updateCooldownLightsOnStaff((30 - P->coolDownMask[i]) / 5, i);
+			P->coolDownMask = 0;
 		}
+		// if(P->coolDownMask[i] % 5 == 0 && P->coolDownMask[i] != 0)
+		// {
+			// updateCooldownLightsOnStaff((30 - P->coolDownMask[i]) / 5, i);
+		// }
 	}
 
 	printf("(amount = %d)Cooldown values = [%d, %d, %d, %d, %d]\n", amount, P->coolDownMask[0], P->coolDownMask[1], P->coolDownMask[2], P->coolDownMask[3], P->coolDownMask[4]);
