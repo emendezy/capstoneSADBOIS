@@ -138,6 +138,10 @@ bool isDoneCasting(struct PlayerStaffData* P)
 	{
 		P->isCasting = false;
 		isSuccessful = true;
+
+		/* Spell is completed - now process the IMU input */
+		imuInputHandler(P);
+
 		endCasting(P, isSuccessful);
 		for (int i = 0; i < TOTAL_SPELLS_IN_SPELLBOOK; i++) {
 			P->activeSpells[i] = 0;
@@ -178,16 +182,23 @@ void imuInputHandler(struct PlayerStaffData* P)
 	 * 			(from spell logic - cooldown starts when rune begins to be
 	 *			drawn)
 	 */
-	// short spellType = dequeueSpell();
-	// if(spellType != -1) {
-	// 	// Spell in queue that was successfully dequeued
-	// 	printf("Spell was properly dequeued - %d\n", spellType);
-	// 	P->activeSpells[spellType]++;
-	//  soundHandler(P, 2); // play "Burp" everytime spell successfully added
-	// }
+	short spellType;
+	while(true)
+	{
+		spellType = dequeueSpell();
+		if(spellType != -1) {
+			// Spell in queue that was successfully dequeued
+			printf("Spell was properly dequeued - %d\n", spellType);
+			P->activeSpells[spellType]++;
+		}
+		else
+		{
+			break;
+		}
+	}
 
 	/* fake code - create fake imu data */
-	P->activeSpells[0] = 3;
+	// P->activeSpells[0] = 3;
 	// P->activeSpells[1] = 3;
 	// P->activeSpells[2] = 3;
 	// P->activeSpells[3] = 3;
@@ -246,13 +257,11 @@ void spellCaster(struct PlayerStaffData* P, int damageType)
 			P->startOfSpell = false;
 			printf("\nhandleplayerdata.c 256\n");
 		}
-	errval = imuMain(P);
-	if (errval < 0)
-	{
-		printf("error value after calling imuMain\n");
-	}
-		/* Spell has been started and now process the IMU input */
-		imuInputHandler(P);
+		errval = imuMain(P);
+		if (errval < 0)
+		{
+			printf("error value after calling imuMain\n");
+		}
 	}
 }
 
@@ -440,17 +449,24 @@ void sendCast(struct PlayerStaffData* P)
 {
 	// -> processDamageRecieved() will do the damage application after being hit with a damage payload
 	printf("Sending a cast! ----\n");
-	system("sudo python3 Libraries/lightUp.py");
+	// system("sudo python3 Libraries/lightUp.py");
 
 	int maxSpell, timesCast;
 	maxSpell = 0;
 	for(int i = 0; i < TOTAL_SPELLS_IN_SPELLBOOK; i++)
 	{
-		printf("%d\n", P->activeSpells[i]);
-		if(P->activeSpells[i] > maxSpell) maxSpell = i;
+		printf("Spell (%s) - %d\n", bookOfSpells[i], P->activeSpells[i]);
+		if(P->activeSpells[i] > P->activeSpells[maxSpell]) maxSpell = i;
 	}
 
 	timesCast = P->activeSpells[maxSpell];
+	printf("Sending out a %s ! *******************\n", bookOfSpells[maxSpell]);
+
+	if(timesCast > 5)
+	{
+		printf("Capped the spell stack of %s at 5\n", bookOfSpells[maxSpell]);
+		timesCast = 5;
+	}
 
 	if(P->coolDownMask[maxSpell] == 0)
 	{
