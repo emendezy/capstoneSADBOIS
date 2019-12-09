@@ -68,7 +68,12 @@ int imuMain(struct PlayerStaffData *P)
         time_passed = ((double)(curr_t - start_t)) / CLOCKS_PER_SEC;
         if (time_passed < FRAMEWAITTIME * numloop)
         {
-            continue;
+            // ----------- I/O processing code control ------------ //
+            updatePlayerFields(P);
+            if(isDoneCasting(P))
+                break;
+            else
+                continue;
         }
         else
         {
@@ -100,11 +105,6 @@ int imuMain(struct PlayerStaffData *P)
                 debug_printf("spell type is WIND %s line %d\n", __FILE__, __LINE__);
             }
         }
-
-        // ----------- I/O processing code control ------------ //
-        updatePlayerFields(P);
-        if(isDoneCasting(P))
-            break;
     }
     debug_printf("exiting imuMain %s %d\n", __FILE__, __LINE__);
     free((void *)initEulPtr);
